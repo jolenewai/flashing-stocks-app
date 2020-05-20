@@ -4,3 +4,5 @@ from customers.models import Person
 
 class Photographer(Person):
     pass
+
+
