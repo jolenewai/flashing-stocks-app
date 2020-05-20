@@ -20,3 +20,7 @@ class Person(models.Model):
 
     class Meta:
         abstract = True
+
+
+class Customer(Person):
+    pass
