@@ -23,7 +23,6 @@ class Person(models.Model):
 
 
 class Customer(Person):
-    pass
 
     def __str__(self):
         return self.user.first_name + ' ' + self.user.last_name + ' (' + self.display_name + ')'
