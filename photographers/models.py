@@ -5,7 +5,7 @@ from customers.models import Person
 class Photographer(Person):
 
     def __str__(self):
-        return self.display_name
+        return self.user.first_name + ' ' + self.user.last_name + ' (' + self.display_name + ')'
 
 
 class Album(models.Model):
@@ -17,3 +17,4 @@ class Album(models.Model):
 
     def __str__(self):
         return self.title
+
