@@ -3,7 +3,9 @@ from customers.models import Person
 
 
 class Photographer(Person):
-    pass
+
+    def __str__(self):
+        return self.display_name
 
 
 class Album(models.Model):
