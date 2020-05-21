@@ -18,10 +18,11 @@
 {{ profile.address_line2 }}</p>
 <p>Postal Code: {{ profile.postal_code }}</p>
 <p>Country: {{ profile.country.name }}</p>
+<p><a href="{% url 'cust_update_profile' %}" class="btn btn-primary">Update Profile</a></p>
 
 {% else %}
     Your profile is empty! Create your profile now.
-    <p><a href="{% url 'create_profile' %}" class="btn btn-primary">Create Profile</a></p>
+    <p><a href="{% url 'cust_create_profile' %}" class="btn btn-primary">Create Profile</a></p>
 {% endif %}
 
 

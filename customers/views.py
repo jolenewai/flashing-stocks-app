@@ -1,8 +1,44 @@
-from django.shortcuts import render, HttpResponse, get_object_or_404
+from django.shortcuts import render, HttpResponse, get_object_or_404, redirect, reverse
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
+from django.contrib import messages
 from .forms import CustomerForm
 from .models import Customer
+
+
+def create_profile(request):
+
+    if Customer.objects.get(user=request.user):
+        return redirect(reverse(view_profile))
+
+    else:
+
+        if request.method == "POST":
+            create_form = CustomerForm(request.POST)
+
+            if create_form.is_valid():
+
+                profile = create_form.save(commit=False)
+                profile.user = request.user
+                profile.save()
+                messages.success(request, "Thank you! Your profile has been created successfully.")
+                return redirect(reverse(view_profile))
+
+            else:
+                print (create_form._errors)
+                return render(request, 'customers/create_profile.template.html', {
+                    'form': form
+                })
+
+                return HttpResponse("form not valid")
+
+        else:
+            form = CustomerForm()
+
+            return render(request, 'customers/create_profile.template.html', {
+                'form': form
+            })
+
 
 def view_profile(request):
 
@@ -19,25 +55,22 @@ def view_profile(request):
     })
 
 
-def create_profile(request):
+def update_profile(request):
 
-    if request.method == "POST":
-        create_form = CustomerForm(request.POST)
+    profile = Customer.objects.get(user=request.user)
 
-        if create_form.is_valid():
+    if request.method == 'POST':
+        profile_form = CustomerForm(request.POST, instance=profile)
 
-            profile = create_form.save(commit=False)
-            profile.user = request.user
-            profile.save()
-            return HttpResponse("profile added")
-
+        if profile_form.is_valid():
+            profile_form.save()
+            return redirect(reverse(view_profile))
         else:
-            print (create_form._errors)
-            return HttpResponse("form not valid")
+            return render(request, 'customers/update_profile.template.html', {
+                'form': profile_form
+            })
     else:
-        form = CustomerForm()
-
-        return render(request, 'customers/create_profile.template.html', {
-            'form': form
+        profile_form = CustomerForm(instance=profile)
+        return render(request, 'customers/update_profile.template.html', {
+            'form': profile_form
         })
-

@@ -7,7 +7,7 @@ class Person(models.Model):
 
     user = models.ForeignKey(User, on_delete='CASCADE')
     display_name = models.CharField(max_length=100, blank=False, null=False)
-    dob = models.DateField(auto_now=False)
+    dob = models.DateField(auto_now=False, label="Date of Birth")
     address_line1 = models.CharField(max_length=100, blank=True)
     address_line2 = models.CharField(max_length=100, blank=True)
     postal_code = models.CharField(max_length=100, blank=True)
