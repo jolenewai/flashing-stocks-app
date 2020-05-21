@@ -2,11 +2,27 @@
 
 {% block content %}
 
-<table class="table">
-{{ profile.display_name }}
-{{ profile.dob }}
-{{ profile.country }}
+<h2>My Profile</h2>
 
-</table>
+<p>Username: {{ user_info.username }}</p>
+<p>Email: {{ user_info.email }}</p>
+<p>Date Joined: {{ user_info.date_joined }}</p>
+<p>Name: {{ user_info.first_name }} {{ user_info.last_name }}</p>
+<a href="{% url 'account_change_password' %}" class="btn btn-primary">Change Password</a>
+<hr />
+
+{% if profile %}
+<p>Display Name: {{ profile.display_name }}</p>
+<p>Date of Birth: {{ profile.dob }}</p>
+<p>Address: {{ profile.address_line1 }}<br/>
+{{ profile.address_line2 }}</p>
+<p>Postal Code: {{ profile.postal_code }}</p>
+<p>Country: {{ profile.country.name }}</p>
+
+{% else %}
+    Your profile is empty! Create your profile now.
+    <p><a href="{% url 'create_profile' %}" class="btn btn-primary">Create Profile</a></p>
+{% endif %}
+
 
 {% endblock %}

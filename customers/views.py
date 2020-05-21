@@ -1,14 +1,21 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, HttpResponse, get_object_or_404
+from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.models import User
 from .forms import CustomerForm
 from .models import Customer
 
-
 def view_profile(request):
 
-    profile = Customer.objects.get(user=request.user)
+    user_info = request.user
+
+    try:
+        profile = Customer.objects.get(user=request.user)
+    except ObjectDoesNotExist:
+        profile = None
 
     return render(request, 'customers/profile.template.html', {
-        'profile': profile
+        'profile': profile,
+        'user_info': user_info
     })
 
 
