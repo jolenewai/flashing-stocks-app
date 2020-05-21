@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'cloudinary',
     'crispy_forms',
+    'bootstrap_datepicker_plus',
     'home',
     'customers',
     'photographers',
@@ -86,6 +87,8 @@ TEMPLATES = [
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+
 
 AUTHENTICATION_BACKENDS = (
 

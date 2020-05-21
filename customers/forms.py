@@ -1,7 +1,7 @@
 from django import forms
 from .models import Customer
 from django.contrib.auth.models import Group
-
+from bootstrap_datepicker_plus import DatePickerInput
 
 class CustomerForm(forms.ModelForm):
     class Meta:
@@ -17,6 +17,9 @@ class CustomerForm(forms.ModelForm):
             'country_code',
             'contact_number'
         )
+        widgets = {
+            'dob': DatePickerInput(), # default date-format %m/%d/%Y will be used
+        }
 
 
 class SignupForm(forms.Form):
