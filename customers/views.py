@@ -3,6 +3,14 @@ from .forms import CustomerForm
 from .models import Customer
 
 
+def view_profile(request):
+
+    profile = Customer.objects.get(user=request.user)
+
+    return render(request, 'customers/profile.template.html', {
+        'profile': profile
+    })
+
 
 def create_profile(request):
 
