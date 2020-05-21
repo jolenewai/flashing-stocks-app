@@ -45,6 +45,13 @@
                 </div>    
             {% endfor %}
         {% endif %}
+
+        {% if request.user.is_authenticated  %}
+        <h1>Hello {{request.user}}</h1>
+        {% else %}
+        <p>Please <a href="accounts/login">Login</a></p>
+        {%endif%}
+
         </header>
         {% block pageheader %}
         {% endblock %}
