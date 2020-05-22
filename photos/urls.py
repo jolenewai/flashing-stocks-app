@@ -8,5 +8,8 @@ urlpatterns = [
     path('edit/<photo_id>', photos.views.edit_photo, name="edit_photo"),
     path('delete/<photo_id>', photos.views.delete_photo, name="delete_photo"),
     path('tags/add', photos.views.add_tags, name="add_tags"),
+    path('tags/edit/<tag_id>', photos.views.edit_tag, name="edit_tag"),
+    path('tags/delete/<tag_id>', photos.views.delete_tag, name="delete_tag"),
     path('category/add', photos.views.add_category, name="add_category")
+
     ]

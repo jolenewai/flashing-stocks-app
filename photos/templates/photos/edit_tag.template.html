@@ -1,0 +1,25 @@
+{% extends 'base.template.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h4>Edit Tag</h4>
+           <form method="POST">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <button type="submit">Update Tag</button>
+           </form>
+        </div>
+    </div>
+
+</div>
+
+
+{% endblock %}
+
+{% block postloadjs %}
+{% endblock %}

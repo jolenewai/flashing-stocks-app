@@ -113,7 +113,7 @@ def add_tags(request):
 
         tag_form = TagForm(request.POST)
 
-        if form.is_valid():
+        if tag_form.is_valid():
             tag = tag_form.save()
             messages.success(
                 request, f"Tag [{tag.name}] added successful"
@@ -132,6 +132,49 @@ def add_tags(request):
         'form': form
     })
 
+
+def edit_tag(request, tag_id):
+
+    try:
+        tag = Tag.objects.get(id=tag_id)
+    except ObjectDoesNotExist:
+        tag = None
+
+    if tag:
+        form = TagForm(instance=tag)
+
+    if request.method == 'POST':
+        tag_form = TagForm(request.POST, instance=tag)
+
+        if tag_form.is_valid():
+            saved_tag = tag_form.save()
+            messages.success(request, f"Tag {saved_tag.name} has been updated")
+            return redirect(reverse(add_tags))
+        else:
+            messages.error(request, f"Update failed.")
+            return render(request, 'photos/edit_tag.template.html', {
+                'form': tag_form
+            })
+
+    return render(request, 'photos/edit_tag.template.html', {
+        'form': form
+    })
+
+
+def delete_tag(request, tag_id):
+
+    try:
+        tag = Tag.objects.get(id=tag_id)
+    except ObjectDoesNotExist:
+        tag = None
+
+    if request.method == 'POST':
+        tag.delete()
+        return redirect(reverse(add_tags))
+
+    return render(request, 'photos/delete_confirm.template.html', {
+        'tag': tag
+    })
 
 def add_category(request):
 
@@ -160,3 +203,5 @@ def add_category(request):
         'categories': categories,
         'form': form
     })
+
+
