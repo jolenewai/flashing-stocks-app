@@ -1,0 +1,27 @@
+{% extends 'base.template.html' %}
+{% load crispy_forms_tags %}
+
+{% block extrajs %}
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <img src="{{ photo.image.cdn_url }}-/resize/480x/" alt="{{ photo.caption }}" />
+        </div>
+        <div class="col-sm">
+            <form method="POST">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <button type="submit">Update</button>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+
+
+{% endblock %}

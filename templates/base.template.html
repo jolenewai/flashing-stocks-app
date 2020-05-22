@@ -50,12 +50,15 @@
 
         </header>
         <div class="container">
+        
         {% if request.user.is_authenticated  %}
-        <h1>Hello {{request.user}}</h1>
-        {% else %}
-        <p>Please <a href="accounts/login">Login</a></p>
+        <div class="my-3">
+            <h5>Hello {{request.user}}</h5>
+            {% else %}
+            <p>Please <a href="accounts/login">Login</a></p>
+        </div>
         {%endif%}
-
+        
         
         {% block pageheader %}
         {% endblock %}

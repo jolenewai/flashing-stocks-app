@@ -1,0 +1,31 @@
+{% extends 'base.template.html' %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <img src="{{ photo.image.cdn_url }}-/resize/480x/" alt="{{ photo.caption }}" />
+            <div class="my-2">
+                <h4>Tags</h4>
+                {% for tag in photo.tags.all %}
+                    <a href="#" class="badge badge-info">{{ tag }}</a>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col-sm">
+            <h3>{{ photo.caption }}</h3>
+            <p>{{ photo.desc }}</p>
+
+            <p class="photographer">{{ photo.owner.display_name }}</p>
+
+            <p>Select a size to download:</p>
+
+            <a href="" class="btn btn-primary">Download</a>
+            <p><small>By clicking the download button, we will add this image to your cart first, so that you can download it later after you have made your payment.</small></p>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

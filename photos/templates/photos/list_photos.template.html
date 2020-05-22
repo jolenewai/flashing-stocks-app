@@ -1,0 +1,16 @@
+{% extends 'base.template.html' %}
+
+{% block content %}
+<div class="card-deck">
+
+{% for photo in photos %}
+  <div class="card">
+    <img src="{{ photo.image.cdn_url }}-/preview/" class="card-img-top" alt="{{photo.caption}}">
+    <div class="card-body">
+        <h5 class="card-title"><a href="{% url 'view_photo' photo_id=photo.id %}">{{photo.caption}}</a></h5>
+        
+    </div>
+  </div>
+{% endfor %}
+</div>
+{% endblock %}

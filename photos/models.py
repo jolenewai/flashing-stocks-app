@@ -22,14 +22,14 @@ class Photo(models.Model):
     image = ImageField(blank=True)
     caption = models.CharField(max_length=100, blank=False, null=False)
     desc = models.CharField(max_length=255, blank=False, null=False)
-    costs = models.FloatField(blank=False)
-    tags = models.ManyToManyField('Tag')
-    category = models.ManyToManyField('Category')
+    price = models.FloatField(blank=False)
+    tags = models.ManyToManyField(Tag, blank=True)
+    category = models.ManyToManyField(Category, blank=True)
     owner = models.ForeignKey(
         Photographer,
         on_delete='CASCADE'
     )
-    album = models.ManyToManyField(Album)
+    album = models.ManyToManyField(Album, blank=True)
 
     def __str__(self):
-        return self.id + '_' + self.title
+        return str(self.id) + '_' + self.caption
