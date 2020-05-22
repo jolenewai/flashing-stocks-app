@@ -1,5 +1,6 @@
 from django.db import models
 from photographers.models import Photographer, Album
+from pyuploadcare.dj.models import ImageField
 
 
 class Tag(models.Model):
@@ -18,9 +19,9 @@ class Category(models.Model):
 
 
 class Photo(models.Model):
-    title = models.CharField(max_length=100, blank=False, null=False)
+    image = ImageField(blank=True)
+    caption = models.CharField(max_length=100, blank=False, null=False)
     desc = models.CharField(max_length=255, blank=False, null=False)
-    url = models.URLField(blank=False)
     costs = models.FloatField(blank=False)
     tags = models.ManyToManyField('Tag')
     category = models.ManyToManyField('Category')
@@ -28,7 +29,7 @@ class Photo(models.Model):
         Photographer,
         on_delete='CASCADE'
     )
-    # album = models.ManyToManyField(Album)
+    album = models.ManyToManyField(Album)
 
     def __str__(self):
         return self.id + '_' + self.title

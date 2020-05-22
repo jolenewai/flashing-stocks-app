@@ -12,7 +12,7 @@
 <hr />
 
 {% if profile %}
-<img src="{{profile.profile_img.cdn_url}}-/preview/200x200/" alt="{{ profile.display_name }}" /> 
+<img src="{{profile.profile_img.cdn_url}}-/preview/200x200/" alt="{{ profile.display_name }}" /> <a href="{% url 'upload_avatar' %}" class="btn btn-primary">Change Profile Image</a>
 <p>Display Name: {{ profile.display_name }}</p>
 <p>Date of Birth: {{ profile.dob }}</p>
 <p>Address: {{ profile.address_line1 }}<br/>

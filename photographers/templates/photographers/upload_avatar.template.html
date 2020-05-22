@@ -6,11 +6,11 @@
 {{ form.media }}
 {% endblock %}
 {% block content %}
-
+<div class="my-3"> <img src="{{profile.profile_img.cdn_url}}-/preview/200x200/" alt="{{ profile.display_name }}" /></div>
 <form id="upload_avatar_form" method="POST">
     {% csrf_token %}
     {{ form|crispy }}
-    <button type="submit">Change</button>
+    <button type="submit" class="btn btn-primary">Change</button>
 </form>
 
 <hr />
