@@ -1,0 +1,20 @@
+{% extends 'base.template.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+ <div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        
+        <h1>Update Profile</h1>
+
+        <form method="POST">
+            {% csrf_token %}
+            {{ form|crispy }}
+            {{ form.media }} 
+
+            <button type="submit">Update</button>
+        </form>
+    </div>
+ </div>
+
+{% endblock %}

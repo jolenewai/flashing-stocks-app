@@ -38,9 +38,7 @@ def upload_avatar(request):
     profile = Photographer.objects.get(user=request.user)
 
     form = AvatarForm(instance=profile)
-    avatar_url = profile.profile_img
 
-    print(avatar_url)
     if request.method == 'POST':
         avatar_to_update = AvatarForm(
             request.POST,
@@ -54,13 +52,35 @@ def upload_avatar(request):
         else:
             print(avatar_to_update.errors)
             return render(request, 'photographers/upload_avatar.template.html', {
-                'form': form,
-                'avatar_url': avatar_url
+                'form': form
             })
     else:
 
         return render(request, 'photographers/upload_avatar.template.html', {
-            'form': form,
-            'avatar_url': avatar_url
+            'form': form
         })
 
+
+def view_profile(request):
+
+    user_info = request.user
+
+    try:
+        profile = Photographer.objects.get(user=request.user)
+    except ObjectDoesNotExist:
+        profile = None
+
+    return render(request, 'photographers/view_profile.template.html', {
+        'profile': profile,
+        'user_info': user_info
+    })
+
+
+def update_profile(request):
+    profile = Photographer.objects.get(user=request.user)
+
+    update_form = PhotographerForm(instance=profile)
+
+    return render(request, 'photographers/update_profile.template.html', {
+        'form': update_form
+    })
