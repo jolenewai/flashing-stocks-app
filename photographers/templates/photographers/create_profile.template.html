@@ -1,0 +1,22 @@
+{% extends 'base.template.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+ <div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        
+        <h1>Photographer's Profile</h1>
+        <p>Fill up the following details so that your customer can understand you more :)</p>
+
+        <form method="POST">
+            {% csrf_token %}
+            {{ form|crispy }}
+            {{ form.media }} 
+            {{ form.errors }}
+
+            <button type="submit">Create Profile</button>
+        </form>
+    </div>
+ </div>
+
+{% endblock %}

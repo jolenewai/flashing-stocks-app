@@ -1,17 +1,11 @@
 from django import forms
 from .models import Photographer
-from django.contrib.auth.models import User
-
-
-class UserForm(forms.ModelForm):
-    class META:
-        model = User
-        fields = ('first_name', 'last_name')
-
+from bootstrap_datepicker_plus import DatePickerInput
+from pyuploadcare.dj.forms import ImageField
 
 class PhotographerForm(forms.ModelForm):
-    class META:
-        model: Photographer
+    class Meta:
+        model = Photographer
         fields = (
             'display_name',
             'dob',
@@ -23,3 +17,17 @@ class PhotographerForm(forms.ModelForm):
             'country_code',
             'contact_number'
         )
+
+        widgets = {
+            'dob': DatePickerInput(), # default date-format %m/%d/%Y will be used
+        }
+
+
+class AvatarForm(forms.ModelForm):
+    profile_img = ImageField(label='', required=False)
+    class Meta:
+        model = Photographer
+        fields = ('profile_img',)
+
+
+
