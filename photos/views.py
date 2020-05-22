@@ -115,9 +115,13 @@ def add_tags(request):
 
         if form.is_valid():
             tag = tag_form.save()
-            messages.success(request, f"Tag [{category.name}] added successful")
+            messages.success(
+                request, f"Tag [{tag.name}] added successful"
+            )
         else:
-            messages.error(request, f"Unable to add Tag [{category.name}]")
+            messages.error(
+                request, f"Unable to add new Tag"
+            )
             return render(request, 'photos/add_tags.template.html', {
                 'tags': tags,
                 'form': tag_form
@@ -138,9 +142,13 @@ def add_category(request):
 
         if category_form.is_valid():
             category = category_form.save()
-            messages.success(request, f"Category [{category.name}] added successful")
+            messages.success(
+                request, f"Category [{category.name}] added successful"
+            )
         else:
-            messages.error(request, f"Unable to add category [{request.POST.name}]")
+            messages.error(
+                request, f"Unable to add new category"
+            )
             return render(request, 'photos/add_category.template.html', {
                 'categories': categories,
                 'form': category_form
