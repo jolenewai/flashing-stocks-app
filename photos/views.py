@@ -2,8 +2,8 @@ from django.shortcuts import render, redirect, reverse
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 from photographers.models import Photographer
-from .models import Photo
-from .forms import PhotoForm
+from .models import Photo, Tag, Category
+from .forms import PhotoForm, TagForm, CategoryForm
 
 # Create your views here.
 
@@ -25,7 +25,7 @@ def add_photo(request):
 
     if request.method == 'POST':
         form = PhotoForm(request.POST)
-        print(form)
+
         if form.is_valid():
             add_form = form.save(commit=False)
             add_form.owner = photographer
@@ -102,4 +102,53 @@ def delete_photo(request, photo_id):
         'photo': photo
     })
 
-    
+
+def add_tags(request):
+
+    tags = Tag.objects.all()
+
+    form = TagForm()
+
+    if request.method == 'POST':
+
+        tag_form = TagForm(request.POST)
+
+        if form.is_valid():
+            tag = tag_form.save()
+            messages.success(request, f"Tag [{category.name}] added successful")
+        else:
+            messages.error(request, f"Unable to add Tag [{category.name}]")
+            return render(request, 'photos/add_tags.template.html', {
+                'tags': tags,
+                'form': tag_form
+            })
+
+    return render(request, 'photos/add_tags.template.html', {
+        'tags': tags,
+        'form': form
+    })
+
+
+def add_category(request):
+
+    categories = Category.objects.all()
+
+    if request.method == 'POST':
+        category_form = CategoryForm(request.POST)
+
+        if category_form.is_valid():
+            category = category_form.save()
+            messages.success(request, f"Category [{category.name}] added successful")
+        else:
+            messages.error(request, f"Unable to add category [{request.POST.name}]")
+            return render(request, 'photos/add_category.template.html', {
+                'categories': categories,
+                'form': category_form
+            })
+
+    form = CategoryForm()
+
+    return render(request, 'photos/add_category.template.html', {
+        'categories': categories,
+        'form': form
+    })
