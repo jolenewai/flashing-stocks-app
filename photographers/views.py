@@ -64,14 +64,3 @@ def upload_avatar(request):
             'avatar_url': avatar_url
         })
 
-
-
-def set_profile_img_to_null(request):
-
-    all_photographers = Photographer.objects.all()
-
-    for p in all_photographers:
-        print(p.profile_img)
-        p.profile_img = Null
-
-    return render(request, 'photographers/setnull_template.html')
