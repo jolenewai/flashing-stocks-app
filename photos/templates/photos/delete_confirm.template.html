@@ -10,7 +10,7 @@
             <h1 class="display-4">Confirm Delete</h1>
         </div>
         <div class="col-sm">
-            <h2>You are about to delete Tag [{{ tag.name }}]</h2>
+            <h2>You are about to delete [{{ item.name }}]</h2>
             Are you sure? You will not be able to retrieve it back after deleting.
             <form method="POST">
                 {% csrf_token %}

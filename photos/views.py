@@ -5,8 +5,6 @@ from photographers.models import Photographer
 from .models import Photo, Tag, Category
 from .forms import PhotoForm, TagForm, CategoryForm
 
-# Create your views here.
-
 
 def list_photos(request):
     try:
@@ -173,8 +171,9 @@ def delete_tag(request, tag_id):
         return redirect(reverse(add_tags))
 
     return render(request, 'photos/delete_confirm.template.html', {
-        'tag': tag
+        'item': tag
     })
+
 
 def add_category(request):
 
@@ -205,3 +204,53 @@ def add_category(request):
     })
 
 
+def edit_category(request, category_id):
+
+    try:
+        category = Category.objects.get(id=category_id)
+    except ObjectDoesNotExist:
+        category = None
+
+    if request.method == 'POST':
+        form = CategoryForm(request.POST, instance=category)
+        if form.is_valid():
+            saved_category = form.save()
+            messages.success(
+                request,
+                f"Category Name [{saved_category.name}] has been updated"
+                )
+            return redirect(reverse(add_category))
+        else:
+            messages.error(request, "Unable to update category name")
+            return render(request, 'photos/edit_category.template.html', {
+                'form': form
+            })
+
+    form = CategoryForm(instance=category)
+
+    return render(request, 'photos/edit_category.template.html', {
+        'form': form
+    })
+
+
+def delete_category(request, category_id):
+
+    try:
+        category = Category.objects.get(id=category_id)
+    except ObjectDoesNotExist:
+        category = None
+
+    if request.method == 'POST':
+        messages.success(
+            request,
+            f"Category [{category.name}] has been deleted"
+        )
+        category.delete()
+        return redirect(reverse(add_category))
+    else:
+        messages.error(request, f"Unable to delete category")
+        return redirect(reverse(add_category))
+
+    return render(request, 'photos/delete_confirm.template.html', {
+        'item': category
+    })

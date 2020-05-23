@@ -9,7 +9,11 @@
         <div class="col">
             <h4>Categories Available</h4>
             {% for category in categories.all %}
-                <div class="d-block"><a href="#">{{ category }}</a></div>
+                <div class="d-block"><a href="#">{{ category }}</a>
+                    <a href="#" class="badge badge-info">{{ tag }}</a> 
+                    <a href="{% url 'edit_category' category_id=category.id %}">Edit</a> 
+                    <a href="{% url 'delete_category' category_id=category.id %}">Delete</a>
+                </div>
             {% endfor %}
         </div>
         <div class="col-sm">

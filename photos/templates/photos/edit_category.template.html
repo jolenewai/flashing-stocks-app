@@ -6,11 +6,11 @@
 <div class="container">
     <div class="row">
         <div class="col">
-            <h4>Edit Tag</h4>
+            <h4>Edit Category</h4>
            <form method="POST">
                 {% csrf_token %}
                 {{ form|crispy }}
-                <button type="submit">Update Tag</button>
+                <button type="submit">Update Category</button>
            </form>
         </div>
     </div>

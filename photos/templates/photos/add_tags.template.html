@@ -10,7 +10,9 @@
             <h4>Tags Available</h4>
             {% for tag in tags.all %}
                 <div class="d-block"> 
-                    <a href="#" class="badge badge-info">{{ tag }}</a> <a href="{% url 'edit_tag' tag_id=tag.id %}">Edit</a> <a href="{% url 'delete_tag' tag_id=tag.id %}">Delete</a>
+                    <a href="#" class="badge badge-info">{{ tag }}</a> 
+                    <a href="{% url 'edit_tag' tag_id=tag.id %}">Edit</a>
+                    <a href="{% url 'delete_tag' tag_id=tag.id %}">Delete</a>
                 </div>
             {% endfor %}
         </div>
