@@ -20,6 +20,12 @@
             <p class="photographer">{{ photo.owner.display_name }}</p>
 
             <p>Select a size to download:</p>
+            <input type="radio" name="size" id="size-small" value="sm" />
+            <label for="size-small">Small - 650 x 433</label>
+            <input type="radio" name="size" id="size-medium" value="md" />
+            <label for="size-medium">Medium - 1200 x 800 </label>
+            <input type="radio" name="size" id="size-large" value="lg" />
+            <label for="size-large">Large - 1500 x 1000</label>
 
             <a href="" class="btn btn-primary">Download</a>
             <p><small>By clicking the download button, we will add this image to your cart first, so that you can download it later after you have made your payment.</small></p>

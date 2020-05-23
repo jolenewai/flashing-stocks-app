@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, reverse
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 from photographers.models import Photographer
+from photographers.views import view_uploads
 from .models import Photo, Tag, Category
 from .forms import PhotoForm, TagForm, CategoryForm
 
@@ -30,7 +31,7 @@ def add_photo(request):
             add_form.save()
             form.save_m2m()
             messages.success(request, "Photo added successfully")
-            return redirect(reverse(list_photos))
+            return redirect(reverse(view_uploads))
         else:
             return render(request, 'photos/add_photos.template.html', {
                 'form': form

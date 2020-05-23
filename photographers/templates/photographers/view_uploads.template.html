@@ -2,7 +2,7 @@
 
 
 {% block content %}
-    <h2>My Uploads</h2>
+    <h2>My Uploads <a href="{% url 'add_photo' %}" class="btn btn-primary float-right">Upload Photos</a></h2>
     {% if photos %}
     <table class="table">
     <thead>
