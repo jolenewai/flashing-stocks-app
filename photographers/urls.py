@@ -2,8 +2,49 @@ from django.urls import path
 import photographers.views
 
 urlpatterns = [
-    path('profile/view', photographers.views.view_profile, name='photographer_view_profile'),
-    path('profile/create', photographers.views.create_profile, name='photographer_create_profile'),
-    path('profile/update', photographers.views.update_profile, name='photographer_update_profile'),
-    path('profile/avatar', photographers.views.upload_avatar, name="upload_avatar"),
+    path(
+        'profile/view',
+        photographers.views.view_profile,
+        name='photographer_view_profile'
+    ),
+    path(
+        'profile/create',
+        photographers.views.create_profile,
+        name='photographer_create_profile'
+    ),
+    path(
+        'profile/update',
+        photographers.views.update_profile,
+        name='photographer_update_profile'
+    ),
+    path(
+        'profile/avatar',
+        photographers.views.upload_avatar,
+        name="upload_avatar"
+    ),
+    path(
+        'uploads/photos',
+        photographers.views.view_uploads,
+        name="view_uploads"
+    ),
+    path(
+        'album/create',
+        photographers.views.create_album,
+        name="create_album"
+    ),
+    path(
+        'album/view',
+        photographers.views.view_albums,
+        name="view_albums"
+    ),
+    path(
+        'album/edit/<album_id>',
+        photographers.views.edit_album,
+        name="edit_album"
+    ),
+    path(
+        'album/delete/<album_id>',
+        photographers.views.delete_album,
+        name='delete_album'
+    )
     ]

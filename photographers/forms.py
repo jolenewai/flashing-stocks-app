@@ -1,5 +1,5 @@
 from django import forms
-from .models import Photographer
+from .models import Photographer, Album
 from bootstrap_datepicker_plus import DatePickerInput
 from pyuploadcare.dj.forms import ImageField
 
@@ -30,4 +30,7 @@ class AvatarForm(forms.ModelForm):
         fields = ('profile_img',)
 
 
-
+class AlbumForm(forms.ModelForm):
+    class Meta:
+        model = Album
+        fields = ('title', 'desc', 'tags', 'category')
