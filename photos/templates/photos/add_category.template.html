@@ -6,15 +6,46 @@
 
 <div class="container">
     <div class="row">
-        <div class="col">
+        <div class="col-sm-6">
             <h4>Categories Available</h4>
+            <table class="table">
             {% for category in categories.all %}
-                <div class="d-block"><a href="#">{{ category }}</a>
-                    <a href="#" class="badge badge-info">{{ tag }}</a> 
-                    <a href="{% url 'edit_category' category_id=category.id %}">Edit</a> 
-                    <a href="{% url 'delete_category' category_id=category.id %}">Delete</a>
-                </div>
+                <tr>
+                    <td>{{ category }}</td>
+                    <td> <a href="{% url 'edit_category' category_id=category.id %}">Edit</a> </td>
+                    <td>
+                        <!-- Button trigger delete modal -->
+                        <button type="button" class="btn-sm btn-primary" data-toggle="modal" data-target="#DeleteModal{{category.id}}">
+                            Delete
+                        </button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="DeleteModal{{category.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalCenterTitle">Confirm Delete</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <strong>You are about to delete [{{ category.name }}]</strong>
+                                <p>Are you sure? You will not be able to retrieve it back after deleting.</p>
+                            </div>
+                            <div class="modal-footer">
+                            <form method="POST" action="{% url 'delete_category' category_id=category.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-primary">Confirm Delete</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                </form>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                    </td> 
+                </tr>
             {% endfor %}
+            </table>
         </div>
         <div class="col-sm">
            <form method="POST" action="{% url 'add_category' %}">

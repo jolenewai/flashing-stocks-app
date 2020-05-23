@@ -19,6 +19,7 @@ class Category(models.Model):
 
 class Photo(models.Model):
     image = ImageField(blank=True)
+    date_added = models.DateField(auto_now_add=True)
     caption = models.CharField(max_length=100, blank=False, null=False)
     desc = models.CharField(max_length=255, blank=False, null=False)
     price = models.FloatField(blank=False)

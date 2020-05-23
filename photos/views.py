@@ -170,9 +170,7 @@ def delete_tag(request, tag_id):
         tag.delete()
         return redirect(reverse(add_tags))
 
-    return render(request, 'photos/delete_confirm.template.html', {
-        'item': tag
-    })
+    return redirect(reverse(add_tags))
 
 
 def add_category(request):
@@ -251,6 +249,5 @@ def delete_category(request, category_id):
         messages.error(request, f"Unable to delete category")
         return redirect(reverse(add_category))
 
-    return render(request, 'photos/delete_confirm.template.html', {
-        'item': category
-    })
+    return redirect(reverse(add_category))
+

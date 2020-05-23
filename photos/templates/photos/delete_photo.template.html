@@ -16,7 +16,7 @@
             <form method="POST">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-primary">Confirm Delete</button>
-                <a href="{% url 'view_photo' photo_id=photo.id %}" class="btn btn-primary">Cancel</a>
+                <a href="{% url 'view_uploads' %}" class="btn btn-primary">Cancel</a>
             </form>
         </div>
     </div>
