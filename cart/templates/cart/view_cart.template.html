@@ -1,0 +1,35 @@
+{% extends 'base.template.html' %}
+
+
+{% block content %}
+
+<h1>Your Cart</h1>
+<table class="table">
+    {% for key, item in shopping_cart.items %}
+    <tr>
+        <td>
+            {% for photo in photos %}
+                {% ifequal item.id photo.id|slugify %}
+                    <img src="{{ photo.image.cdn_url }}-/resize/160x/" /><br/>
+                {% endifequal %}
+            {% endfor %}
+            {{ item.caption }}
+        </td>
+        <td>{{ item.price }}</td>
+        <td>
+            {% ifequal item.size 'sm' %}
+                Small - 650px x 433px
+            {% endifequal %}
+            {% ifequal item.size 'md' %}
+                Medium - 1200px x 800px
+            {% endifequal %}
+            {% ifequal item.size 'lg' %}
+                Large - 1500px x 1000px
+            {% endifequal %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}
+
