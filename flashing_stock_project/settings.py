@@ -51,7 +51,8 @@ INSTALLED_APPS = [
     'customers',
     'photographers',
     'photos',
-    'cart'
+    'cart',
+    'checkout'
 ]
 
 MIDDLEWARE = [
@@ -81,6 +82,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',   # required by allauth
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'cart.contexts.cart_contents'
             ],
         },
     },
@@ -176,3 +178,6 @@ UPLOADCARE = {
     'pub_key': os.environ.get('UPLOADCARE_PUBLIC_KEY'),
     'secret': os.environ.get('UPLOADCARE_SECRET_KEY'),
 }
+
+STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY')
+STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')

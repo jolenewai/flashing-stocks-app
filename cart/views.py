@@ -74,6 +74,11 @@ def update_size(request, photo_id):
     if photo_id in cart:
         cart[photo_id]['size'] = request.POST['size']
         request.session['shopping_cart'] = cart
-        messages.success(request, f"Size for {cart[photo_id]['caption']} has been changed")
+        messages.success(
+            request,
+            f"Size for {cart[photo_id]['caption']} has been changed"
+        )
 
         return redirect(reverse(view_cart))
+
+

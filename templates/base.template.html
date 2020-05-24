@@ -53,8 +53,11 @@
         {% if request.user.is_authenticated  %}
         <div class="my-3">
             <h5>Hello {{request.user}}</h5>
+            <div class="float-right"><a href="{% url 'view_cart' %}" class="float-right">Shopping Cart <span class="badge badge-danger">{{number_of_items}}</span></a></div>
+
             {% else %}
             <p>Please <a href="accounts/login">Login</a></p>
+            
         </div>
         {%endif%}
         
