@@ -68,3 +68,12 @@ def remove_from_cart(request, photo_id):
         return redirect(reverse(view_cart))
 
 
+def update_size(request, photo_id):
+    cart = request.session.get('shopping_cart')
+
+    if photo_id in cart:
+        cart[photo_id]['size'] = request.POST['size']
+        request.session['shopping_cart'] = cart
+        messages.success(request, f"Size for {cart[photo_id]['caption']} has been changed")
+
+        return redirect(reverse(view_cart))

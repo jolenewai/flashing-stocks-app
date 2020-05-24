@@ -5,7 +5,7 @@
 <div class="container">
 <h1>Your Cart</h1>
 <div class="row">
-<table class="table col-6">
+<table class="table">
     <tr>
         <td>Item</td>
         <td>Cost</td>
@@ -32,10 +32,79 @@
             {% endifequal %}
             {% ifequal item.size 'lg' %}
                 Large - 1500px x 1000px
-            {% endifequal %}
+            {% endifequal %}           
+            
+            <!-- Button trigger update modal -->
+
+            <button type="button" class="btn-sm btn-primary float-right" data-toggle="modal" data-target="#UpdateModal{{item.id}}">
+                Change
+            </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="UpdateModal{{item.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">{{ item.caption }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <form method="POST" action="{% url 'update_size' photo_id=item.id %}" >
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="custom-control custom-radio">
+                            <input type="radio" name="size" id="size-small" value="sm" />
+                            <label for="size-small" class="mx-2"> Small - 650px x 433px</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" name="size" id="size-medium" value="md" />
+                            <label for="size-medium" class="mx-2"> Medium - 1200px x 800px</label>
+                        </div>
+                        <div class="custom-control custom-radio">
+                            <input type="radio" name="size" id="size-large" value="lg" />
+                            <label for="size-large" class="mx-2"> Large - 1500px x 1000px</label>
+                        </div>
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn-sm btn-primary float-right">Confirm</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+                </div>
+            </div>
+            </div> 
         </td>
         <td>
-            <a class="btn btn-primary" href="{% url 'remove_from_cart' photo_id=item.id %}">Remove</a>
+            <!-- Button trigger delete modal -->
+            <button type="button" class="btn-sm btn-primary" data-toggle="modal" data-target="#DeleteModal{{item.id}}">Remove</button>
+            
+            <!-- Modal -->
+            <div class="modal fade" id="DeleteModal{{item.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Remove From Cart</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    You are removing <strong>{{ item.caption }}</strong> from your cart.
+                    <p>Are you sure? </p>
+                </div>
+                <div class="modal-footer">
+                <form method="POST" action="{% url 'remove_from_cart' photo_id=item.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary">Remove</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </form>
+                </div>
+                </div>
+            </div>
+            </div>
         </td>
     </tr>
     {% endfor %}
