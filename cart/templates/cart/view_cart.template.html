@@ -1,16 +1,23 @@
 {% extends 'base.template.html' %}
 
-
 {% block content %}
 
+<div class="container">
 <h1>Your Cart</h1>
-<table class="table">
+<div class="row">
+<table class="table col-6">
+    <tr>
+        <td>Item</td>
+        <td>Cost</td>
+        <td>Size</td>
+        <td></td>
+    </tr>
     {% for key, item in shopping_cart.items %}
     <tr>
         <td>
             {% for photo in photos %}
                 {% ifequal item.id photo.id|slugify %}
-                    <img src="{{ photo.image.cdn_url }}-/resize/160x/" /><br/>
+                    <img src="{{ photo.image.cdn_url }}-/resize/120x/" /><br/>
                 {% endifequal %}
             {% endfor %}
             {{ item.caption }}
@@ -27,9 +34,14 @@
                 Large - 1500px x 1000px
             {% endifequal %}
         </td>
+        <td>
+            <a class="btn btn-primary" href="{% url 'remove_from_cart' photo_id=item.id %}">Remove</a>
+        </td>
     </tr>
     {% endfor %}
 </table>
+</div>
+</div>
 
 {% endblock %}
 

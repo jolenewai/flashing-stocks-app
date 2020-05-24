@@ -41,16 +41,12 @@
         <header class="container-fluid fixed-top">
         {% if messages %}
             {% for m in messages %}
-                <div class="message-container ">
-                    <div {% if m.tags %} class="alert-{{ m.tags }}"{% endif %}>
+            {{ m }}
+                <div class="message-container {% if m.tags %} alert-{{ m.tags }}{% endif %}">
                     {{ m }}
-                    </div>
                 </div>    
             {% endfor %}
         {% endif %}
-
-        
-
         </header>
         <div class="container">
         

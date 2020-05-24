@@ -52,3 +52,19 @@ def view_cart(request):
         'shopping_cart': cart,
         'photos': photos
     })
+
+
+def remove_from_cart(request, photo_id):
+    cart = request.session.get('shopping_cart', {})
+
+    if photo_id in cart:
+        del cart[photo_id]
+
+        request.session['shopping_cart'] = cart
+        messages.success(request, "Photo removed from cart successfully")
+        return redirect(reverse(view_cart))
+    else:
+        messages.error(request, "Photo not in cart!")
+        return redirect(reverse(view_cart))
+
+
