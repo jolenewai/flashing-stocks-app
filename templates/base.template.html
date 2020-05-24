@@ -41,7 +41,6 @@
         <header class="container-fluid fixed-top">
         {% if messages %}
             {% for m in messages %}
-            {{ m }}
                 <div class="message-container {% if m.tags %} alert-{{ m.tags }}{% endif %}">
                     {{ m }}
                 </div>    

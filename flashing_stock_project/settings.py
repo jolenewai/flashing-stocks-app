@@ -116,6 +116,8 @@ ACCOUNT_SIGNUP_FORM_CLASS = 'customers.forms.SignupForm'
 
 WSGI_APPLICATION = 'flashing_stock_project.wsgi.application'
 
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
