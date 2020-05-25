@@ -1,4 +1,5 @@
 {% load static %}
+{% load icon %}
 
 <!doctype html>
 <html lang="en">
@@ -33,13 +34,38 @@
     {% endblock %}
 
     {% block extrajs %}
-        <script src="{% static 'js/main.js' %}"></script>
     {% endblock %}
 
         <title>FlashStocks :: {% block extra_title %} {% endblock %} </title>
     </head>
     <body>
-        <header class="container-fluid fixed-top">
+        <header class="container-fluid">
+
+        <nav class="navbar navbar-expand-lg topnav">
+            <div id="site-logo"><a class="navbar-brand" href="#"></a></div>
+
+            <form class="form-inline my-lg-0">
+                <input class="top-searchbar" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-main" type="submit">{% icon "search" class="feather-16 feather-white"  %}</button>
+            </form>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+    
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">{% icon "shopping-cart" class="feather-16 feather-white" %} <span class="sr-only">(shopping cart)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">{% icon "user" class="feather-16 feather-white" %}</a>
+                </li>
+            </ul>
+                </ul>
+                
+            </div>
+            </nav>
+
         {% if messages %}
             {% for m in messages %}
                 <div class="message-container {% if m.tags %} alert-{{ m.tags }}{% endif %}">
@@ -48,6 +74,8 @@
             {% endfor %}
         {% endif %}
         </header>
+
+
         <div class="container">
         
         {% if request.user.is_authenticated  %}
@@ -71,6 +99,7 @@
     
 
     {% block postloadjs %}
+            <script src="{% static 'js/main.js' %}"></script> 
     {% endblock %}
         </div>
   </body>

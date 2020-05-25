@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'pyuploadcare.dj',
     'bootstrap_datepicker_plus',
+    'django_feather',
     'home',
     'customers',
     'photographers',

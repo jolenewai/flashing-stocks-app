@@ -3,8 +3,64 @@
 body {
     font-family: 'Proza Libre', sans-serif;
     font-size: 0.875em;
+    background-color: #EFEFEF;
+    margin: 20px;
 }
 
-div#update-size-selector{
-    display:none;
+.topnav{
+    height: 60px;
+    background-color: #FB7B3A;
+    padding: 10px;
 }
+
+#site-logo{
+    width: 137px;
+    height: 21px;
+    background-image: url('../img/site-logo.svg');
+    margin-left: 20px;
+    margin-right: 20px;
+    float: left;
+}
+
+#site-logo a{
+    display:block;
+    width:100%;
+    height:100%;
+}
+
+.align-middle{
+      vertical-align: middle;
+}
+
+.top-searchbar {
+    border-radius: 0;
+    border-width: 0;
+    background-color: #FFF;
+    padding: 10px 12px;
+    width: 500px;
+}
+
+.top-searchbar::placeholder {
+    color: #F5B699;
+}
+
+.btn {
+    border-radius: 0;
+    padding: 10px 15px;
+    border:0;
+    font-size:1em;
+}
+
+.btn-main {
+    background-color: #F5B699;
+}
+
+.feather-16 {
+    width:16px;
+    height:16px;
+}
+
+.feather-white {
+    stroke: #FFF;
+}
+

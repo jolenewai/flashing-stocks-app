@@ -1,0 +1,132 @@
+@import url('https://fonts.googleapis.com/css2?family=Proza+Libre:ital,wght@0,400;0,500;0,700;1,400&display=swap');
+
+html{
+    height: 100%;
+}
+
+body{
+    font-family: 'Proza Libre', sans-serif;
+    background-color: #EFEFEF;
+    padding: 20px; 
+    font-size: 0.875em;
+    height: 100%;
+}
+
+.main-bg{
+    width: 100%;
+    height: 100%;
+    background-image: url('../img/home-bg.jpg');
+    background-size: cover;
+    min-height: 100%;
+    vertical-align: middle;
+}
+
+.bg-overlay{
+    width: 100%;
+    height: 100%;
+    min-height:100%;
+    background-color: rgba(0,0,0,0.3);
+}
+
+.main-section{
+    color: #FFF;
+    text-align: center;
+    width: 688px;
+    margin: auto;
+    z-index: 999;
+}
+
+#site-logo{
+    width: 137px;
+    height: 21px;
+    background-image: url('../img/site-logo.svg');
+    position: fixed;
+    top: 51px;
+    left: 58px;
+}
+
+
+.headline{
+    font-size: 3.42em;
+    font-weight: 500;
+    line-height: 1.14em;
+}
+
+#searchbar-wrapper{
+    width:550px;
+}
+
+.searchbar {
+    border-radius: 0;
+    border-width: 0;
+    background-color: #FFF;
+    padding: 10px 12px;
+    width: 502px;
+}
+
+.searchbar::placeholder {
+    color: #F5B699;
+}
+
+.searchbar:focus {
+    transform: scale(1.2, 1.2)
+}
+
+.btn {
+    border-radius: 0;
+    padding: 10px 15px;
+    border:0;
+    font-size:1em;
+}
+
+.btn-main {
+    background-color: #FE5F55;
+}
+
+.feather-16 {
+    width:16px;
+    height:16px;
+}
+
+.feather-20 {
+    width:20px;
+    height:20px;
+}
+
+
+.feather-white {
+    stroke: #FFF;
+}
+
+#login-button {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: #FB7B3A;
+    padding: 10px;
+    z-index: 1000;
+    text-align: center;
+    bottom: 50px;
+    right: 50px;
+    transition: width 0.2s, height 0.2s;
+    transition-timing-function: ease-in-out;
+}
+
+#login-button a{
+    margin-top:15px;
+    color: #FFF;
+    display:block;
+}
+
+#login-button:hover{
+    width: 110px;
+    height: 110px;
+    background-color: #FE5F55;
+}
+
+#login-button:hover a{
+    transform: scale(1.3,1.3)
+    margin-top:25px;
+
+}
+
