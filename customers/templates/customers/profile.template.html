@@ -1,6 +1,16 @@
 {% extends 'base.template.html' %}
-
+{% load icon %}
 {% block content %}
+
+<div class="row">
+    <div class="col-sm-3">
+        <nav class="nav nav-vertical flex-column">
+            <a class="nav-link active" href="#">{% icon "user" class="feather-20 mr-2" %} Profile</a>
+            <a class="nav-link" href="#">{% icon "heart" class="feather-20 mr-2" %}Favourites</a>
+            <a class="nav-link" href="#">{% icon "download" class="feather-20 mr-2" %} Download History</a>
+        </nav>
+    </div>
+    <div class="col-sm">
 
 <h2>My Profile</h2>
 
@@ -8,7 +18,7 @@
 <p>Email: {{ user_info.email }}</p>
 <p>Date Joined: {{ user_info.date_joined }}</p>
 <p>Name: {{ user_info.first_name }} {{ user_info.last_name }}</p>
-<a href="{% url 'account_change_password' %}" class="btn btn-primary">Change Password</a>
+<a href="{% url 'account_change_password' %}" class="btn btn-form text-white">Change Password</a>
 <hr />
 
 {% if profile %}
@@ -18,12 +28,13 @@
 {{ profile.address_line2 }}</p>
 <p>Postal Code: {{ profile.postal_code }}</p>
 <p>Country: {{ profile.country.name }}</p>
-<p><a href="{% url 'cust_update_profile' %}" class="btn btn-primary">Update Profile</a></p>
+<p><a href="{% url 'cust_update_profile' %}" class="btn btn-form text-white">Update Profile</a></p>
 
 {% else %}
     Your profile is empty! Create your profile now.
-    <p><a href="{% url 'cust_create_profile' %}" class="btn btn-primary">Create Profile</a></p>
+    <p><a href="{% url 'cust_create_profile' %}" class="btn btn-form text-white">Create Profile</a></p>
 {% endif %}
 
-
+    </div>
+</div>
 {% endblock %}

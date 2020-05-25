@@ -1,44 +1,84 @@
 {% extends 'base.template.html' %}
+{% load icon %}
 
 {% block content %}
 
-<div class="container">
-    <div class="row">
+<div class="container-flex">
+    <div class="row justify-content-center">
         <div class="col">
-            <img src="{{ photo.image.cdn_url }}-/resize/480x/" alt="{{ photo.caption }}" />
+            <img src="{{ photo.image.cdn_url }}-/resize/500x/" alt="{{ photo.caption }}" class="img-fluid" />
             <div class="my-2">
                 <h4>Tags</h4>
+                <div class="tags">
                 {% for tag in photo.tags.all %}
-                    <a href="#" class="badge badge-info">{{ tag }}</a>
+                    <a href="#">{{ tag }}</a>
                 {% endfor %}
+                </div>
             </div>
         </div>
-        <div class="col-sm">
+        <div class="col-sm border custom-border p-3 bg-white">
             <h3>{{ photo.caption }}</h3>
             <p>{{ photo.desc }}</p>
 
             <p class="photographer">{{ photo.owner.display_name }}</p>
-            <form method="POST" action="{% url 'add_to_cart' photo_id=photo.id %}">
+            <hr />
+            <form method="POST" action="{% url 'add_to_cart' photo_id=photo.id %}" class="mt-3">
                 {% csrf_token %}
                 <p>Select a size to download:</p>
                 <div class="custom-control custom-radio">
                     <input type="radio" name="size" id="size-small" value="sm" />
-                    <label for="size-small">Small - 650px x 433px</label>
+                    <label for="size-small"> Small - 650px x 433px</label>
                 </div>
                 <div class="custom-control custom-radio">
                     <input type="radio" name="size" id="size-medium" value="md" />
-                    <label for="size-medium">Medium - 1200px x 800px</label>
+                    <label for="size-medium"> Medium - 1200px x 800px</label>
                 </div>
                 <div class="custom-control custom-radio">
                     <input type="radio" name="size" id="size-large" value="lg" />
-                    <label for="size-large">Large - 1500px x 1000px</label>
+                    <label for="size-large"> Large - 1500px x 1000px</label>
                 </div>
-                <button type="submit" class="btn btn-primary">Download</button>
+                <button type="submit" class="btn btn-form px-5 mt-4">Download</button>
             </form>
             <p><small>By clicking the download button, we will add this image to your cart first, so that you can download it later after you have made your payment.</small></p>
         </div>
     </div>
 
 </div>
+<div class="container-flex mt-4">
+    <hr />
+    <h2>Related Photos</h2>
+    <div class="row row-cols-1 row-cols-md-3 p-4">
+        {% for photo in related_photos %}
 
+        <div class="col mb-4 px-0 ">
+            <div class="image-container">
+                <img src="{{ photo.image.cdn_url }}-/preview/" class="image" alt="{{photo.caption}}" />
+                <div class="overlay">
+                    <a href="{% url 'view_photo' photo_id=photo.id %}">{{photo.caption}}</a><a href="">{% icon 'heart' class='feather-20 feather-white float-right mx-1' %}</a><a href="{% url 'view_photo' photo_id=photo.id %}">{% icon 'download' class='feather-20 feather-white float-right mx-1' %}</a>
+                    
+                </div>
+            </div>
+        </div>   
+        {% endfor %}
+    </div>
+</div>
+
+<div class="container-flex mt-4">
+    <hr />
+    <h2>From This Photographer</h2>
+    <div class="row row-cols-1 row-cols-md-3 p-4">
+        {% for photo in photographer_set %}
+
+        <div class="col mb-4 px-0 ">
+            <div class="image-container">
+                <img src="{{ photo.image.cdn_url }}-/preview/" class="image" alt="{{photo.caption}}" />
+                <div class="overlay">
+                    <a href="{% url 'view_photo' photo_id=photo.id %}">{{photo.caption}}</a><a href="">{% icon 'heart' class='feather-20 feather-white float-right mx-1' %}</a><a href="{% url 'view_photo' photo_id=photo.id %}">{% icon 'download' class='feather-20 feather-white float-right mx-1' %}</a>
+                    
+                </div>
+            </div>
+        </div>   
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}

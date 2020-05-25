@@ -91,8 +91,6 @@ TEMPLATES = [
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
-
-
 AUTHENTICATION_BACKENDS = (
 
     # Needed to login by username in Django admin, regardless of `allauth`
@@ -102,6 +100,7 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
 
 )
+
 
 SITE_ID = 1
 
@@ -113,8 +112,9 @@ ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_SIGNUP_EMAIL_ENTER_TWICE = True
 ACCOUNT_USERNAME_MIN_LENGTH = 4
 LOGIN_URL = '/accounts/login/'
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/photos/'
 ACCOUNT_SIGNUP_FORM_CLASS = 'customers.forms.SignupForm'
+
 
 
 WSGI_APPLICATION = 'flashing_stock_project.wsgi.application'

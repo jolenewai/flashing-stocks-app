@@ -1,16 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=Proza+Libre:ital,wght@0,400;0,500;0,700;1,400&display=swap');
-
-body {
-    font-family: 'Proza Libre', sans-serif;
-    font-size: 0.875em;
-    background-color: #EFEFEF;
-    margin: 20px;
-}
 
 .topnav{
     height: 60px;
-    background-color: #FB7B3A;
     padding: 10px;
+    background-color: #FB7B3A;
+
+}
+
+.customers {
+    background-color: #FB7B3A;
+}
+
+.photographers {
+    background-color: #252525;
 }
 
 #site-logo{
@@ -37,30 +38,84 @@ body {
     border-width: 0;
     background-color: #FFF;
     padding: 10px 12px;
-    width: 500px;
+    width: 450px;
 }
 
 .top-searchbar::placeholder {
     color: #F5B699;
 }
 
-.btn {
-    border-radius: 0;
-    padding: 10px 15px;
-    border:0;
-    font-size:1em;
+.cart-number {
+    border-radius: 50%;
+    background-color: #FE5F55;
+    width: 16px;
+    height: 16px;
+    color: #FFF;
+    font-size: 0.714em;
+    line-height: 1em;
+    text-align: center;
+    display:inline-block;
+    padding-top: 0.4em;
 }
 
-.btn-main {
-    background-color: #F5B699;
+nav a:link, nav a:visited {
+    color: #FFF;
+    transition: 0.2s ease-in-out;
+    -webkit-transition: 0.2s ease-in-out;
 }
 
-.feather-16 {
-    width:16px;
-    height:16px;
+nav a:hover {
+    transform: scale(1.2, 1.2)
 }
 
-.feather-white {
-    stroke: #FFF;
+#search-filter{
+    margin-top:40px;
 }
 
+/* The sidepanel menu */
+.sidepanel {
+  height: 100%; /* Specify a height */
+  width: 0; /* 0 width - change this with JavaScript */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Stay on top */
+  top: 100;
+  right: 0;
+  margin-right:35px;
+  background-color: #FFF; /* Black*/
+  overflow-x: hidden; /* Disable horizontal scroll */
+  padding-top: 60px; /* Place content 60px from the top */
+  transition: 0.5s; /* 0.5 second transition effect to slide in the sidepanel */
+}
+
+/* The sidepanel links */
+.sidepanel a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 1.14em;
+  color: #252525;
+  display: block;
+  transition: 0.3s;
+}
+
+/* When you mouse over the navigation links, change their color */
+.sidepanel a:hover {
+  color: #FE5F55;
+}
+
+/* Position and style the close button (top right corner) */
+.sidepanel .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+
+.nav-vertical a:link, .nav-vertical a:visited {
+    color: #252525;
+}
+
+.nav-vertical a:hover {
+    color: #FE5F55;
+}

@@ -18,6 +18,7 @@
     {% block corecss %}
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link rel="stylesheet" href="{% static 'css/base.css' %}" />
         <link rel="stylesheet" href="{% static 'css/main.css' %}" />
     {% endblock %}
 
@@ -41,53 +42,75 @@
     <body>
         <header class="container-fluid">
 
-        <nav class="navbar navbar-expand-lg topnav">
+        <nav class="navbar navbar-expand-lg topnav {% if user.groups.all.0 %}{{ user.groups.all.0 }}{% endif %} ">
             <div id="site-logo"><a class="navbar-brand" href="#"></a></div>
+            {% ifequal 'customers' request.user.groups.all.0.name %}
 
-            <form class="form-inline my-lg-0">
-                <input class="top-searchbar" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-main" type="submit">{% icon "search" class="feather-16 feather-white"  %}</button>
+            <form class="form-inline my-lg-0" method="GET" action="{% url 'search' %}">
+                <input name="keyword" class="top-searchbar" type="search" placeholder="Search image" aria-label="Search">
+                <button class="btn btn-main" type="submit">{% icon "search" class="feather-16 feather-white" %}</button>
             </form>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-    
+            {% endifequal %}
+            {% if request.user.is_authenticated  %}
+                    <span class="navbar-text text-white ml-auto">
+                        Hello, {{ request.user }}!
+                    </span>
+                {% endif %} 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                
                 <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="#">{% icon "shopping-cart" class="feather-16 feather-white" %} <span class="sr-only">(shopping cart)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">{% icon "user" class="feather-16 feather-white" %}</a>
-                </li>
-            </ul>
+                    {% ifequal 'customers' request.user.groups.all.0.name %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'view_cart' %}">{% icon "shopping-cart" class="feather-16 feather-white" %}<span class="sr-only">(shopping cart)</span><span class="mx-1 cart-number">{{number_of_items}}</span></a>
+                    </li>
+                    {% endifequal %}
+                    <li class="nav-item">
+                        <a class="nav-link" onclick="openNav()">{% icon "user" class="feather-16 feather-white" %}</a>
+                    </li>
+                    <li class="nav-item">
+                        {% if request.user.is_authenticated  %}
+                        <a class="nav-link" href="{% url 'account_logout' %}"> Logout</a>
+                        {% else %}
+                        <a class="nav-link" href="{% url 'account_login' %}">{% icon "user" class="feather-16 feather-white" %} Login</a>
+                        {% endif %}     
+                    </li>
                 </ul>
+
                 
             </div>
-            </nav>
+        </nav>
 
         {% if messages %}
             {% for m in messages %}
-                <div class="message-container {% if m.tags %} alert-{{ m.tags }}{% endif %}">
+                <div class="message-container alert {% if m.tags %} alert-{{ m.tags }}{% endif %}">
                     {{ m }}
                 </div>    
             {% endfor %}
         {% endif %}
         </header>
 
-
-        <div class="container">
-        
         {% if request.user.is_authenticated  %}
-        <div class="my-3">
-            <h5>Hello {{request.user}}</h5>
-            <div class="float-right"><a href="{% url 'view_cart' %}" class="float-right">Shopping Cart <span class="badge badge-danger">{{number_of_items}}</span></a></div>
 
-            {% else %}
-            <p>Please <a href="accounts/login">Login</a></p>
-            
+        <div id="mySidepanel" class="sidepanel">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+            <h3 class="ml-4">Hello, {{ request.user }}!</h3>
+            {% ifequal 'customers' request.user.groups.all.0.name %}
+                <a href="{% url 'cust_view_profile' %}">{% icon "user" class="feather-20 mr-2" %} Profile</a>
+                <a href="#">{% icon "heart" class="feather-20 mr-2" %} Favourites</a>
+                <a href="#">{% icon "download" class="feather-20 mr-2" %} Download History</a>
+            {% endifequal %}
+            {% ifequal 'photographers' request.user.groups.all.0.name %}
+                <a href="{% url 'photographer_view_profile' %}">{% icon "user" class="feather-20 mr-2" %} Profile</a>
+                <a href="#">{% icon "book" class="feather-20 mr-2" %} Albums</a>
+                <a href="{% url 'view_uploads' %}">{% icon "upload" class="feather-20 mr-2" %}Upload History</a>
+            {% endifequal %}
         </div>
-        {%endif%}
+
+        {% endif %}
+        <div class="container-fluid my-4 p-4">
         
         
         {% block pageheader %}

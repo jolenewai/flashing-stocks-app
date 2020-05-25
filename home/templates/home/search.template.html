@@ -1,0 +1,55 @@
+{% extends 'base.template.html' %}
+{% load icon %}
+{% block content %}
+    <div class="row">    
+        <div id="search-filter" class="col-sm-3">
+        <form method="GET" action="{% url 'search' %}">
+            {% if keyword %}
+            <input type="hidden" name="keyword" value="{{keyword}}">
+            {% endif %}
+            <label for="id_category"><h5>Category</h5></label>
+            <select class="form-control custom-select custom-border rounded-0 mb-4" name="category" id="id_category">
+                {% for category in categories %}
+                    <option value="{{category.id}}">{{category.name}}</option>
+                {% endfor %}
+            </select>
+
+            <label for="id_sort"><h5>Sort by</h5></label>
+            <select class="form-control custom-select custom-border rounded-0 mb-4" name="sortby" id="id_sort">
+                <option value="mr">Most Recent</option>
+                <option value="pp">Popularity</option>
+                <option value="al">Alphabetical A-Z</option>
+            </select>
+
+            <button type="submit" name="submit" class="form-control btn btn-form">Filter</button>
+        </form> 
+
+            <h5 class="mt-4">Tags</h5>
+             <div class="tags"> 
+            {% for tag in tags %}
+                <a href="{% url 'search_by_tag' tag_id=tag.id %}">{{ tag }}</a>
+            {% endfor %}
+            </div>
+
+
+        </div>
+        <div class="col-sm">
+            <h1>Images for {{ keyword }}</h1>
+
+            <div class="row row-cols-1 row-cols-md-3">
+                {% for photo in photos %}
+
+                <div class="col mb-4 px-0 ">
+                    <div class="image-container">
+                        <img src="{{ photo.image.cdn_url }}-/preview/" class="image" alt="{{photo.caption}}" />
+                        <div class="overlay">
+                            <a href="{% url 'view_photo' photo_id=photo.id %}">{{photo.caption}}</a><a href="">{% icon 'heart' class='feather-20 feather-white float-right mx-1' %}</a><a href="{% url 'view_photo' photo_id=photo.id %}">{% icon 'download' class='feather-20 feather-white float-right mx-1' %}</a>
+                            
+                        </div>
+                    </div>
+                </div>   
+                 {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

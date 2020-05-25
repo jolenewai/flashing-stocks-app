@@ -1,7 +1,16 @@
 {% extends 'base.template.html' %}
-
+{% load icon %}
 
 {% block content %}
+<div class="row">
+    <div class="col-sm-3">
+        <nav class="nav nav-vertical flex-column">
+            <a class="nav-link active" href="{% url 'photographer_view_profile' %}">{% icon "user" class="feather-20 mr-2" %} Profile</a>
+            <a class="nav-link" href="{% url 'view_albums' %}">{% icon "book" class="feather-20 mr-2" %} Album</a>
+            <a class="nav-link" href="{% url 'view_uploads' %}">{% icon "upload" class="feather-20 mr-2" %} Upload History</a>
+        </nav>
+    </div>
+    <div class="col-sm">
     <h2>My Albums</h2>
     {% if albums %}
         <table class="table">
@@ -25,23 +34,27 @@
                     {{ album.desc }}
                 </td>
                 <td>
+                    <div class="tags">
                     {% for tag in album.tags.all %}
-                    <span class="badge badge-info">{{tag}}</span>
+                    <a href="{% url 'search_by_tag' tag_id=tag.id %}">{{tag}}</a>
                     {% endfor %}
+                    </div>
                 </td>
                 <td>
+                    <div class="tags">
                     {% for cat in album.category.all %}
-                        <span class="badge badge-info">{{ cat }}</span>
+                        <a href="#">{{ cat }}</a>
                     {% endfor %}
+                    </div>
                 </td>
                 <td>
-                <a href="{% url 'edit_album' album_id=album.id %}">Edit</a>
+                <a href="{% url 'edit_album' album_id=album.id %}" class="text-reset">{% icon "edit" class="feather-20 mr-2" %}</a>
                 </td>
                 <td>
                     <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-                        Delete
-                    </button>
+                    <a href="#" class="text-reset" data-toggle="modal" data-target="#exampleModalCenter">
+                        {% icon "trash-2" class="feather-20 mr-2" %}
+                    </a>
                     <!-- Modal -->
                     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -53,13 +66,13 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <strong>You are about to delete [{{ album.title }}]</strong>
+                            You deleting <strong>{{ album.title }}</strong>
                             <p>Are you sure? You will not be able to retrieve it back after deleting.</p>
                         </div>
                         <div class="modal-footer">
                         <form method="POST" action="{% url 'delete_album' album_id=album.id%}">
                                 {% csrf_token %}
-                                <button type="submit" class="btn btn-primary">Confirm Delete</button>
+                                <button type="submit" class="btn btn-form text-white">Confirm Delete</button>
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                             </form>
                         </div>
@@ -76,8 +89,8 @@
         <a href="{% url 'create_album' %}" class="btn btn-primary">Create Album</a>
     {% endif %}
 
-    
-
+    </div>    
+</div>
 
 
 {% endblock %}

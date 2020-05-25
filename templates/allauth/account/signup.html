@@ -1,4 +1,4 @@
-{% extends "base.template.html" %}
+{% extends "accounts.template.html" %}
 {% load crispy_forms_tags %}
 
 {% load i18n %}
@@ -7,16 +7,15 @@
     Sign Up
 {% endblock %}
 
-{% block pageheader %}
-    <h1 class="text-center"> Sign Up </h1>
-{% endblock %}
 
 {% block content %}
 
-<div class="jumbotron jumbotron-fluid">
-  <div class="container">
-    <h1 class="display-4">Sign Up</h1>
-    <p>Already have an account? Sign in <a href="{{ login_url }}">here</a>.</p>
+<div class="row align-items-center justify-content-center">
+    <div class="col-sm-5">
+    <h1>Sign Up</h1>
+    <p>Already have an account? Sign in <a href="{{ login_url }}" class="text-pink">here</a>.</p>
+    </div>
+    <div class="col-sm-5 border-left border-white">
     <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
         {% csrf_token %}
         {{ form|crispy }}
@@ -24,7 +23,7 @@
         
         <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
         {% endif %}
-        <button type="submit">{% trans "Sign Up" %} &raquo;</button>
+        <button type="submit" class="btn btn-form">{% trans "Sign Up" %} &raquo;</button>
     </form>
   </div>
 </div>

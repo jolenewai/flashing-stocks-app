@@ -1,16 +1,25 @@
 {% extends 'base.template.html' %}
+{% load icon %}
 
 {% block content %}
-<div class="card-deck">
 
-{% for photo in photos %}
-  <div class="card">
-    <img src="{{ photo.image.cdn_url }}-/preview/" class="card-img-top" alt="{{photo.caption}}">
-    <div class="card-body">
-        <h5 class="card-title"><a href="{% url 'view_photo' photo_id=photo.id %}">{{photo.caption}}</a></h5>
-        
+    <h1>Explore Images</h1>
+    <hr />
+    <p><strong>{{ photos_count }}</strong> photos waiting for you to explore</p> 
+    <hr />
+    <div class="row row-cols-1 row-cols-md-3 p-4">
+        {% for photo in photos %}
+
+        <div class="col mb-4 px-0 ">
+            <div class="image-container">
+                <img src="{{ photo.image.cdn_url }}-/preview/" class="image" alt="{{photo.caption}}" />
+                <div class="overlay">
+                    <a href="{% url 'view_photo' photo_id=photo.id %}">{{photo.caption}}</a><a href="">{% icon 'heart' class='feather-20 feather-white float-right mx-1' %}</a><a href="{% url 'view_photo' photo_id=photo.id %}">{% icon 'download' class='feather-20 feather-white float-right mx-1' %}</a>
+                    
+                </div>
+            </div>
+        </div>   
+        {% endfor %}
     </div>
-  </div>
-{% endfor %}
-</div>
+
 {% endblock %}

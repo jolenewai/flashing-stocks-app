@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, reverse
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
+from django.db.models import Q
 from photographers.models import Photographer
 from photographers.views import view_uploads
 from .models import Photo, Tag, Category
@@ -13,8 +14,11 @@ def list_photos(request):
     except ObjectDoesNotExist:
         photos = None
 
+    photos_count = photos.count()
+
     return render(request, 'photos/list_photos.template.html', {
-        'photos': photos
+        'photos': photos,
+        'photos_count': photos_count
     })
 
 
@@ -52,8 +56,21 @@ def view_photo(request, photo_id):
     except ObjectDoesNotExist:
         photo = None
 
+    category = photo.category.all()
+    photos = Photo.objects.all()
+
+    queries = ~Q(pk__in=[])
+
+    queries_1 = queries & Q(category__in=category)
+    related_photos = photos.filter(queries_1)
+
+    queries_2 = queries & Q(owner=photo.owner)
+    photographer_set = photos.filter(queries_2) 
+
     return render(request, 'photos/view_photo.template.html', {
-        'photo': photo
+        'photo': photo,
+        'related_photos': related_photos,
+        'photographer_set': photographer_set
     })
 
 
@@ -95,7 +112,7 @@ def delete_photo(request, photo_id):
 
     if request.method == "POST":
         photo.delete()
-        return redirect(reverse(list_photos))
+        return redirect(reverse(view_uploads))
 
     return render(request, 'photos/delete_photo.template.html', {
         'photo': photo

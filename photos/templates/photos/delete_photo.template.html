@@ -6,17 +6,18 @@
 {% block content %}
 
 <div class="container">
-    <div class="row">
+    <div class="row  align-items-center">
         <div class="col">
             <img src="{{ photo.image.cdn_url }}-/resize/480x/" alt="{{ photo.caption }}" />
         </div>
         <div class="col-sm">
             <h2>You are deleting this photo</h2>
-            Are you sure? You will not be able to retrieve it back after deleting.
+            <p>Are you sure? <br/>
+            You will not be able to retrieve it back after deleting.</p>
             <form method="POST">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-primary">Confirm Delete</button>
-                <a href="{% url 'view_uploads' %}" class="btn btn-primary">Cancel</a>
+                <button type="submit" class="btn btn-form">Confirm Delete</button>
+                <a href="{% url 'view_uploads' %}" class="btn btn-secondary text-white">Cancel</a>
             </form>
         </div>
     </div>
