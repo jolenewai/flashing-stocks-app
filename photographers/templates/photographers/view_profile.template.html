@@ -4,44 +4,99 @@
 {% block content %}
 <div class="row">
     <div class="col-sm-3">
-        <nav class="nav nav-vertical flex-column">
-            <a class="nav-link active" href="{% url 'photographer_view_profile' %}">{% icon "user" class="feather-20 mr-2" %} Profile</a>
-            <a class="nav-link" href="{% url 'view_albums' %}">{% icon "book" class="feather-20 mr-2" %} Album</a>
-            <a class="nav-link" href="{% url 'view_uploads' %}">{% icon "upload" class="feather-20 mr-2" %} Upload History</a>
-        </nav>
+        {% include 'sidebar.template.html' %}
     </div>
     <div class="col-sm">
         <h2>My Profile</h2>
+        <div class="row">
+            <div class="col-sm-4">
+            
+                {% if profile %}
+                    {% if profile.profile_img %}
+                    <div class="mt-2 text-center">
+                        <img src="{{profile.profile_img.cdn_url}}-/preview/200x200/" alt="{{ profile.display_name }}" /> 
+                    </div>
+                    <div class="mt-3 text-right">
+                        <a href="{% url 'upload_avatar' %}" class="btn-sm btn-main">Change Profile Image</a>
+                    </div>
+                    {% else %}
+                    <div class="mt-2 text-center bg-white">
+                        <img src="{% static 'img/avatar.png' %}" alt="Default Avatar" width="250"/> 
+                    </div>
+                    <div class="mt-3 text-right">
+                        <a href="{% url 'upload_avatar' %}" class="btn-sm btn-main">Add Your Avatar</a>
+                    </div>
+                    {% endif %}
+                {% endif %}
 
-        <p>Username: {{ user_info.username }}</p>
-        <p>Email: {{ user_info.email }}</p>
-        <p>Date Joined: {{ user_info.date_joined }}</p>
-        <p>Name: {{ user_info.first_name }} {{ user_info.last_name }}</p>
-        <a href="{% url 'account_change_password' %}" class="btn btn-primary">Change Password</a>
-        <hr />
+            </div>
+            <div class="col-sm">
+             <div id="profile" class="p-3 border custom-border bg-white">
+                <div class="row">
+                    <div class="col-3"><label>Username</label></div>
+                    <div class="col">{{ user_info.username }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-3"><label>Email</label></div>
+                    <div class="col">{{ user_info.email }} <a href="{% url 'account_email' %}">{% icon "edit" class="feather-16 ml-2 float-right" %} </a>
+</div> 
+                </div>
+                <div class="row">
+                    <div class="col-3"><label>Date Joined</label></div>
+                    <div class="col">{{ user_info.date_joined }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-3"><label>Full Name</label></div>
+                    <div class="col">{{ user_info.first_name }} {{ user_info.last_name }}</div>
+                </div>
+                <div class="row my-2">
+                    <div class="col">
+                        <a href="{% url 'account_change_password' %}" class="btn btn-form text-white float-right">Change Password</a>
+                    </div>
+                </div>  
+                <hr />
 
-        {% if profile %}
+                {% if profile %}
+                <div class="row">
+                    <div class="col-3"><label>Display Name</label></div>
+                    <div class="col">{{ profile.display_name }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-3"><label>Date of Birth</label></div>
+                    <div class="col">{{ profile.dob }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-3"><label>Address</label></div>
+                    <div class="col">{{ profile.address_line1 }}<br/>{{ profile.address_line2 }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-3"><label>Postal Code</label></div>
+                    <div class="col">{{ profile.postal_code }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-3"><label>Country</label></div>
+                    <div class="col">{{ profile.country.name }}</div>
+                </div>         
+                <div class="row my-2">
+                    <div class="col">
+                        <a href="{% url 'photographer_update_profile' %}" class="btn btn-form text-white float-right">Update Profile</a>
+                    </div>
+                </div>  
 
-        {% if profile.profile_img %}
-        <img src="{{profile.profile_img.cdn_url}}-/preview/200x200/" alt="{{ profile.display_name }}" /> 
-        <a href="{% url 'upload_avatar' %}" class="btn btn-primary">Change Profile Image</a>
-        {% else %}
-        <img src="{% static 'img/avatar.png' %}" alt="Default Avatar" width="200"/> 
-        <a href="{% url 'upload_avatar' %}" class="btn btn-primary">Add Your Avatar</a>
-        {% endif %}
+                {% else %}
+                <div class="row my-2">
+                    <div class="col">
+                        Your profile is empty! Create your profile now. 
+                        <p><a href="{% url 'photographer_create_profile' %}" class="btn btn-form text-white">Create Profile</a></p>
+                    </div>
+                </div> 
+                {% endif %}
+            </div>
 
-        <p>Display Name: {{ profile.display_name }}</p>
-        <p>Date of Birth: {{ profile.dob }}</p>
-        <p>Address: {{ profile.address_line1 }}<br/>
-        {{ profile.address_line2 }}</p>
-        <p>Postal Code: {{ profile.postal_code }}</p>
-        <p>Country: {{ profile.country.name }}</p>
-        <p><a href="{% url 'photographer_update_profile' %}" class="btn btn-primary">Update Profile</a></p>
+        </div>
+        </div>
 
-        {% else %}
-            Your profile is empty! Create your profile now.
-            <p><a href="{% url 'photographer_create_profile' %}" class="btn btn-primary">Create Profile</a></p>
-        {% endif %}
+        
     </div>
 </div>
 

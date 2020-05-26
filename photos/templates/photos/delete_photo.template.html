@@ -4,26 +4,25 @@
 {% endblock %}
 
 {% block content %}
-
-<div class="container">
-    <div class="row  align-items-center">
-        <div class="col">
-            <img src="{{ photo.image.cdn_url }}-/resize/480x/" alt="{{ photo.caption }}" />
-        </div>
-        <div class="col-sm">
-            <h2>You are deleting this photo</h2>
-            <p>Are you sure? <br/>
-            You will not be able to retrieve it back after deleting.</p>
-            <form method="POST">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-form">Confirm Delete</button>
-                <a href="{% url 'view_uploads' %}" class="btn btn-secondary text-white">Cancel</a>
-            </form>
+<div class="row">
+    <div class="col-sm-3">
+        {% include 'sidebar.template.html' %}
+    </div>
+    <div class="col-sm-6">
+        <div class="p-3 bg-white border custom-border">
+        <img src="{{ photo.image.cdn_url }}-/resize/480x/" alt="{{ photo.caption }}" class="mb-4 img-fluid"/>
+        
+        <h2>You are deleting this photo</h2>
+        <p>Are you sure? <br/>
+        You will not be able to retrieve it back after deleting.</p>
+        <form method="POST">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-form">Confirm Delete</button>
+            <a href="{% url 'view_uploads' %}" class="btn btn-secondary text-white">Cancel</a>
+        </form>
         </div>
     </div>
-
 </div>
-
 
 
 {% endblock %}

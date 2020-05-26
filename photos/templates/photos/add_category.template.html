@@ -1,6 +1,7 @@
 {% extends 'base.template.html' %}
 {% load crispy_forms_tags %}
 {% load static %}
+{% load icon %}
 
 {% block content %}
 
@@ -12,12 +13,12 @@
             {% for category in categories.all %}
                 <tr>
                     <td>{{ category }}</td>
-                    <td> <a href="{% url 'edit_category' category_id=category.id %}">Edit</a> </td>
+                    <td> <a href="{% url 'edit_category' category_id=category.id %}">{% icon "edit" class="feather-20 mr-2" %}</a> </td>
                     <td>
                         <!-- Button trigger delete modal -->
-                        <button type="button" class="btn-sm btn-primary" data-toggle="modal" data-target="#DeleteModal{{category.id}}">
-                            Delete
-                        </button>
+                        <a href="#" data-toggle="modal" data-target="#DeleteModal{{category.id}}" class="text-reset"> 
+                        {% icon "trash-2" class="feather-20 mr-2" %}
+                        </a>
                         <!-- Modal -->
                         <div class="modal fade" id="DeleteModal{{category.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -47,11 +48,11 @@
             {% endfor %}
             </table>
         </div>
-        <div class="col-sm">
+        <div class="col-sm order-first mb-4">
            <form method="POST" action="{% url 'add_category' %}">
                 {% csrf_token %}
                 {{ form|crispy }}
-                <button type="submit">Add Category</button>
+                <button type="submit" class="btn btn-form">Add Category</button>
            </form>
         </div>
     </div>

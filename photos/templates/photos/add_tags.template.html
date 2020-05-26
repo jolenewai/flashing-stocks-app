@@ -1,6 +1,7 @@
 {% extends 'base.template.html' %}
 {% load crispy_forms_tags %}
 {% load static %}
+{% load icon %}
 
 {% block content %}
 
@@ -12,12 +13,14 @@
             {% for tag in tags.all %}
                 <tr>
                     <td>{{ tag }}</td>
-                    <td><a href="{% url 'edit_tag' tag_id=tag.id %}">Edit</a></td>
+                    <td><a href="{% url 'edit_tag' tag_id=tag.id %}">{% icon "edit" class="feather-20 mr-2" %}</a></td>
                     <td>
                         <!-- Button trigger delete modal -->
-                        <button type="button" class="btn-sm btn-primary" data-toggle="modal" data-target="#DeleteModal{{tag.id}}">
-                            Delete
-                        </button>
+                        
+                        <a href="#" data-toggle="modal" data-target="#DeleteModal{{tag.id}}" class="text-reset"> 
+                        {% icon "trash-2" class="feather-20 mr-2" %}
+                        </a>
+                        
                         <!-- Modal -->
                         <div class="modal fade" id="DeleteModal{{tag.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -35,7 +38,7 @@
                             <div class="modal-footer">
                             <form method="POST" action="{% url 'delete_tag' tag_id=tag.id %}">
                                     {% csrf_token %}
-                                    <button type="submit" class="btn btn-primary">Confirm Delete</button>
+                                    <button type="submit" class="btn btn-form">Confirm Delete</button>
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                                 </form>
                             </div>
@@ -51,7 +54,7 @@
            <form method="POST" action="{% url 'add_tags' %}">
                 {% csrf_token %}
                 {{ form|crispy }}
-                <button type="submit">Add Tag</button>
+                <button type="submit" class="btn btn-form text-white">Add Tag</button>
            </form>
         </div>
     </div>

@@ -85,11 +85,14 @@ def view_profile(request):
         profile = Photographer.objects.get(user=request.user)
     except ObjectDoesNotExist:
         profile = None
-
-    return render(request, 'photographers/view_profile.template.html', {
-        'profile': profile,
-        'user_info': user_info
-    })
+    
+    if profile is None:
+        return redirect(reverse('photographer_create_profile'))
+    else:
+        return render(request, 'photographers/view_profile.template.html', {
+            'profile': profile,
+            'user_info': user_info
+        })
 
 
 def update_profile(request):

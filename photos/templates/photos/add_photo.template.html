@@ -6,11 +6,18 @@
 {% endblock %}
 
 {% block content %}
-
-<form method="POST">
-    {% csrf_token %}
-    {{ form|crispy }}
-    <button type="submit">Add Photo</button>
-</form>
-
+<div class="row">
+    <div class="col-sm-3">
+        {% include 'sidebar.template.html' %}
+    </div>
+    <div class="col-sm-6">
+    <h1>Upload Image</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-form text-white px-4">Add Photo</button>
+        <a href="{% url 'view_uploads' %}" class="btn btn-secondary text-white px-4" >Cancel</a>
+    </form>
+    </div>
+</div>
 {% endblock %}

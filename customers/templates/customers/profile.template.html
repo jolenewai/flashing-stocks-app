@@ -10,26 +10,70 @@
 
 <h2>My Profile</h2>
 
-<p>Username: {{ user_info.username }}</p>
-<p>Email: {{ user_info.email }}</p>
-<p>Date Joined: {{ user_info.date_joined }}</p>
-<p>Name: {{ user_info.first_name }} {{ user_info.last_name }}</p>
-<a href="{% url 'account_change_password' %}" class="btn btn-form text-white">Change Password</a>
-<hr />
 
-{% if profile %}
-<p>Display Name: {{ profile.display_name }}</p>
-<p>Date of Birth: {{ profile.dob }}</p>
-<p>Address: {{ profile.address_line1 }}<br/>
-{{ profile.address_line2 }}</p>
-<p>Postal Code: {{ profile.postal_code }}</p>
-<p>Country: {{ profile.country.name }}</p>
-<p><a href="{% url 'cust_update_profile' %}" class="btn btn-form text-white">Update Profile</a></p>
+<div id="profile" class="p-3 border custom-border bg-white">
+                <div class="row">
+                    <div class="col-3"><label>Username</label></div>
+                    <div class="col">{{ user_info.username }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-3"><label>Email</label></div>
+                    <div class="col">{{ user_info.email }} <a href="{% url 'account_email' %}">{% icon "edit" class="feather-16 ml-2 float-right" %} </a>
+</div> 
+                </div>
+                <div class="row">
+                    <div class="col-3"><label>Date Joined</label></div>
+                    <div class="col">{{ user_info.date_joined }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-3"><label>Full Name</label></div>
+                    <div class="col">{{ user_info.first_name }} {{ user_info.last_name }}</div>
+                </div>
+                <div class="row my-2">
+                    <div class="col">
+                        <a href="{% url 'account_change_password' %}" class="btn btn-form text-white float-right">Change Password</a>
+                    </div>
+                </div>  
+                <hr />
 
-{% else %}
-    Your profile is empty! Create your profile now.
-    <p><a href="{% url 'cust_create_profile' %}" class="btn btn-form text-white">Create Profile</a></p>
-{% endif %}
+                {% if profile %}
+                <div class="row">
+                    <div class="col-3"><label>Display Name</label></div>
+                    <div class="col">{{ profile.display_name }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-3"><label>Date of Birth</label></div>
+                    <div class="col">{{ profile.dob }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-3"><label>Address</label></div>
+                    <div class="col">{{ profile.address_line1 }}<br/>{{ profile.address_line2 }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-3"><label>Postal Code</label></div>
+                    <div class="col">{{ profile.postal_code }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-3"><label>Country</label></div>
+                    <div class="col">{{ profile.country.name }}</div>
+                </div>         
+                <div class="row my-2">
+                    <div class="col">
+                        <a href="{% url 'cust_update_profile' %}" class="btn btn-form text-white float-right">Update Profile</a>
+                    </div>
+                </div>  
+
+                {% else %}
+                <div class="row my-2">
+                    <div class="col">
+                        Your profile is empty! Create your profile now. 
+                        <p><a href="{% url 'cust_create_profile' %}" class="btn btn-form text-white">Create Profile</a></p>
+                    </div>
+                </div> 
+                {% endif %}
+            </div>
+
+
 
     </div>
 </div>

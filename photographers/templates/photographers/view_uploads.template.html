@@ -5,14 +5,11 @@
 
 <div class="row">
     <div class="col-sm-3">
-        <nav class="nav nav-vertical flex-column">
-            <a class="nav-link active" href="{% url 'photographer_view_profile' %}">{% icon "user" class="feather-20 mr-2" %} Profile</a>
-            <a class="nav-link" href="{% url 'view_albums' %}">{% icon "book" class="feather-20 mr-2" %} Album</a>
-            <a class="nav-link" href="{% url 'view_uploads' %}">{% icon "upload" class="feather-20 mr-2" %} Upload History</a>
-        </nav>
+        {% include 'sidebar.template.html' %}
     </div>
     <div class="col-sm">
-    <a href="{% url 'add_photo' %}" class="btn btn-form float-right text-white">Upload Photos</a><h2>My Uploads </h2>
+    <a href="{% url 'add_photo' %}" class="btn btn-form float-right text-white">{% icon "upload" class="feather-16 feather-white mr-2" %}Upload Photos</a>
+    <h2>My Uploads </h2>
 
     
     {% if photos %}
@@ -33,11 +30,11 @@
                 <img src="{{ photo.image.cdn_url }}-/resize/x160/" class="img-fluid float-left mx-2" alt="{{photo.caption}}">
                 <h5>{{photo.caption}}</h5>
                 <p>{{ photo.desc }}</p>
-                <p>
+                <div class="tags">
                     {% for tag in photo.tags.all %}
-                        <a href="#" class="badge badge-info">{{ tag }}</a>
+                        <a href="#">{{ tag }}</a>
                     {% endfor %}
-                </p>
+                </div>
             </td>
             <td><span class="align-middle"><a href="{% url 'edit_photo' photo_id=photo.id %}" class="text-reset">{% icon "edit" class="feather-20 mr-2" %}</a></span></td>
             <td><a href="{% url 'delete_photo' photo_id=photo.id %}" class="text-reset"> {% icon "trash-2" class="feather-20 mr-2" %}</a></td>
@@ -46,7 +43,7 @@
     {% endfor %}
     </table>
     {% else %}
-        No photos uploaded. <a href="{% url 'add_photo' %}" class="btn btn-primary">Start Uploading!</a>
+        No photos uploaded. 
     {% endif %}
     </div>
 </div>

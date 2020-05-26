@@ -120,3 +120,23 @@ nav a:hover {
 .nav-vertical a:hover {
     color: #FE5F55;
 }
+
+#profile label{
+    font-weight: 500;
+}
+
+#profile {
+    padding:15px;
+}
+
+.uploadcare--widget__button, .uploadcare--widget__button:hover {
+	padding: 12px 18px;
+	background-color: #FE5F55;
+	border-radius: 0;
+	font-family: Sans-serif;
+	font-weight: 800;
+}
+
+.uploadcare--widget__button:hover {
+	background-color: #FE5F55;
+}

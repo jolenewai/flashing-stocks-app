@@ -2,9 +2,8 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
- <div class="jumbotron jumbotron-fluid">
-    <div class="container">
-        
+<div class="row justify-content-center">
+    <div class="col-6">
         <h1>Photographer's Profile</h1>
         <p>Set up your profile to start using Photographer's features!</p>
 
@@ -14,7 +13,7 @@
             {{ form.media }} 
             {{ form.errors }}
 
-            <button type="submit">Create Profile</button>
+            <button type="submit" class="btn btn-form">Create Profile</button>
         </form>
     </div>
  </div>

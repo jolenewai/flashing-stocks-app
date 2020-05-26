@@ -56,7 +56,7 @@ h5, h6 {
 }
 
 .custom-border{
-    border-color: #F5B699;
+    border-color: #F5B699 !important;
 }
 
 .custom-control {
@@ -75,10 +75,13 @@ h5, h6 {
 
 a:link, a:visited{
     transition: 0.5s ease-in-out;
+    text-decoration: none;
 }
 
 a:hover{
     transform: scale(1.1)
+    text-decoration: none;
+
 }
 
 
@@ -130,6 +133,10 @@ a:hover{
     color: #F5B699 !important;
 }
 
+.text-darkpink {
+    color: #FE5F55 !important;
+}
+
 .btn {
     border-radius: 0;
     padding: 10px 15px;
@@ -140,6 +147,14 @@ a:hover{
 
 .btn-main {
     background-color: #F5B699;
+    color: #FE5F55 !important;
+    transition: .3s ease-in-out;
+}
+
+.btn-main:hover {
+    background-color: #FE5F55;
+    transform: scale(1.05);
+    color: #FFF !important;
 }
 
 .btn-form {

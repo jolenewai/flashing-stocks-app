@@ -4,15 +4,17 @@
 {% block content %}
 <div class="row">
     <div class="col-sm-3">
-        <nav class="nav nav-vertical flex-column">
-            <a class="nav-link active" href="{% url 'photographer_view_profile' %}">{% icon "user" class="feather-20 mr-2" %} Profile</a>
-            <a class="nav-link" href="{% url 'view_albums' %}">{% icon "book" class="feather-20 mr-2" %} Album</a>
-            <a class="nav-link" href="{% url 'view_uploads' %}">{% icon "upload" class="feather-20 mr-2" %} Upload History</a>
-        </nav>
+        {% include 'sidebar.template.html' %}
     </div>
     <div class="col-sm">
-    <h2>My Albums</h2>
+    <a href="{% url 'create_album' %}" class="btn btn-form text-white float-right">
+        {% icon "plus" class="feather-16 feather-white" %}Create
+    </a>
+
+    <h2> My Albums</h2>
+    <div class="clearfix"></div>
     {% if albums %}
+    <div class="mt-3 p-3 bg-white border custom-border clearfix">
         <table class="table">
             <thead>
                 <tr>
@@ -84,9 +86,9 @@
         
         {% endfor %}
         </table>
+    </div>
     {% else %}
         No album has been created. 
-        <a href="{% url 'create_album' %}" class="btn btn-primary">Create Album</a>
     {% endif %}
 
     </div>    
