@@ -2,6 +2,9 @@ from django import forms
 from .models import Customer
 from django.contrib.auth.models import Group
 from bootstrap_datepicker_plus import DatePickerInput
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Row, Column
+
 
 class CustomerForm(forms.ModelForm):
     class Meta:
@@ -42,4 +45,6 @@ class SignupForm(forms.Form):
         else:
             photographer_group = Group.objects.get(name="photographers")
             photographer_group.user_set.add(user)
+
+
 

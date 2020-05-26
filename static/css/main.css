@@ -15,9 +15,10 @@
 }
 
 #site-logo{
-    width: 137px;
-    height: 21px;
-    background-image: url('../img/site-logo.svg');
+    width: 156px;
+    height: 35px;
+    background-image: url('../img/site-logo-v2.svg');
+    background-repeat: no-repeat;
     margin-left: 20px;
     margin-right: 20px;
     float: left;

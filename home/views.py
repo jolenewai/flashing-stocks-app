@@ -1,13 +1,27 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, reverse, HttpResponse
 from django.db.models import Q
+from django.core.exceptions import ObjectDoesNotExist
 from photos.models import Photo, Category, Tag
+from django.contrib.auth.models import Group
+
+
 
 # Create your views here.
 
 
 def index(request):
 
-    return render(request, 'home/index.template.html')
+    photographer_group = Group.objects.get(name='photographers')
+
+    if request.user.is_authenticated:
+
+        if photographer_group in request.user.groups.all():
+            return redirect(reverse('photographer_view_profile'))
+        else: 
+            return redirect(reverse('list_photos'))
+    else: 
+        return render(request, 'home/index.template.html')
+
 
 
 def search(request):
