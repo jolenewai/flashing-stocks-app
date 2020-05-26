@@ -36,8 +36,18 @@
                     {% endfor %}
                 </div>
             </td>
-            <td><span class="align-middle"><a href="{% url 'edit_photo' photo_id=photo.id %}" class="text-reset">{% icon "edit" class="feather-20 mr-2" %}</a></span></td>
-            <td><a href="{% url 'delete_photo' photo_id=photo.id %}" class="text-reset"> {% icon "trash-2" class="feather-20 mr-2" %}</a></td>
+            <td>
+                <span class="align-middle">
+                    <a href="{% url 'edit_photo' photo_id=photo.id %}" class="text-reset">
+                        {% icon "edit" class="feather-20 mr-2" %}
+                    </a>
+                </span>
+            </td>
+            <td>
+                <a href="{% url 'delete_photo' photo_id=photo.id %}" class="text-reset"> 
+                    {% icon "trash-2" class="feather-20 mr-2" %}
+                </a>
+            </td>
         </tr>
 
     {% endfor %}

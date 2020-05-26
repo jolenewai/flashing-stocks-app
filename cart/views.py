@@ -34,7 +34,7 @@ def add_to_cart(request, photo_id):
                 f"{photo.caption} has been added to your cart!"
             )
 
-            return redirect(reverse(list_photos))
+            return redirect(reverse('view_photo', kwargs={'photo_id':photo.id}))
     else:
 
         messages.error(
@@ -47,10 +47,22 @@ def add_to_cart(request, photo_id):
 def view_cart(request):
     cart = request.session.get('shopping_cart', {})
     photos = Photo.objects.all()
+    total = 0
+
+    for id, photo in cart.items():
+        try:
+            photo_object = Photo.objects.get(id=id)
+        except ObjectDoesNotExist:
+            photo_object = None
+
+        total = total + int(photo_object.price*100)
+
+    total = total / 100
 
     return render(request, 'cart/view_cart.template.html', {
         'shopping_cart': cart,
-        'photos': photos
+        'photos': photos,
+        'total': total
     })
 
 
@@ -80,5 +92,3 @@ def update_size(request, photo_id):
         )
 
         return redirect(reverse(view_cart))
-
-

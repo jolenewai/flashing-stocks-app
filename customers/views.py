@@ -3,7 +3,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
 from django.contrib import messages
 from .forms import CustomerForm
-from .models import Customer
+from .models import Customer, Download, Favourite
+from photos.models import Photo
 
 
 def create_profile(request):
@@ -74,3 +75,31 @@ def update_profile(request):
         return render(request, 'customers/update_profile.template.html', {
             'form': profile_form
         })
+
+
+def view_download(request):
+
+    customer = Customer.objects.get(user=request.user)
+
+    downloads = Download.objects.filter(user=customer)
+
+    return render(request, 'customers/download.template.html',{
+        'downloads': downloads
+    })
+
+
+def add_to_favourite(request, photo_id):
+
+    customer = Customer.objects.get(user=request.user)
+    photo = Photo.objects.get(id=photo_id)
+
+    new_favourite = Favourite(
+        user = customer,
+        image = photo
+    )
+
+    new_favourite.save()
+
+    redirect_url = request.POST['redirect_url']
+
+    return redirect(redirect_url)

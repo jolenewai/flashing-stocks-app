@@ -3,8 +3,9 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.sites.models import Site
 from django.conf import settings
 import stripe
+import datetime
 from photos.models import Photo
-from customers.models import Customer
+from customers.models import Customer, Download
 from django.views.decorators.csrf import csrf_exempt
 
 endpoint_secret = settings.SIGNING_SECRET
@@ -21,7 +22,7 @@ def checkout(request):
             photo_object = Photo.objects.get(id=id)
         except ObjectDoesNotExist:
             photo_object = None
-        
+
         line_items.append({
             'name': photo_object.caption,
             'amount': int(photo_object.price*100),
@@ -47,7 +48,28 @@ def checkout(request):
 
 
 def checkout_success(request):
-    return HttpResponse('Checkout success')
+
+    cart = request.session.get('shopping_cart', {})
+    customer = Customer.objects.get(user=request.user)
+
+    for id, photo in cart.items():
+        try:
+            photo_object = Photo.objects.get(id=id)
+        except ObjectDoesNotExist:
+            photo_object = None
+
+        new_download = Download(
+            user = customer,
+            image = photo_object,
+            size = photo['size'],
+            date = datetime.datetime.now(),
+            )
+        new_download.save()
+
+    # Empty the shopping cart
+    request.session['shopping_cart'] = {}
+
+    return HttpResponse('Check out successful')
 
 
 def checkout_cancelled(request):
@@ -65,10 +87,10 @@ def payment_completed(request):
             payload, sig_header, endpoint_secret
         )
     except ValuedError as e:
-        #Invalid payload
+        # Invalid payload
         return HttpResponse(status=400)
     except stripe.error.SignatureVerificationError as e:
-        #Invalid signature
+        # Invalid signature
         return HttpResponse(status=400)
 
     if event['type'] == 'checkout.session.completed':
@@ -81,6 +103,4 @@ def payment_completed(request):
 
 def handle_checkout_session(session):
     print(session)
-
-
 

@@ -4,19 +4,18 @@
 {% block content %}
 
 <div class="container-flex">
-    <div class="row justify-content-center">
-        <div class="col">
+    <div class="row justify-content-left">
+        <div class="col-sm-5">
             <img src="{{ photo.image.cdn_url }}-/resize/500x/" alt="{{ photo.caption }}" class="img-fluid" />
             <div class="my-2">
-                <h4>Tags</h4>
                 <div class="tags">
                 {% for tag in photo.tags.all %}
-                    <a href="#">{{ tag }}</a>
+                    <a href="{% url 'search_by_tag' tag_id=tag.id %}">{{ tag }}</a>
                 {% endfor %}
                 </div>
             </div>
         </div>
-        <div class="col-sm border custom-border p-3 bg-white">
+        <div class="col-sm-6 border custom-border p-3 bg-white">
             <h3>{{ photo.caption }}</h3>
             <p>{{ photo.desc }}</p>
 
@@ -38,6 +37,7 @@
                     <label for="size-large"> Large - 1500px x 1000px</label>
                 </div>
                 <button type="submit" class="btn btn-form px-5 mt-4">Download</button>
+
             </form>
             <p><small>By clicking the download button, we will add this image to your cart first, so that you can download it later after you have made your payment.</small></p>
         </div>

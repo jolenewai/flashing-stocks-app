@@ -6,6 +6,7 @@ from photographers.models import Photographer
 from photographers.views import view_uploads
 from .models import Photo, Tag, Category
 from .forms import PhotoForm, TagForm, CategoryForm
+from customers.models import Favourite, Customer
 
 
 def list_photos(request):
@@ -15,10 +16,19 @@ def list_photos(request):
         photos = None
 
     photos_count = photos.count()
+    customer = Customer.objects.get(user=request.user)
+    favourites = Favourite.objects.filter(user=customer)
+    favourited_photo = []
+
+    for fav in favourites:
+        favourited_photo.append(
+            fav.image
+        )
 
     return render(request, 'photos/list_photos.template.html', {
         'photos': photos,
-        'photos_count': photos_count
+        'photos_count': photos_count,
+        'favourited_photo': favourited_photo
     })
 
 

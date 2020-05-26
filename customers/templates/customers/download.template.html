@@ -1,0 +1,62 @@
+{% extends 'base.template.html' %}
+{% load icon %}
+
+{% block content %}
+
+<div class="row justify-content-left">
+    <div class="col-sm-3">
+        {% include 'sidebar.template.html' %}
+    </div>
+    <div class="col-sm">
+    <h2>My Uploads </h2>
+
+    
+    {% if downloads %}
+    <div class="pr-3">
+        <table class="table mt-2">
+        <thead class="table-dark">
+            <tr>
+                <th>Date Purchased</th>
+                <th>Image</th>
+                <th>Size</th>
+                <th></th>
+            </tr>
+        </thead>
+        {% for download in downloads %}
+
+        <tr>
+            <td>{{ download.date|date:'d-m-Y H:i' }}</td>
+            <td class="align-middle">
+                <img src="{{ download.image.image.cdn_url }}-/resize/x160/" class="img-fluid mb-3" alt="{{download.image.caption}}">
+                <h4>{{ download.image.caption }}</h4>
+            </td>
+            <td>
+                {% ifequal download.size 'sm' %}
+                    Small - 650px x 433px
+                {% endifequal %}
+                {% ifequal download.size 'md' %}
+                    Medium - 1200px x 800px
+                {% endifequal %}
+                {% ifequal download.size 'lg' %}
+                    Large - 1500px x 1000px
+                {% endifequal %}   
+            </td>
+            <td>
+                <span class="align-middle">
+                    <a href="{{ download.image.image.cdn_url }}-/resize/{% ifequal download.size 'sm' %}650{% endifequal %}{% ifequal download.size 'md' %}1200{% endifequal %}{% ifequal download.size 'lg' %}1500{% endifequal %}x/" class="text-reset" target="_blank">
+                        {% icon "download" class="feather-20 mr-2" %}
+                    </a>
+                </span>
+            </td>
+            
+        </tr>
+
+    {% endfor %}
+    </table>
+    {% else %}
+        No photos uploaded. 
+    {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
