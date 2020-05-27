@@ -99,13 +99,13 @@
             <h3 class="ml-4">Hello, {{ request.user }}!</h3>
             {% ifequal 'customers' request.user.groups.all.0.name %}
                 <a href="{% url 'cust_view_profile' %}">{% icon "user" class="feather-20 mr-2" %} Profile</a>
-                <a href="#">{% icon "heart" class="feather-20 mr-2" %} Favourites</a>
-                <a href="#">{% icon "download" class="feather-20 mr-2" %} Download History</a>
+                <a href="{% url 'view_favourites' %}">{% icon "heart" class="feather-20 mr-2" %} Favourites</a>
+                <a href="{% url 'view_downloads' %}">{% icon "download" class="feather-20 mr-2" %} My Downloads</a>
             {% endifequal %}
             {% ifequal 'photographers' request.user.groups.all.0.name %}
                 <a href="{% url 'photographer_view_profile' %}">{% icon "user" class="feather-20 mr-2" %} Profile</a>
                 <a href="#">{% icon "book" class="feather-20 mr-2" %} Albums</a>
-                <a href="{% url 'view_uploads' %}">{% icon "upload" class="feather-20 mr-2" %}Upload History</a>
+                <a href="{% url 'view_uploads' %}">{% icon "upload" class="feather-20 mr-2" %}My Uploads</a>
             {% endifequal %}
         </div>
 
@@ -118,8 +118,10 @@
 
         {% block content %}
         {% endblock %}
-
     
+    <footer class="mt-5 pt-3 border-top container-flex clearfix">
+        <a href="">Terms of Use</a>    
+    </footer>
 
     {% block postloadjs %}
             <script src="{% static 'js/main.js' %}"></script> 

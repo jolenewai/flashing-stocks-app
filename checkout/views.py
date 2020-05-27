@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, reverse, HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.sites.models import Site
 from django.conf import settings
+from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 import stripe
@@ -18,6 +19,8 @@ def checkout(request):
 
     cart = request.session.get('shopping_cart', {})
 
+    customer = Customer.objects.get(user=request.user)
+
     line_items = []
 
     for id, photo in cart.items():
@@ -33,7 +36,6 @@ def checkout(request):
             'quantity': 1
         })
 
-    print(line_items)
     current_site = Site.objects.get_current()
     domain = current_site.domain
 
@@ -71,12 +73,15 @@ def checkout_success(request):
 
     # Empty the shopping cart
     request.session['shopping_cart'] = {}
+    messages.success(request, "Thank you for your payment. You may download the images now.")
 
     return redirect(reverse('view_downloads'))
 
 
 def checkout_cancelled(request):
-    return HttpResponse('Checkout cancelled')
+    messages.error(request, "Payment has been cancelled.")
+
+    return redirect(reverse('view_cart'))
 
 
 @csrf_exempt

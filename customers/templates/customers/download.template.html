@@ -1,5 +1,7 @@
 {% extends 'base.template.html' %}
-{% load icon %}
+{% load icon %} 
+
+{% block extra_title %}My Downloads {% endblock %}
 
 {% block content %}
 
@@ -7,8 +9,8 @@
     <div class="col-sm-3">
         {% include 'sidebar.template.html' %}
     </div>
-    <div class="col-sm">
-    <h2>My Uploads </h2>
+    <div class="col-sm-8">
+    <h2>My Downloads </h2>
 
     
     {% if downloads %}
@@ -25,7 +27,7 @@
         {% for download in downloads %}
 
         <tr>
-            <td>{{ download.date|date:'d-m-Y H:i' }}</td>
+            <td>{{ download.date }}</td>
             <td class="align-middle">
                 <img src="{{ download.image.image.cdn_url }}-/resize/x160/" class="img-fluid mb-3" alt="{{download.image.caption}}">
                 <h4>{{ download.image.caption }}</h4>

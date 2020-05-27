@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect, reverse
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
-
-
 from photos.models import Photo
 from photos.views import list_photos
+from customers.models import Download, Customer
+import datetime
 
 
 def add_to_cart(request, photo_id):
@@ -12,29 +12,52 @@ def add_to_cart(request, photo_id):
     if request.POST['size']:
         # to get existing cart from the session using the key "shopping cart"
         cart = request.session.get('shopping_cart', {})
-        
+        customer = Customer.objects.get(user=request.user)
+        customer_downloaded = Download.objects.filter(user=customer)
+
+        # to check if the photo is already in cart
         if photo_id not in cart:
-            print("find photo")
             try:
                 photo = Photo.objects.get(id=photo_id)
             except ObjectDoesNotExist:
                 photo = None
 
+            # to check if the user has downloaded the photo before
+            try:
+                downloaded = customer_downloaded.filter(image=photo)
+            except ObjectDoesNotExist:
+                downloaded = None
+
             if photo:
-                
-                cart[photo_id] = {
-                    'id': photo_id,
-                    'caption': photo.caption,
-                    'price': photo.price,
-                    'size': request.POST['size']
-                }
+                # if the user has already paid for the photo, add a new record to download
+                # so that the user can download the image again with the desired size
+                if downloaded:
+                    new_download = Download(
+                        user = customer,
+                        image = photo,
+                        size = request.POST['size'],
+                        date = datetime.datetime.now(),
+                        )
+                    new_download.save()
 
-                request.session['shopping_cart'] = cart
+                    messages.error(
+                        request,
+                        "Image has already been purchased, please download it on My Download page"
+                    )
+                else:
+                    cart[photo_id] = {
+                        'id': photo_id,
+                        'caption': photo.caption,
+                        'price': photo.price,
+                        'size': request.POST['size']
+                    }
 
-                messages.success(
-                    request,
-                    f"{photo.caption} has been added to your cart!"
-                )
+                    request.session['shopping_cart'] = cart
+
+                    messages.success(
+                        request,
+                        f"{photo.caption} has been added to your cart!"
+                    )
 
                 return redirect(reverse(
                     'view_photo',
@@ -66,7 +89,7 @@ def view_cart(request):
         except ObjectDoesNotExist:
             photo_object = None
 
-        total = total + int(photo_object.price*100)
+        total = total + int(photo['price']*100)
 
     total = total / 100
 

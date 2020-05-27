@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Q
 from .forms import CustomerForm
 from .models import Customer, Download, Favourite
 from photos.models import Photo
@@ -99,14 +100,36 @@ def add_to_favourite(request, photo_id):
 
     customer = Customer.objects.get(user=request.user)
     photo = Photo.objects.get(id=photo_id)
+    customer_favourite = Favourite.objects.filter(user=customer)
+    
+    try:
+        favourited = customer_favourite.get(image=photo)
+    except ObjectDoesNotExist:
+        favourited = None
 
-    new_favourite = Favourite(
-        user = customer,
-        image = photo
-    )
+    if favourited is None:
+        new_favourite = Favourite(
+            user = customer,
+            image = photo
+        )
+        new_favourite.save()
 
-    new_favourite.save()
+        messages.success(request, f"{photo.caption} has been added to your favourite")
+
+    else:
+        messages.success(request, f"{photo.caption} has been removed from your favourite")
+        favourited.delete()
 
     redirect_url = request.POST['redirect_url']
 
     return redirect(redirect_url)
+
+
+def view_favourites(request):
+
+    customer = Customer.objects.get(user=request.user)
+    favourites = Favourite.objects.filter(user=customer)
+
+    return render(request, 'customers/view_favourite.template.html', {
+        'favourites': favourites
+    })

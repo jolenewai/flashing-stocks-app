@@ -3,10 +3,7 @@ from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
 from photos.models import Photo, Category, Tag
 from django.contrib.auth.models import Group
-
-
-
-# Create your views here.
+from customers.models import Customer, Favourite
 
 
 def index(request):
@@ -21,7 +18,6 @@ def index(request):
             return redirect(reverse('list_photos'))
     else:
         return render(request, 'home/index.template.html')
-
 
 
 def search(request):
@@ -44,11 +40,26 @@ def search(request):
 
         photos = photos.filter(queries)
         
+
+    favourited_photo = []
+
+    photos_count = photos.count()
+    if request.user.is_authenticated:
+        customer = Customer.objects.get(user=request.user)
+        favourites = Favourite.objects.filter(user=customer)
+
+        for fav in favourites:
+            favourited_photo.append(
+                fav.image
+            )
+
     return render(request, 'home/search.template.html', {
         'photos': photos,
         'categories': categories,
         'tags': tags,
-        'keyword': keyword
+        'keyword': keyword,
+        'photos_count': photos_count,
+        'favourited_photo': favourited_photo
     })
 
 
@@ -63,9 +74,23 @@ def search_by_tag(request, tag_id):
     queries = queries & Q(tags=selected_tag)
 
     photos = photos.filter(queries)
+    favourited_photo = []
+    photos_count = photos.count()
+
+    if request.user.is_authenticated:
+        customer = Customer.objects.get(user=request.user)
+        favourites = Favourite.objects.filter(user=customer)
+
+        for fav in favourites:
+            favourited_photo.append(
+                fav.image
+            )
 
     return render(request, 'home/search.template.html', {
         'photos': photos,
         'categories': categories,
-        'tags': tags
+        'tags': tags,
+        'favourited_photo': favourited_photo,
+        'photos_count': photos_count
     })
+
