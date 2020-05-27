@@ -14,10 +14,10 @@
 
 </head>
 <body>
-    <div class="customer-login">
+    <div class="{% block background %}{% endblock %}">
         <div class="bg-overlay row align-items-center justify-content-center m-0 p-0">
             <div id="site-logo"></div>
-            <div class="login-box col-sm-8">
+            <div class="login-box col-sm-8 my-3 py-4">
                 {% block content %}
                 {% endblock %}
                 </div>

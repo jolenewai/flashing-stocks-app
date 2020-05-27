@@ -1,5 +1,6 @@
 {% extends 'base.template.html' %}
 {% load icon %}
+{% load static %}
 
 {% block content %}
 
@@ -19,7 +20,7 @@
             <h3>{{ photo.caption }}</h3>
             <p>{{ photo.desc }}</p>
 
-            <p class="photographer">{{ photo.owner.display_name }}</p>
+            <p class="photographer"><img src="{% static 'img/camera.svg' %}" width="18"> <a href="#" class="text-darkpink">{{ photo.owner.display_name }}</a></p>
             <hr />
             <form method="POST" action="{% url 'add_to_cart' photo_id=photo.id %}" class="mt-3">
                 {% csrf_token %}
@@ -44,6 +45,7 @@
     </div>
 
 </div>
+{% if related_photos %}
 <div class="container-flex mt-4">
     <hr />
     <h2>Related Photos</h2>
@@ -62,11 +64,12 @@
         {% endfor %}
     </div>
 </div>
-
+{% endif %}
+{% if photographer_set %}
 <div class="container-flex mt-4">
     <hr />
     <h2>From This Photographer</h2>
-    <div class="row row-cols-1 row-cols-md-3 p-4">
+    <div class="row row-cols-1 row-cols-md-4 p-4">
         {% for photo in photographer_set %}
 
         <div class="col mb-4 px-0 ">
@@ -81,4 +84,5 @@
         {% endfor %}
     </div>
 </div>
+{% endif %}
 {% endblock %}

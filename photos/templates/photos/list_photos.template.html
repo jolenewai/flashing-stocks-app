@@ -18,7 +18,8 @@
                     <form method="POST" action="{% url 'add_to_favourite' photo_id=photo.id %}">
                     {% csrf_token %}
                     <button type="submit" class="btn-icon form-inline float-right" >
-                        {% if photo in favourited_photo %}
+                        
+                        {% if user.is_authenticated and photo in favourited_photo %}
                         {% icon 'heart' class='feather-20 feather-liked float-right mx-1' %}
                         {% else %}
                         {% icon 'heart' class='feather-20 feather-white float-right mx-1' %}

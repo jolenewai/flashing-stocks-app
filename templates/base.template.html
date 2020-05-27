@@ -41,9 +41,10 @@
     </head>
     <body>
         <header class="container-fluid">
-
+            
         <nav class="navbar navbar-expand-lg topnav {% if user.groups.all.0 %}{{ user.groups.all.0 }}{% endif %} ">
-            <div id="site-logo"><a class="navbar-brand" href="#"></a></div>
+            <div id="site-logo"><a class="navbar-brand" href="{% url 'home' %}"></a></div>
+            
             {% ifnotequal 'photographers' request.user.groups.all.0.name %}
             <form class="form-inline my-lg-0" method="GET" action="{% url 'search' %}">
                 <input name="keyword" class="top-searchbar" type="search" placeholder="Search image" aria-label="Search">
@@ -53,22 +54,16 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             {% endifnotequal %}
-            {% if request.user.is_authenticated  %}
-                    <span class="navbar-text text-white ml-auto">
-                        Hello, {{ request.user }}!
-                    </span>
-                {% endif %} 
+
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                
+
                 <ul class="navbar-nav ml-auto">
                     {% ifequal 'customers' request.user.groups.all.0.name %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'view_cart' %}">{% icon "shopping-cart" class="feather-16 feather-white" %}<span class="sr-only">(shopping cart)</span><span class="mx-1 cart-number">{{number_of_items}}</span></a>
+                        <a class="nav-link" href="{% url 'view_cart' %}">{% icon "shopping-cart" class="feather-20 feather-white" %}<span class="sr-only">(shopping cart)</span><span class="mx-1 cart-number">{{number_of_items}}</span></a>
                     </li>
                     {% endifequal %}
-                    <li class="nav-item">
-                        <a class="nav-link" onclick="openNav()">{% icon "user" class="feather-16 feather-white" %}</a>
-                    </li>
+                    
                     <li class="nav-item">
                         {% if request.user.is_authenticated  %}
                         <a class="nav-link" href="{% url 'account_logout' %}"> Logout</a>
@@ -76,9 +71,15 @@
                         <a class="nav-link" href="{% url 'account_login' %}"> Login</a>
                         {% endif %}     
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#" onclick="openNav()">{% icon "user" class="feather-20 feather-white" %} </a>
+                    </li>
                 </ul>
-
-                
+                {% if request.user.is_authenticated  %}
+                    <span class="navbar-text text-white">
+                        Hello, {{ request.user }}!
+                    </span>
+                {% endif %}
             </div>
         </nav>
 

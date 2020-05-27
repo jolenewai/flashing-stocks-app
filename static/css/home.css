@@ -33,18 +33,23 @@ body{
 }
 
 #site-logo{
-    width: 137px;
-    height: 21px;
-    background-image: url('../img/site-logo.svg');
+    width: 156px;
+    height: 35px;
+    background-image: url('../img/site-logo-v2.svg');
+    background-repeat: no-repeat;
     position: fixed;
     top: 51px;
     left: 58px;
 }
 
+#home-wrapper {
+    padding: 45px 25px;
+    background-color: rgba(0,0,0,0.5)
+}
+
 .headline{
-    font-size: 3.42em;
-    font-weight: 500;
-    line-height: 1.14em;
+    font-size: 2.28em;
+    letter-spacing: 1px;
 }
 
 #searchbar-wrapper{
@@ -53,6 +58,7 @@ body{
     -webkit-transition: 0.2s;
     transition-timing-function: ease-in-out;
     -webkit-transition-timing-function: ease-in-out;
+    
 }
 
 .searchbar {
@@ -60,7 +66,7 @@ body{
     border-width: 0;
     background-color: #FFF;
     padding: 10px 12px;
-    width: 502px;
+    width: 470px;
 }
 
 .searchbar::placeholder {
@@ -85,29 +91,34 @@ body{
     stroke: #FFF;
 }
 
-#login-button {
-    width: 250px;
-    border-radius: 3px;
-    background-color: rgba(37,37,37,0.8);
-    padding: 15px 20px;
+.home-button {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    background-color: rgba(255,255,255, 0.25);
+    border-color: #FFF;
+    border-width: 1px;
     text-align: center;
+    padding: 30px 30px; 
+    display: inline-block;
+    text-transform: uppercase;
     transition: 0.2s;
     -webkit-transition: 0.2s;
     transition-timing-function: ease-in-out;
     -webkit-transition-timing-function: ease-in-out;
 }
 
-#login-button a{
-    color: #FFF;
-    display:block;
-    font-size: 1.14em;
-}
-
-#login-button:hover{
+.home-button:hover{
     background-color: #FE5F55;
     transform: translate(0, -5px);
     -webkit-transform: translate(0, -5px);
 }
+
+.home-button a {
+    color: #FFF;
+}
+
+
 
 
 /****** for login section ******/
@@ -120,17 +131,15 @@ body{
     vertical-align: middle;
 }
 
-.photographer-login{
+.sign-up{
     width: 100%;
-    height: 100%;
     background-image: url('../img/photographer_login.jpg');
     background-size: cover;
-    min-height: 100%;
     vertical-align: middle;
+    margin-bottom: 20px;
 }
 
 .login-box {
     background-color: rgba(0,0,0,0.5);
-    padding: 40px 0;
     color: #FFF;
 }

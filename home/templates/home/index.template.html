@@ -19,19 +19,36 @@
     <div class="main-bg">
         <div class="bg-overlay row align-items-center m-0 p-0">
             <div id="site-logo"></div>
-            <div class="main-section justify-content-center">
-                <p class="headline">Create Impressions with Great Visuals</p>
-                <div id="searchbar-wrapper" class="mx-auto">
-                <form method="GET" action="{% url 'search' %}" class="form-inline my-lg-0 mx-0">
-                    <input name="keyword" class="searchbar" type="search" placeholder="Search for an image" aria-label="Search">
-                    <button class="btn btn-form" type="submit">{% icon "search" class="feather-16 feather-white" %}</button>
-                </form>
+
+            <div class="main-section justify-content-center row">
+                <div id="home-wrapper" class="col">
+                    <p class="headline">Great Images at Your Fingertips</p>
+                    <div id="searchbar-wrapper" class="mx-auto">
+                    <form method="GET" action="{% url 'search' %}" class="form-inline my-lg-0 mx-0">
+                        <input name="keyword" class="searchbar" type="search" placeholder="Search for an image" aria-label="Search">
+                        <button class="btn btn-form" type="submit">Search</button>
+                    </form>
+                    </div>
+                    </div>
+                    <div class="home-button btn mx-auto mt-5">
+                        <a href="{% url 'list_photos' %}">
+                            {% icon "search" class="feather-42 feather-white mb-2" %}<br/>Explore
+                        </a>
+                    </div>
+                    <div class="home-button btn mx-auto mt-5">
+                        <a href="{% url 'account_login' %}">
+                            {% icon "user" class="feather-42 feather-white mb-2" %}<br/>Sign-In
+                        </a>
+                    </div>
+                    <div class="home-button btn mx-auto mt-5">
+                        <a href="{% url 'account_signup' %}">
+                            <img src="{% static 'img/camera-white.svg' %}" width="42" class="mb-3"> <br/>Sell
+                        </a>
+                    </div>
                 </div>
-                <div id="login-button" class="btn mx-auto mt-5">
-                <a href="{% url 'account_login' %}" class="text-decoration-none">
-                    {% icon "user" class="feather-20 feather-white mx-1" %} Photographer Login
-                </a>
-            </div>
+                <div class="row">
+                </div>
+
             </div>
         </div>
     </div>

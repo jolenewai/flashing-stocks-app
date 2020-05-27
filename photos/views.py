@@ -14,16 +14,18 @@ def list_photos(request):
         photos = Photo.objects.all()
     except ObjectDoesNotExist:
         photos = None
-
-    photos_count = photos.count()
-    customer = Customer.objects.get(user=request.user)
-    favourites = Favourite.objects.filter(user=customer)
+    
     favourited_photo = []
 
-    for fav in favourites:
-        favourited_photo.append(
-            fav.image
-        )
+    photos_count = photos.count()
+    if request.user.is_authenticated:
+        customer = Customer.objects.get(user=request.user)
+        favourites = Favourite.objects.filter(user=customer)
+
+        for fav in favourites:
+            favourited_photo.append(
+                fav.image
+            )
 
     return render(request, 'photos/list_photos.template.html', {
         'photos': photos,
