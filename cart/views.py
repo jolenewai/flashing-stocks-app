@@ -8,40 +8,51 @@ from photos.views import list_photos
 
 
 def add_to_cart(request, photo_id):
-    # to get existng card from the session using the key "shopping cart"
-    cart = request.session.get('shopping_cart', {})
-    print("find cart")
-    if photo_id not in cart:
-        print("find photo")
-        try:
-            photo = Photo.objects.get(id=photo_id)
-        except ObjectDoesNotExist:
-            photo = None
 
-        if photo:
-            print("found photo")
-            cart[photo_id] = {
-                'id': photo_id,
-                'caption': photo.caption,
-                'price': photo.price,
-                'size': request.POST['size']
-            }
+    if request.POST['size']:
+        # to get existing cart from the session using the key "shopping cart"
+        cart = request.session.get('shopping_cart', {})
+        
+        if photo_id not in cart:
+            print("find photo")
+            try:
+                photo = Photo.objects.get(id=photo_id)
+            except ObjectDoesNotExist:
+                photo = None
 
-            request.session['shopping_cart'] = cart
+            if photo:
+                
+                cart[photo_id] = {
+                    'id': photo_id,
+                    'caption': photo.caption,
+                    'price': photo.price,
+                    'size': request.POST['size']
+                }
 
-            messages.success(
+                request.session['shopping_cart'] = cart
+
+                messages.success(
+                    request,
+                    f"{photo.caption} has been added to your cart!"
+                )
+
+                return redirect(reverse(
+                    'view_photo',
+                    kwargs={'photo_id': photo.id})
+                )
+        else:
+
+            messages.error(
                 request,
-                f"{photo.caption} has been added to your cart!"
+                "Image is already in your cart"
             )
-
-            return redirect(reverse('view_photo', kwargs={'photo_id':photo.id}))
+            return redirect(reverse(list_photos))
     else:
-
         messages.error(
             request,
-            "Image is already in your cart"
+            "Please select a size!"
         )
-        return redirect(reverse(list_photos))
+        return redirect(reverse('view_photo', kwargs={'photo_id': photo.id}))
 
 
 def view_cart(request):

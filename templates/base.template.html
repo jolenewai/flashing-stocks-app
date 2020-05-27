@@ -58,11 +58,11 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
                 <ul class="navbar-nav ml-auto">
-                    {% ifequal 'customers' request.user.groups.all.0.name %}
+                    {% ifnotequal 'photographers' request.user.groups.all.0.name %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'view_cart' %}">{% icon "shopping-cart" class="feather-20 feather-white" %}<span class="sr-only">(shopping cart)</span><span class="mx-1 cart-number">{{number_of_items}}</span></a>
                     </li>
-                    {% endifequal %}
+                    {% endifnotequal %}
                     
                     <li class="nav-item">
                         {% if request.user.is_authenticated  %}

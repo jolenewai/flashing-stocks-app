@@ -49,7 +49,7 @@ body{
 
 .headline{
     font-size: 2.28em;
-    letter-spacing: 1px;
+    text-transform: uppercase;
 }
 
 #searchbar-wrapper{

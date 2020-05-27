@@ -17,9 +17,9 @@ def index(request):
 
         if photographer_group in request.user.groups.all():
             return redirect(reverse('photographer_view_profile'))
-        else: 
+        else:
             return redirect(reverse('list_photos'))
-    else: 
+    else:
         return render(request, 'home/index.template.html')
 
 
@@ -36,11 +36,11 @@ def search(request):
 
         if 'keyword' in request.GET and request.GET['keyword']:
             keyword = request.GET['keyword']
-            queries = queries & Q(caption__icontains=keyword)
+            queries = queries & (Q(caption__icontains=keyword) | Q(desc__icontains=keyword))
 
         if 'category' in request.GET and request.GET['category']:
             category = request.GET['category']
-            queries = queries & Q(category__id=category)
+            queries = queries & Q(category__id=category) 
 
         photos = photos.filter(queries)
         

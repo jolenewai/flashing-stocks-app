@@ -11,11 +11,13 @@ from customers.models import Favourite, Customer
 
 def list_photos(request):
     try:
-        photos = Photo.objects.all()
+        photos = Photo.objects.all().order_by('-date_added')
     except ObjectDoesNotExist:
         photos = None
-    
+
     favourited_photo = []
+
+    categories = Category.objects.all()
 
     photos_count = photos.count()
     if request.user.is_authenticated:
@@ -30,7 +32,8 @@ def list_photos(request):
     return render(request, 'photos/list_photos.template.html', {
         'photos': photos,
         'photos_count': photos_count,
-        'favourited_photo': favourited_photo
+        'favourited_photo': favourited_photo,
+        'categories': categories
     })
 
 
@@ -98,8 +101,8 @@ def edit_photo(request, photo_id):
 
         if edit_form.is_valid():
             edit_form.save()
-            messages.success(request, "Profile updated successfully")
-            return redirect(reverse(view_photo, kwargs={'photo_id': photo.id}))
+            messages.success(request, "Photo updated successfully")
+            return redirect(reverse(view_uploads))
         else:
             return render(request, 'photos/edit_photo.template.html', {
                 'form': edit_form,
@@ -281,3 +284,18 @@ def delete_category(request, category_id):
 
     return redirect(reverse(add_category))
 
+
+def photo_by_category(request, category_id):
+
+    all_categories = Category.objects.all()
+    category = Category.objects.get(id=category_id)
+
+    photos_in_category = Photo.objects.filter(category=category)
+    photos_count = photos_in_category.count()
+
+    return render(request, 'photos/view_category.template.html', {
+        'photos': photos_in_category,
+        'photos_count': photos_count,
+        'category': category,
+        'all_categories': all_categories
+    })

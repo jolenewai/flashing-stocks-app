@@ -10,6 +10,7 @@ urlpatterns = [
     path('tags/add', photos.views.add_tags, name="add_tags"),
     path('tags/edit/<tag_id>', photos.views.edit_tag, name="edit_tag"),
     path('tags/delete/<tag_id>', photos.views.delete_tag, name="delete_tag"),
+    path('category/<category_id>', photos.views.photo_by_category, name="view_category"),
     path('category/add', photos.views.add_category, name="add_category"),
     path(
         'category/edit/<category_id>',

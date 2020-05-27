@@ -2,14 +2,17 @@ from django.shortcuts import render, redirect, reverse, HttpResponse
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.sites.models import Site
 from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
 import stripe
 import datetime
 from photos.models import Photo
 from customers.models import Customer, Download
-from django.views.decorators.csrf import csrf_exempt
+
 
 endpoint_secret = settings.SIGNING_SECRET
 
+@login_required
 def checkout(request):
     stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -69,7 +72,7 @@ def checkout_success(request):
     # Empty the shopping cart
     request.session['shopping_cart'] = {}
 
-    return HttpResponse('Check out successful')
+    return redirect(reverse('view_downloads'))
 
 
 def checkout_cancelled(request):

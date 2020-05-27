@@ -1,7 +1,9 @@
 from django.shortcuts import render, HttpResponse, get_object_or_404, redirect, reverse
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.core.exceptions import ObjectDoesNotExist
 from .forms import CustomerForm
 from .models import Customer, Download, Favourite
 from photos.models import Photo
@@ -9,7 +11,12 @@ from photos.models import Photo
 
 def create_profile(request):
 
-    if Customer.objects.get(user=request.user):
+    try:
+        customer = Customer.objects.get(user=request.user)
+    except ObjectDoesNotExist:
+        customer = None
+
+    if customer:
         return redirect(reverse(view_profile))
 
     else:
@@ -87,7 +94,7 @@ def view_download(request):
         'downloads': downloads
     })
 
-
+@login_required
 def add_to_favourite(request, photo_id):
 
     customer = Customer.objects.get(user=request.user)
