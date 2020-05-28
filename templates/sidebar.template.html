@@ -2,9 +2,9 @@
 
 {% ifequal 'customers' request.user.groups.all.0.name %}
 
-<nav class="nav nav-vertical flex-column">
+<nav id="cust-sidebar" class="nav nav-vertical flex-column">
     <a class="nav-link" href="{% url 'cust_view_profile' %}">{% icon "user" class="feather-20 mr-2" %} Profile</a>
-    <a class="nav-link" href="#">{% icon "heart" class="feather-20 mr-2" %}Favourites</a>
+    <a class="nav-link" href="{% url 'view_favourites' %}">{% icon "heart" class="feather-20 mr-2" %}Favourites</a>
     <a class="nav-link" href="{% url 'view_downloads' %}">{% icon "download" class="feather-20 mr-2" %} My Downloads</a>
 </nav>
 
@@ -12,7 +12,7 @@
 
 {% ifequal 'photographers' request.user.groups.all.0.name %}
 
-<nav class="nav nav-vertical flex-column">
+<nav id="phot-sidebar" class="nav nav-vertical flex-column">
     <a class="nav-link" href="{% url 'photographer_view_profile' %}">{% icon "user" class="feather-20 mr-2" %} Profile</a>
     <a class="nav-link" href="{% url 'view_albums' %}">{% icon "book" class="feather-20 mr-2" %} Album</a>
     <a class="nav-link" href="{% url 'view_uploads' %}">{% icon "upload" class="feather-20 mr-2" %} My Uploads</a>

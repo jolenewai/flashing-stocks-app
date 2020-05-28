@@ -22,7 +22,7 @@
                     <a href="{% url 'view_photo' photo_id=favourite.image.id %}">{{favourite.image.caption}}</a>
                     <form method="POST" action="{% url 'add_to_favourite' photo_id=favourite.image.id %}" class="form-inline float-right">
                     {% csrf_token %}
-                    <button type="submit" class="btn-icon " >
+                    <button type="submit" class="btn-icon" >
                         
                         {% if user.is_authenticated and photo in favourited_photo %}
                         {% icon 'heart' class='feather-20 feather-liked float-right mx-1' %}
