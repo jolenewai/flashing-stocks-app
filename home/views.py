@@ -39,7 +39,6 @@ def search(request):
             queries = queries & Q(category__id=category) 
 
         photos = photos.filter(queries)
-        
 
     favourited_photo = []
 
