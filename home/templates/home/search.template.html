@@ -2,7 +2,7 @@
 {% load icon %}
 {% block content %}
     <div class="row">    
-        <div id="search-filter" class="col-sm-3">
+        <div id="search-filter" class="col-sm-3 mb-4">
         <form method="GET" action="{% url 'search' %}">
             {% if keyword %}
             <input type="hidden" name="keyword" value="{{ keyword }}">
@@ -69,4 +69,7 @@
             </div>
         </div>
     </div>
+
+    <button id="filter-button" class="fixed-bottom ml-auto mr-3 mb-3" onclick="toggleFilter()">
+    {% icon 'sliders' class='feather-32 feather-white' %}</button>
 {% endblock %}

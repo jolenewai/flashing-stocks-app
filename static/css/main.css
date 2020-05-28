@@ -59,18 +59,23 @@
     padding-top: 0.4em;
 }
 
-nav a:link, nav a:visited {
-    color: #FFF;
+.nav-item a:link, .nav-item a:visited {
+    color: #FFF !important;
     transition: 0.2s ease-in-out;
     -webkit-transition: 0.2s ease-in-out;
 }
 
-nav a:hover {
+.nav-item a:hover {
     transform: scale(1.2, 1.2)
 }
 
 #search-filter{
     margin-top:40px;
+    display:block;
+}
+
+#mobileSearchForm {
+    display:none;
 }
 
 /* The sidepanel menu */
@@ -147,3 +152,140 @@ nav a:hover {
     border:0;
 }
 
+#mobile-navbar, .navbar-text {
+    display:none;
+}
+
+#mobile-navbar a{
+    display: inline-block;
+}
+
+#filter-button{
+    display:none;
+}
+
+ol li{
+    padding-left: 5px;
+}
+
+/* // Extra small devices (portrait phones, less than 576px) */
+@media (max-width: 767.98px) { 
+
+    body {
+        padding:8px;
+        font-size: 0.75rem !important;
+    }
+
+    #site-logo{
+        width: 140px;
+        height: 30px;
+        margin-left: 8px;
+        margin-right: 8px;
+        background-size: 100%;
+    }
+
+    .topnav{
+        height: 60px;
+        padding: 10px;
+        background-color: #FB7B3A;
+    }
+
+    ul.navbar-nav, #topsearchform {
+        display:none;
+    }
+
+    #mobileSearchForm {
+        display:none;
+        background-color: #F5B699;
+    }
+
+    .top-searchbar {
+        border-radius: 0;
+        border-width: 0;
+        background-color: #FFF;
+        padding: 10px 12px;
+        width: 85%;
+    }
+
+    .top-searchbar::placeholder {
+        color: #F5B699;
+    }
+
+    #mobile-navbar{
+        display: inline-block;
+    }
+
+    #mobile-navbar a{
+        padding: 0 6px;
+    }
+
+    #mobile-navbar a:nth-child(2){
+        padding-right: 4px;
+    }
+
+    #search-filter{
+        display: none;
+        transition: 2s ease-in-out;
+        margin-top:0;
+        margin-bottom: 30px;
+        border-bottom: 1px solid #EFEFEF;
+    }
+
+    #filter-button{
+        width: 68px;
+        height: 68px;
+        border-radius: 50%;
+        background-color: #FE5F55;
+        padding: 18px;
+        display:block;
+    }
+
+    .nav-vertical {
+        display:none;
+    }
+
+    .sidepanel {
+        margin-right:8px;
+    }
+
+    .downloads .th-1, .downloads .th-3 {
+        display: none;
+    }
+ }
+
+
+
+/* // Medium devices (tablets, 768px and up to 991.98px) */
+@media (min-width: 768px) and (max-width: 991.98px) { 
+    .top-searchbar {
+        width: 300px;
+    }
+
+    ul.navbar-nav {
+        display:none;
+    }
+
+    #mobile-navbar{
+        display: inline-block;
+    }
+
+    #mobile-navbar a{
+        padding: 0 8px;
+    }
+
+    #mobile-navbar a:nth-child(1){
+        display:none;
+    }
+
+    #mobile-navbar a:nth-child(2){
+        padding-right: 4px;
+    }
+
+    #mobileSearchForm {
+        display:none;
+    }
+
+    .sidepanel {
+        margin-right:20px;
+    }
+}

@@ -115,7 +115,7 @@ body{
 }
 
 .home-button a {
-    color: #FFF;
+    color: #FFF !important;
 }
 
 

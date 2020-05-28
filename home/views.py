@@ -38,7 +38,6 @@ def search(request):
             queries = queries & Q(category__id=category) 
 
         photos = photos.filter(queries)
-        photos_count = photos.count()
 
         if 'sortby' in request.GET and request.GET['sortby']:
             sortby_field = request.GET['sortby']
@@ -47,23 +46,24 @@ def search(request):
                 photos = photos.order_by('date_added')
             elif sortby_field == 'al':
                 photos = photos.order_by('caption')
-            elif sortby_field == 'pp':
-                downloads = Download.objects.values('image__id').annotate(num_download=Count('image')).order_by('-num_download')
+            # elif sortby_field == 'pp':
+            #     downloads = Download.objects.values('image__id').annotate(num_download=Count('image')).order_by('-num_download')
 
-                queries = ~Q(pk__in=[])
+            #     queries = ~Q(pk__in=[])
 
-                if 'keyword' in request.GET and request.GET['keyword']:
-                    keyword = request.GET['keyword']
-                    queries = queries & (
-                        Q(image__caption__icontains=keyword) | Q(image__desc__icontains=keyword) | Q(image__tags__name=keyword)
-                    )
+            #     if 'keyword' in request.GET and request.GET['keyword']:
+            #         keyword = request.GET['keyword']
+            #         queries = queries & (
+            #             Q(image__caption__icontains=keyword) | Q(image__desc__icontains=keyword) | Q(image__tags__name=keyword)
+            #         )
 
-                if 'category' in request.GET and request.GET['category']:
-                    category = request.GET['category']
-                    queries = queries & Q(image__category__id=category) 
+            #     if 'category' in request.GET and request.GET['category']:
+            #         category = request.GET['category']
+            #         queries = queries & Q(image__category__id=category) 
 
-                photos = downloads.filter(queries)
-
+            #     photos = downloads.filter(queries)
+    
+    photos_count = photos.count()
     favourited_photo = []
 
     
@@ -117,3 +117,10 @@ def search_by_tag(request, tag_id):
         'photos_count': photos_count
     })
 
+
+def terms_of_use(request):
+    return render(request, 'home/terms_of_use.html')
+
+
+def license_agreements(request):
+    return render(request, 'home/license_agreements.html')

@@ -3,8 +3,8 @@
 
 {% block content %}
 
-<div class="row justify-content-center">
-    <div class="col-sm-10 col-md-10">
+<div class="row justify-content-center px-0 mx-0">
+    <div class="col-sm-10 col-md-10 px-0 mx-0">
     <h1>Your Cart</h1>
 
         <table class="table table-striped">
@@ -13,39 +13,42 @@
                 <th>Item</th>
                 <th>Size</th>
                 <th>Cost</th>
-                <th></th>
-                <th></th>
             </tr>
             </thead>
             {% for key, item in shopping_cart.items %}
             <tr>
-                <td>
-                    {% for photo in photos %}
-                        {% ifequal item.id photo.id|slugify %}
-                            <img src="{{ photo.image.cdn_url }}-/resize/280x/" class="img-fluid mb-3" /><br/>
-                        {% endifequal %}
-                    {% endfor %}
-
-                    ImageID{{ item.id }} 
-                     <h4>{{ item.caption }}</h4>
+                <td class="align-middle">
+                        {% for photo in photos %}
+                            {% ifequal item.id photo.id|slugify %}
+                                <img src="{{ photo.image.cdn_url }}-/resize/200x/" class="img-fluid float-left mx-2" /><br/>
+                            {% endifequal %}
+                        {% endfor %}
+                        ImageID{{ item.id }} <br/> 
+                        <strong>{{ item.caption }}</strong>
                 </td>
                 <td class="align-middle">
                     {% ifequal item.size 'sm' %}
-                        Small - 650px x 433px
+                        SMALL <br/>
+                        <strong>650px</strong> X <strong>433px</strong>
                     {% endifequal %}
                     {% ifequal item.size 'md' %}
-                        Medium - 1200px x 800px
+                        MEDIUM <br/>
+                        <strong>1200px</strong> X <strong>800px</strong>
                     {% endifequal %}
                     {% ifequal item.size 'lg' %}
-                        Large - 1500px x 1000px
-                    {% endifequal %}           
-                </td>
-                <td class="align-middle">{{ item.price|stringformat:".2f" }}</td>
-                <td class="align-middle">    
+                        LARGE <br/>
+                        <strong>1500px</strong> X <strong>1000px</strong>
+                    {% endifequal %}   
                     <!-- Button trigger update modal -->
-
-                    <a href="#" class="float-right" data-toggle="modal" data-target="#UpdateModal{{item.id}}">
-                        {% icon "edit" class="feather-20 mr-2" %}
+                    <a href="#" data-toggle="modal" data-target="#UpdateModal{{item.id}}">
+                        {% icon "edit" class="feather-20 mx-2" %}
+                    </a>      
+                </td>
+                <td class="align-middle">
+                {{ item.price|stringformat:".2f" }}                    
+                    <!-- Button trigger delete modal -->
+                    <a href="#" data-toggle="modal" data-target="#DeleteModal{{item.id}}">                
+                        {% icon "trash-2" class="feather-20 mx-2" %}
                     </a>
                     <!-- Modal -->
                     <div class="modal fade" id="UpdateModal{{item.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -82,14 +85,8 @@
                         </form>
                         </div>
                     </div>
-                    </div> 
-                </td>
-                <td class="align-middle">
-                    <!-- Button trigger delete modal -->
-                    <a href="#" data-toggle="modal" data-target="#DeleteModal{{item.id}}">                
-                        {% icon "trash-2" class="feather-20 mr-2" %}
-                    </a>
-                    
+                    </div>
+          
                     <!-- Modal -->
                     <div class="modal fade" id="DeleteModal{{item.id}}" tabindex="-1" role="dialog" aria-labelledby="DeleteModalTitle" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -113,20 +110,24 @@
                         </div>
                         </div>
                     </div>
-                    </div>
+                    </div>    
+
                 </td>
             </tr>
             {% endfor %}
             
                 <tr class="table-light">
-                    <td colspan="2" class="align-middle"><strong>Total (USD)</strong></td>
-                    <td class="align-middle"><strong>{{ total|stringformat:".2f" }}</strong></td>
-                    <td colspan="2" class="text-center align-middle">
-                        <a href="{% url 'checkout' %}" class="btn btn-form text-white px-5">Check Out</a>
+                    <td colspan="2" class="align-middle">
+                        <strong>Total (USD)</strong>
+                    </td>
+                    <td class="text-center align-middle">
+                        <strong>{{ total|stringformat:".2f" }}</strong>
                     </td>
                 </tr>
         
         </table>
+            <a href="{% url 'checkout' %}" class="btn btn-form text-white px-5 float-right">Check Out</a>
+
     </div>
     
 </div>

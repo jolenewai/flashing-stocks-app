@@ -2,8 +2,11 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-6">
+<div class="row">
+    <div class="col-sm-3 sidebar-left px-0">
+        {% include 'sidebar.template.html' %}
+    </div>
+    <div class="col-sm">
         <h1>Photographer's Profile</h1>
         <p>Set up your profile to start using Photographer's features!</p>
 

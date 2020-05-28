@@ -6,6 +6,8 @@
     <a class="nav-link" href="{% url 'cust_view_profile' %}">{% icon "user" class="feather-20 mr-2" %} Profile</a>
     <a class="nav-link" href="{% url 'view_favourites' %}">{% icon "heart" class="feather-20 mr-2" %}Favourites</a>
     <a class="nav-link" href="{% url 'view_downloads' %}">{% icon "download" class="feather-20 mr-2" %} My Downloads</a>
+    <a class="nav-link" href="{% url 'account_logout' %}">{% icon "log-out" class="feather-20 mr-2" %} Logout</a>
+
 </nav>
 
 {% endifequal %}
@@ -16,6 +18,7 @@
     <a class="nav-link" href="{% url 'photographer_view_profile' %}">{% icon "user" class="feather-20 mr-2" %} Profile</a>
     <a class="nav-link" href="{% url 'view_albums' %}">{% icon "book" class="feather-20 mr-2" %} Album</a>
     <a class="nav-link" href="{% url 'view_uploads' %}">{% icon "upload" class="feather-20 mr-2" %} My Uploads</a>
+    <a class="nav-link" href="{% url 'account_logout' %}">{% icon "log-out" class="feather-20 mr-2" %} Logout</a>
 </nav>
 
 {% endifequal %}
