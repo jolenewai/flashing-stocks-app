@@ -1,9 +1,8 @@
-from django.shortcuts import render, redirect, reverse, HttpResponse
-from django.db.models import Q
-from django.core.exceptions import ObjectDoesNotExist
+from django.shortcuts import render, redirect, reverse
+from django.db.models import Q, Count
 from photos.models import Photo, Category, Tag
 from django.contrib.auth.models import Group
-from customers.models import Customer, Favourite
+from customers.models import Customer, Favourite, Download
 
 
 def index(request):
@@ -24,7 +23,7 @@ def search(request):
 
     photos = Photo.objects.all()
     categories = Category.objects.all()
-    tags = Tag.objects.all()
+    tags = Tag.objects.all().order_by('name')
 
     keyword = ''
     if request.GET:
@@ -32,17 +31,42 @@ def search(request):
 
         if 'keyword' in request.GET and request.GET['keyword']:
             keyword = request.GET['keyword']
-            queries = queries & (Q(caption__icontains=keyword) | Q(desc__icontains=keyword))
+            queries = queries & (Q(caption__icontains=keyword) | Q(desc__icontains=keyword) | Q(tags__name=keyword))
 
         if 'category' in request.GET and request.GET['category']:
             category = request.GET['category']
             queries = queries & Q(category__id=category) 
 
         photos = photos.filter(queries)
+        photos_count = photos.count()
+
+        if 'sortby' in request.GET and request.GET['sortby']:
+            sortby_field = request.GET['sortby']
+            
+            if sortby_field == 'mr':
+                photos = photos.order_by('date_added')
+            elif sortby_field == 'al':
+                photos = photos.order_by('caption')
+            elif sortby_field == 'pp':
+                downloads = Download.objects.values('image__id').annotate(num_download=Count('image')).order_by('-num_download')
+
+                queries = ~Q(pk__in=[])
+
+                if 'keyword' in request.GET and request.GET['keyword']:
+                    keyword = request.GET['keyword']
+                    queries = queries & (
+                        Q(image__caption__icontains=keyword) | Q(image__desc__icontains=keyword) | Q(image__tags__name=keyword)
+                    )
+
+                if 'category' in request.GET and request.GET['category']:
+                    category = request.GET['category']
+                    queries = queries & Q(image__category__id=category) 
+
+                photos = downloads.filter(queries)
 
     favourited_photo = []
 
-    photos_count = photos.count()
+    
     if request.user.is_authenticated:
         customer = Customer.objects.get(user=request.user)
         favourites = Favourite.objects.filter(user=customer)

@@ -5,10 +5,11 @@
         <div id="search-filter" class="col-sm-3">
         <form method="GET" action="{% url 'search' %}">
             {% if keyword %}
-            <input type="hidden" name="keyword" value="{{keyword}}">
+            <input type="hidden" name="keyword" value="{{ keyword }}">
             {% endif %}
             <label for="id_category"><h5>Category</h5></label>
             <select class="form-control custom-select custom-border rounded-0 mb-4" name="category" id="id_category">
+                <option value="">Select Category</option>
                 {% for category in categories %}
                     <option value="{{category.id}}">{{category.name}}</option>
                 {% endfor %}
