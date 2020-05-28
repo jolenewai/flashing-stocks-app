@@ -75,7 +75,9 @@ def checkout_success(request):
     request.session['shopping_cart'] = {}
     messages.success(request, "Thank you for your payment. You may download the images now.")
 
-    return redirect(reverse('view_downloads'))
+    return render(request, 'checkout/checkout_success.template.html', {
+        'cart': cart
+    })
 
 
 def checkout_cancelled(request):
