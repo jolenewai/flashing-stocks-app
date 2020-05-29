@@ -1,18 +1,20 @@
 from django.shortcuts import render, redirect, reverse
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.decorators import login_required
 from photos.models import Photo
 from photos.views import list_photos
 from customers.models import Download, Customer
 import datetime
 
 
-
+@login_required
 def add_to_cart(request, photo_id):
 
     if request.POST['size']:
         # to get existing cart from the session using the key "shopping cart"
         cart = request.session.get('shopping_cart', {})
+
         customer = Customer.objects.get(user=request.user)
         customer_downloaded = Download.objects.filter(user=customer)
 
@@ -79,7 +81,7 @@ def add_to_cart(request, photo_id):
         return redirect(reverse('view_photo', kwargs={'photo_id': photo.id}))
 
 
-
+@login_required
 def view_cart(request):
     cart = request.session.get('shopping_cart', {})
     photos = Photo.objects.all()

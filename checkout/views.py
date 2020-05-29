@@ -55,23 +55,6 @@ def checkout(request):
 @login_required
 def checkout_success(request):
 
-    cart = request.session.get('shopping_cart', {})
-    customer = Customer.objects.get(user=request.user)
-
-    for id, photo in cart.items():
-        try:
-            photo_object = Photo.objects.get(id=id)
-        except ObjectDoesNotExist:
-            photo_object = None
-
-        new_download = Download(
-            user = customer,
-            image = photo_object,
-            size = photo['size'],
-            date = datetime.datetime.now(),
-            )
-        new_download.save()
-
     # Empty the shopping cart
     request.session['shopping_cart'] = {}
     messages.success(request, "Thank you for your payment. You may download the images now.")
@@ -108,6 +91,23 @@ def payment_completed(request):
 
     if event['type'] == 'checkout.session.completed':
         session = event['data']['object']
+
+        cart = request.session.get('shopping_cart', {})
+        customer = Customer.objects.get(user=request.user)
+
+        for id, photo in cart.items():
+            try:
+                photo_object = Photo.objects.get(id=id)
+            except ObjectDoesNotExist:
+                photo_object = None
+
+            new_download = Download(
+                user = customer,
+                image = photo_object,
+                size = photo['size'],
+                date = datetime.datetime.now(),
+                )
+            new_download.save()
 
         handle_checkout_session(session)
 

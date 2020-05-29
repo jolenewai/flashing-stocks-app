@@ -39,7 +39,7 @@
                     <label for="size-large"> Large - 1500px x 1000px</label>
                 </div>
                 
-                <button type="submit" class="btn btn-form px-5 mt-4" {% ifnotequal 'customers' request.user.groups.all.0.name %}disabled{% endifnotequal %}
+                <button type="submit" class="btn btn-form px-5 mt-4" {% if user.is_authenticated %}{% ifnotequal 'customers' request.user.groups.all.0.name %}disabled{% endifnotequal %}{% endif %}
 >Download</button>
 
             </form>
