@@ -42,7 +42,7 @@ def checkout(request):
     session = stripe.checkout.Session.create(
         payment_method_types=['card'],
         line_items=line_items,
-        success_url=domain + reverse(checkout_success, kwargs={'session':id}),
+        success_url=domain + reverse(checkout_success, args={'session': id}),
         cancel_url=domain + reverse(checkout_cancelled),
     )
 
