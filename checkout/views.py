@@ -42,7 +42,7 @@ def checkout(request):
     session = stripe.checkout.Session.create(
         payment_method_types=['card'],
         line_items=line_items,
-        success_url=domain + reverse(checkout_success),
+        success_url=domain + reverse(checkout_success, kwargs={'session':CHECKOUT_SESSION_ID}),
         cancel_url=domain + reverse(checkout_cancelled),
     )
 
@@ -54,7 +54,23 @@ def checkout(request):
 
 @login_required
 def checkout_success(request):
+
     cart = request.session.get('shopping_cart', {})
+    customer = Customer.objects.get(user=request.user)
+
+    for id, photo in cart.items():
+        try:
+            photo_object = Photo.objects.get(id=id)
+        except ObjectDoesNotExist:
+            photo_object = None
+
+        new_download = Download(
+            user = customer,
+            image = photo_object,
+            size = photo['size'],
+            date = datetime.datetime.now(),
+            )
+        new_download.save()
 
     # Empty the shopping cart
     request.session['shopping_cart'] = {}
@@ -90,26 +106,10 @@ def payment_completed(request):
         # Invalid signature
         return HttpResponse(status=400)
 
+    print('session :' + session)
+
     if event['type'] == 'checkout.session.completed':
         session = event['data']['object']
-
-        cart = request.session.get('shopping_cart', {})
-        customer = Customer.objects.get(user=request.user)
-
-        for id, photo in cart.items():
-            try:
-                photo_object = Photo.objects.get(id=id)
-            except ObjectDoesNotExist:
-                photo_object = None
-
-            new_download = Download(
-                user = customer,
-                image = photo_object,
-                size = photo['size'],
-                date = datetime.datetime.now(),
-                )
-            new_download.save()
-
         handle_checkout_session(session)
 
     return HttpResponse(status=200)
