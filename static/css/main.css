@@ -172,7 +172,7 @@ ol li{
     border-radius: 50%;
 }
 
-/* // Extra small devices (portrait phones, less than 576px) */
+/* for Tablets or smaller devices */
 @media (max-width: 767.98px) { 
 
     body {
@@ -256,10 +256,8 @@ ol li{
     }
  }
 
-    
 
-
-/* // Medium devices (tablets, 768px and up to 991.98px) */
+/* Medium devices (tablets, 768px and up to 991.98px) */
 @media (min-width: 768px) and (max-width: 991.98px) { 
     .top-searchbar {
         width: 300px;

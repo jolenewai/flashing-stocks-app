@@ -96,7 +96,7 @@ a:link, a:visited{
 }
 
 a:hover{
-    transform: scale(1.1)
+    transform: scale(1.1);
     text-decoration: none;
     color: #252525 !important;
 }
