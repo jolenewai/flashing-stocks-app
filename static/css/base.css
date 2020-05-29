@@ -179,12 +179,20 @@ a:hover{
 
 .btn-form {
     background-color: #FB7B3A;
-    color: #FFF;
+    color: #FFF !important;
     transition: .3s ease-in-out;
+}
+
+a.btn-form:link, a.btn-form:visited{
+    color: #FFF !important;
 }
 
 .btn-form:hover {
     background-color: #FE5F55;
     transform: scale(1.05);
     color: #FFF;
+}
+
+footer{
+    bottom:0;
 }

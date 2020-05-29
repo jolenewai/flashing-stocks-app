@@ -37,7 +37,7 @@
     <body>
         <header class="container-fluid px-0">
             
-        <nav class="navbar navbar-expand-lg topnav {% if user.groups.all.0 %}{{ user.groups.all.0 }} {% else %} admin {% endif %} ">
+        <nav class="navbar navbar-expand-lg topnav {% if user.groups.all.0 %}{{ user.groups.all.0 }} {% elif user.is_staff %} admin {% endif %} ">
             <div id="site-logo"><a class="navbar-brand" href="{% url 'home' %}"></a></div>
             {% if request.user.groups.all.0 %}
                 {% ifnotequal 'photographers' request.user.groups.all.0.name %}
@@ -119,7 +119,7 @@
                     <a href="{% url 'view_uploads' %}">{% icon "upload" class="feather-20 mr-2" %}My Uploads</a>
                     <a href="{% url 'account_logout' %}">{% icon "log-out" class="feather-20 mr-2" %} Logout</a>
                 {% endifequal %}
-            {% else %}
+            {% elif user.is_staff %}
                     <a href="{% url 'add_tags' %}">{% icon "tag" class="feather-20 mr-2" %} Manage Tags</a>
                     <a href="{% url 'add_category' %}">{% icon "folder" class="feather-20 mr-2" %} Manage Categories</a>
                     <a href="{% url 'account_logout' %}">{% icon "log-out" class="feather-20 mr-2" %} Logout</a>
@@ -136,8 +136,8 @@
         {% endblock %}
     
     
-
-    <footer class="mt-5 pt-3 border-top container-flex clearfix small">
+    </div>
+    <footer class="mt-5 pt-3 border-top container-flex clearfix small ">
         <a class="mx-1" href="{% url 'terms_of_use' %}">Terms of Use</a> <a class="mx-1" href="{% url 'license_agreements' %}">License(s) Agreements</a>  
         <div class="float-right">&copy; FlashStocks Inc {% now 'Y' %}. All rights reserved.</div>
     </footer>
@@ -151,6 +151,6 @@
             <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
             <script src="{% static 'js/main.js' %}"></script> 
     {% endblock %}
-        </div>
+        
   </body>
 </html>

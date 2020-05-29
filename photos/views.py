@@ -1,12 +1,23 @@
 from django.shortcuts import render, redirect, reverse
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.contrib import messages
 from django.db.models import Q
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import Group
 from photographers.models import Photographer
 from photographers.views import view_uploads
 from .models import Photo, Tag, Category
 from .forms import PhotoForm, TagForm, CategoryForm
 from customers.models import Favourite, Customer
+
+
+def check_user_in_group(user):
+
+    photographer_group = Group.objects.get(name='photographers')
+    if photographer_group in user.groups.all():
+        return True
+    else:
+        return False
 
 
 def list_photos(request):
@@ -37,31 +48,35 @@ def list_photos(request):
     })
 
 
+@login_required
 def add_photo(request):
+    is_photographer = check_user_in_group(request.user)
+    if is_photographer:
+        photographer = Photographer.objects.get(user=request.user)
 
-    photographer = Photographer.objects.get(user=request.user)
+        if request.method == 'POST':
+            form = PhotoForm(request.POST)
 
-    if request.method == 'POST':
-        form = PhotoForm(request.POST)
-
-        if form.is_valid():
-            add_form = form.save(commit=False)
-            add_form.owner = photographer
-            add_form.save()
-            form.save_m2m()
-            messages.success(request, "Photo added successfully")
-            return redirect(reverse(view_uploads))
+            if form.is_valid():
+                add_form = form.save(commit=False)
+                add_form.owner = photographer
+                add_form.save()
+                form.save_m2m()
+                messages.success(request, "Photo added successfully")
+                return redirect(reverse(view_uploads))
+            else:
+                return render(request, 'photos/add_photos.template.html', {
+                    'form': form
+                })
         else:
-            return render(request, 'photos/add_photos.template.html', {
+
+            form = PhotoForm()
+
+            return render(request, 'photos/add_photo.template.html', {
                 'form': form
             })
     else:
-
-        form = PhotoForm()
-
-        return render(request, 'photos/add_photo.template.html', {
-            'form': form
-        })
+        raise PermissionDenied
 
 
 def view_photo(request, photo_id):
@@ -89,49 +104,59 @@ def view_photo(request, photo_id):
     })
 
 
+@login_required
 def edit_photo(request, photo_id):
 
-    try:
-        photo = Photo.objects.get(id=photo_id)
-    except ObjectDoesNotExist:
-        photo = None
+    is_photographer = check_user_in_group(request.user)
+    if is_photographer:
 
-    if request.method == "POST":
-        edit_form = PhotoForm(request.POST, instance=photo)
+        try:
+            photo = Photo.objects.get(id=photo_id)
+        except ObjectDoesNotExist:
+            photo = None
 
-        if edit_form.is_valid():
-            edit_form.save()
-            messages.success(request, "Photo updated successfully")
-            return redirect(reverse(view_uploads))
+        if request.method == "POST":
+            edit_form = PhotoForm(request.POST, instance=photo)
+
+            if edit_form.is_valid():
+                edit_form.save()
+                messages.success(request, "Photo updated successfully")
+                return redirect(reverse(view_uploads))
+            else:
+                return render(request, 'photos/edit_photo.template.html', {
+                    'form': edit_form,
+                    'photo': photo
+                })
         else:
+
+            form = PhotoForm(instance=photo)
+
             return render(request, 'photos/edit_photo.template.html', {
-                'form': edit_form,
+                'form': form,
                 'photo': photo
             })
     else:
+        raise PermissionDenied
 
-        form = PhotoForm(instance=photo)
 
-        return render(request, 'photos/edit_photo.template.html', {
-            'form': form,
+@login_required
+def delete_photo(request, photo_id):
+    is_photographer = check_user_in_group(request.user)
+    if is_photographer:
+        try:
+            photo = Photo.objects.get(id=photo_id)
+        except ObjectDoesNotExist:
+            photo = None
+
+        if request.method == "POST":
+            photo.delete()
+            return redirect(reverse(view_uploads))
+
+        return render(request, 'photos/delete_photo.template.html', {
             'photo': photo
         })
-
-
-def delete_photo(request, photo_id):
-
-    try:
-        photo = Photo.objects.get(id=photo_id)
-    except ObjectDoesNotExist:
-        photo = None
-
-    if request.method == "POST":
-        photo.delete()
-        return redirect(reverse(view_uploads))
-
-    return render(request, 'photos/delete_photo.template.html', {
-        'photo': photo
-    })
+    else:
+        raise PermissionDenied
 
 
 def photo_by_category(request, category_id):

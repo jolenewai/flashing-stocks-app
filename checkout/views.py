@@ -10,8 +10,8 @@ import datetime
 from photos.models import Photo
 from customers.models import Customer, Download
 
-
 endpoint_secret = settings.SIGNING_SECRET
+
 
 @login_required
 def checkout(request):
@@ -52,6 +52,7 @@ def checkout(request):
     })
 
 
+@login_required
 def checkout_success(request):
 
     cart = request.session.get('shopping_cart', {})
@@ -80,12 +81,14 @@ def checkout_success(request):
     })
 
 
+@login_required
 def checkout_cancelled(request):
     messages.error(request, "Payment has been cancelled.")
 
     return redirect(reverse('view_cart'))
 
 
+@login_required
 @csrf_exempt
 def payment_completed(request):
     payload = request.body
@@ -111,6 +114,7 @@ def payment_completed(request):
     return HttpResponse(status=200)
 
 
+@login_required
 def handle_checkout_session(session):
     print(session)
 

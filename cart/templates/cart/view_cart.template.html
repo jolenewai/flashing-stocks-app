@@ -4,7 +4,7 @@
 {% block content %}
 
 <div class="row justify-content-center px-0 mx-0">
-    <div class="col-sm-10 col-md-10 px-0 mx-0">
+    <div class="col-sm-8 col-md-8 px-0 mx-0">
     <h1>Your Cart</h1>
 
         <table class="table table-striped">
@@ -42,14 +42,15 @@
                     <!-- Button trigger update modal -->
                     <a href="#" data-toggle="modal" data-target="#UpdateModal{{item.id}}">
                         {% icon "edit" class="feather-20 mx-2" %}
-                    </a>      
-                </td>
-                <td class="align-middle">
-                {{ item.price|stringformat:".2f" }}                    
+                    </a> 
                     <!-- Button trigger delete modal -->
                     <a href="#" data-toggle="modal" data-target="#DeleteModal{{item.id}}">                
                         {% icon "trash-2" class="feather-20 mx-2" %}
-                    </a>
+                    </a>     
+                </td>
+                <td class="align-middle">
+                {{ item.price|stringformat:".2f" }}                    
+                    
                     <!-- Modal -->
                     <div class="modal fade" id="UpdateModal{{item.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -120,7 +121,7 @@
                     <td colspan="2" class="align-middle">
                         <strong>Total (USD)</strong>
                     </td>
-                    <td class="text-center align-middle">
+                    <td class="align-middle">
                         <strong>{{ total|stringformat:".2f" }}</strong>
                     </td>
                 </tr>

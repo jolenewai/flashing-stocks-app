@@ -12,13 +12,13 @@
         <p>What would you like to do today?</p>
         <div class="row justify-content-center">
             <div class="col-sm-4 border custom-border mx-3 p-3">
-                <h2>Tags</h2>
+                <h2>{% icon "tag" class="feather-32 mr-2" %} Tags</h2>
                 <a href="{% url 'add_tags' %}" class="btn btn-main">{% icon 'plus' class='feather-16 mr-2' %}Add</a>
                 <a href="{% url 'add_tags' %}" class="btn btn-main">{% icon 'edit' class='feather-16 mr-2' %}Edit</a>
                 <a href="{% url 'add_tags' %}" class="btn btn-main">{% icon 'trash-2' class='feather-16 mr-2' %}Delete</a>
             </div>
             <div class="col-sm-4 border custom-border mx-3 p-3">
-                <h2>Categories</h2>
+                <h2>{% icon "folder" class="feather-32 mr-2" %} Categories</h2>
                 <a href="{% url 'add_category' %}" class="btn btn-main">{% icon 'plus' class='feather-16 mr-2' %}Add</a>
                 <a href="{% url 'add_category' %}" class="btn btn-main">{% icon 'edit' class='feather-16 mr-2' %}Edit</a>
                 <a href="{% url 'add_category' %}" class="btn btn-main">{% icon 'trash-2' class='feather-16 mr-2' %}Delete</a>

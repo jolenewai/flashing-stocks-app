@@ -8,13 +8,16 @@ from customers.models import Customer, Favourite, Download
 def index(request):
 
     photographer_group = Group.objects.get(name='photographers')
+    customer_group = Group.objects.get(name='customers')
 
     if request.user.is_authenticated:
 
         if photographer_group in request.user.groups.all():
             return redirect(reverse('photographer_view_profile'))
-        else:
+        elif customer_group in request.user.groups.all():
             return redirect(reverse('list_photos'))
+        else:
+            return redirect(reverse('admin_homepage'))
     else:
         return render(request, 'home/index.template.html')
 

@@ -7,6 +7,7 @@ from customers.models import Download, Customer
 import datetime
 
 
+
 def add_to_cart(request, photo_id):
 
     if request.POST['size']:
@@ -78,6 +79,7 @@ def add_to_cart(request, photo_id):
         return redirect(reverse('view_photo', kwargs={'photo_id': photo.id}))
 
 
+
 def view_cart(request):
     cart = request.session.get('shopping_cart', {})
     photos = Photo.objects.all()
@@ -89,7 +91,7 @@ def view_cart(request):
         except ObjectDoesNotExist:
             photo_object = None
 
-        total = total + int(photo['price']*100)
+        total = total + int(photo_object.price*100)
 
     total = total / 100
 
@@ -98,6 +100,7 @@ def view_cart(request):
         'photos': photos,
         'total': total
     })
+
 
 
 def remove_from_cart(request, photo_id):
