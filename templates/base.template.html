@@ -116,7 +116,9 @@
                 {% endifequal %}
                 {% ifequal 'photographers' request.user.groups.all.0.name %}
                     <a href="{% url 'photographer_view_profile' %}">{% icon "user" class="feather-20 mr-2" %} Profile</a>
+                    <a href="{% url 'view_albums' %}">{% icon "book" class="feather-20 mr-2" %} Album</a>
                     <a href="{% url 'view_uploads' %}">{% icon "upload" class="feather-20 mr-2" %}My Uploads</a>
+                    <a href="{% url 'photographer_view_downloads' %}">{% icon "upload" class="feather-20 mr-2" %} My Downloads</a>
                     <a href="{% url 'account_logout' %}">{% icon "log-out" class="feather-20 mr-2" %} Logout</a>
                 {% endifequal %}
             {% elif user.is_staff %}
