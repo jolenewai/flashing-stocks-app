@@ -38,7 +38,7 @@ The ER diagrams can be accessed [here](https://github.com/jolenewai/flashing-sto
 - User can also explore for images by filtering the images within certain category
 
 ### Colour Scheme
-<img src="https://github.com/jolenewai/flashing-stocks-app/blob/master/static/dev/UI_Elements_-_Color_Palette.jpg" width="600" style="margin:0">
+<img src="https://github.com/jolenewai/flashing-stocks-app/blob/master/static/dev/UI_Elements_-_Color_Palette.jpg" style="margin:0">
 
 The colour scheme is a combination of vibrant colours and shades of black.
 
