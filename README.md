@@ -116,12 +116,11 @@ User can login to perform the following task:
 
 
 #### Features Left to Implement
-- To allow Customers sort by Popularity of the images
-- To allow Photographers to add photos into the albums
-- Lazy loading for the images
-- To allow Customer to follow a Photographer to receive updates upon new uploads
-- Pagination to handle large number of results
-- 
+- [ ] To allow Customers sort by Popularity of the images
+- [ ] To allow Photographers to add photos into the albums
+- [ ] Lazy loading for the images
+- [ ] To allow Customer to follow a Photographer to receive updates upon new uploads
+- [ ] Pagination to handle large number of results- 
 
 ## Technologies Used
 
