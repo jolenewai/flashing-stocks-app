@@ -7,7 +7,7 @@
             {% if keyword %}
             <input type="hidden" name="keyword" value="{{ keyword }}">
             {% endif %}
-            <label for="id_category"><h5>Category</h5></label>
+            <h5>Category</h5>
             <select class="form-control custom-select custom-border rounded-0 mb-4" name="category" id="id_category">
                 <option value="">Select Category</option>
                 {% for category in categories %}
@@ -15,7 +15,7 @@
                 {% endfor %}
             </select>
 
-            <label for="id_sort"><h5>Sort by</h5></label>
+            <h5>Sort by</h5>
             <select class="form-control custom-select custom-border rounded-0 mb-4" name="sortby" id="id_sort">
                 <option value="mr">Most Recent</option>
                 <option value="pp">Popularity</option>
