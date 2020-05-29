@@ -3,6 +3,11 @@ import photographers.views
 
 urlpatterns = [
     path(
+        'id/<photographer_id>',
+        photographers.views.public_profile,
+        name='photographer_public_profile'
+    ),
+    path(
         'profile/view',
         photographers.views.view_profile,
         name='photographer_view_profile'
@@ -23,9 +28,14 @@ urlpatterns = [
         name="upload_avatar"
     ),
     path(
-        'uploads/photos',
+        'uploads',
         photographers.views.view_uploads,
         name="view_uploads"
+    ),
+    path(
+        'downloads',
+        photographers.views.view_downloads,
+        name="photographer_view_downloads"
     ),
     path(
         'album/create',

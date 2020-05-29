@@ -5,6 +5,7 @@ from django.contrib import messages
 from .forms import PhotographerForm, AvatarForm, AlbumForm
 from .models import Photographer, Album
 from photos.models import Photo
+from customers.models import Download
 
 # Create your views here.
 
@@ -237,3 +238,27 @@ def delete_album(request, album_id):
 
     return redirect(reverse(view_albums))
 
+
+def public_profile(request, photographer_id):
+
+    photographer = Photographer.objects.get(id=photographer_id)
+    photos_by_photographer = Photo.objects.filter(owner=photographer_id)
+    photos_count = photos_by_photographer.count()
+
+    return render(request, 'photographers/public_profile.template.html', {
+        'photographer': photographer,
+        'photos': photos_by_photographer,
+        'photos_count': photos_count
+    })
+
+
+def view_downloads(request):
+
+    photographer = Photographer.objects.get(user=request.user)
+    downloads = Download.objects.filter(image__owner=photographer)
+    download_count = downloads.count()
+
+    return render(request, 'photographers/view_downloads.template.html', {
+        'downloads': downloads,
+        'download_count': download_count
+    })

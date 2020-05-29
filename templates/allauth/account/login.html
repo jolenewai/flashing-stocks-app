@@ -31,7 +31,7 @@
         <a href="{{ signup_url }}" class="text-pink">sign up</a> first.{% endblocktrans %}</p>
     {% endif %}
     </div>
-    <div class="col-sm-5 border-left border-white">
+    <div class="col-sm-5 custom-border-left">
         <form class="login" method="POST" action="{% url 'account_login' %}">
         {% csrf_token %}
         {{ form|crispy }}

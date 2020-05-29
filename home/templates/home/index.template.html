@@ -18,9 +18,10 @@
 <body>
     <div class="main-bg">
         <div class="bg-overlay row align-items-center m-0 p-0">
-            <div id="site-logo"></div>
 
             <div class="main-section justify-content-center row">
+                <div id="site-logo"></div>
+                <div class="clearfix w-100"></div>
                 <div id="home-wrapper" class="col">
                     <p class="headline">Great Images at Your Fingertips</p>
                     <div id="searchbar-wrapper" class="mx-auto">
@@ -30,28 +31,28 @@
                     </form>
                     </div>
                     </div>
+                    <div class="clearfix w-100"></div>
                     <div class="home-button btn mx-auto mt-5">
                         <a href="{% url 'list_photos' %}" class="text-white">
-                            {% icon "search" class="feather-42 feather-white mb-2" %}<br/>Explore
+                            {% icon "search" class="feather feather-white mb-2" %}<br/>Explore
                         </a>
                     </div>
                     <div class="home-button btn mx-auto mt-5">
                         <a href="{% url 'account_login' %}" class="text-white">
-                            {% icon "user" class="feather-42 feather-white mb-2" %}<br/>Sign-In
+                            {% icon "user" class="feather feather-white mb-2" %}<br/>Sign-In
                         </a>
                     </div>
                     <div class="home-button btn mx-auto mt-5">
                         <a href="{% url 'account_signup' %}" class="text-white">
-                            <img src="{% static 'img/camera-white.svg' %}" width="42" class="mb-3"> <br/>Sell
+                            <img src="{% static 'img/camera-white.svg' %}" class="mb-2 signup-icon"> <br/>Sell
                         </a>
                     </div>
                 </div>
-                <div class="row">
-                </div>
+
 
             </div>
         </div>
-    </div>
+
 
     
 

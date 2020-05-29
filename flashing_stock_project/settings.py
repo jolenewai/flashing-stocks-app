@@ -54,7 +54,8 @@ INSTALLED_APPS = [
     'photographers',
     'photos',
     'cart',
-    'checkout'
+    'checkout',
+    'site_admin'
 ]
 
 MIDDLEWARE = [

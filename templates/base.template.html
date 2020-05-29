@@ -37,28 +37,34 @@
     <body>
         <header class="container-fluid px-0">
             
-        <nav class="navbar navbar-expand-lg topnav {% if user.groups.all.0 %}{{ user.groups.all.0 }}{% endif %} ">
+        <nav class="navbar navbar-expand-lg topnav {% if user.groups.all.0 %}{{ user.groups.all.0 }} {% else %} admin {% endif %} ">
             <div id="site-logo"><a class="navbar-brand" href="{% url 'home' %}"></a></div>
-            
-            {% ifnotequal 'photographers' request.user.groups.all.0.name %}
-            <form id="topsearchform" class="form-inline my-lg-0" method="GET" action="{% url 'search' %}">
-                <input name="keyword" class="top-searchbar" type="search" placeholder="Search image" aria-label="Search">
-                <button class="btn btn-main" type="submit">{% icon "search" class="feather-16 feather-white" %}</button>
-            </form>
-            {% endifnotequal %}
+            {% if request.user.groups.all.0 %}
+                {% ifnotequal 'photographers' request.user.groups.all.0.name %}
+                <form id="topsearchform" class="form-inline my-lg-0" method="GET" action="{% url 'search' %}">
+                    <input name="keyword" class="top-searchbar" type="search" placeholder="Search image" aria-label="Search">
+                    <button class="btn btn-main" type="submit">{% icon "search" class="feather-16 feather-white" %}</button>
+                </form>
+                {% endifnotequal %}
+            {% endif %}
                 <div id="mobile-navbar">
-                    {% ifnotequal 'photographers' request.user.groups.all.0.name %}
-                    <a href="#" onclick="toggleSearch()">{% icon "search" class="feather-16 feather-white" %}</a>
-                    {% endifnotequal %}
-                    <a  href="{% url 'view_cart' %}">{% icon "shopping-cart" class="feather-16 feather-white" %}<span class="mx-1 cart-number">{{number_of_items}}</span></a>
-                    <a class="text-white" href="#" onclick="openNav()">{% icon "user" class="feather-16 feather-white" %} </a>
+                    {% if request.user.groups.all.0 %}
+                        {% ifnotequal 'photographers' request.user.groups.all.0.name %}
+                        <a href="#" onclick="toggleSearch()">{% icon "search" class="feather-16 feather-white" %}</a>
+                        
+                        <a  href="{% url 'view_cart' %}">{% icon "shopping-cart" class="feather-16 feather-white" %}<span class="mx-1 cart-number">{{number_of_items}}</span></a>
+                        {% endifnotequal %}
+                    {% endif %}
+                    <a class="text-white" href="{% if request.user.is_authenticated  %}#{% else %}{% url 'account_login' %}{% endif %}" onclick="openNav()">{% icon "user" class="feather-16 feather-white" %} </a>
                 </div>
                 <ul class="navbar-nav ml-auto">
-                    {% ifnotequal 'photographers' request.user.groups.all.0.name %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'view_cart' %}">{% icon "shopping-cart" class="feather-20 feather-white" %}<span class="sr-only">(shopping cart)</span><span class="mx-1 cart-number">{{number_of_items}}</span></a>
-                    </li>
-                    {% endifnotequal %}
+                    {% if request.user.groups.all.0 %}
+                        {% ifnotequal 'photographers' request.user.groups.all.0.name %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'view_cart' %}">{% icon "shopping-cart" class="feather-20 feather-white" %}<span class="sr-only">(shopping cart)</span><span class="mx-1 cart-number">{{number_of_items}}</span></a>
+                        </li>
+                        {% endifnotequal %}
+                    {% endif %}
                     
                     <li class="nav-item">
                         {% if request.user.is_authenticated  %}
@@ -77,15 +83,17 @@
                     </span>
                 {% endif %}
         </nav>
-        {% ifnotequal 'photographers' request.user.groups.all.0.name %}
-            <form id="mobileSearchForm" class="form-inline my-lg-0" method="GET" action="{% url 'search' %}">
-                <input name="keyword" class="top-searchbar" type="search" placeholder="Search image" aria-label="Search">
-                <button class="btn btn-main" type="submit">{% icon "search" class="feather-16 feather-white" %}</button>
-            </form>
-        {% endifnotequal %}
+        {% if request.user.groups.all.0 %}
+            {% ifnotequal 'photographers' request.user.groups.all.0.name %}
+                <form id="mobileSearchForm" class="form-inline my-lg-0" method="GET" action="{% url 'search' %}">
+                    <input name="keyword" class="top-searchbar" type="search" placeholder="Search image" aria-label="Search">
+                    <button class="btn btn-main" type="submit">{% icon "search" class="feather-16 feather-white" %}</button>
+                </form>
+            {% endifnotequal %}
+        {% endif %}
         {% if messages %}
             {% for m in messages %}
-                <div class="message-container alert {% if m.tags %} alert-{{ m.tags }}{% endif %}">
+                <div class="message-container alert {% ifequal m.tags 'error' %} alert-warning {% else %} alert-{{ m.tags }}{% endifequal %}">
                     {{ m }}
                 </div>    
             {% endfor %}
@@ -98,24 +106,28 @@
         <div id="mySidepanel" class="sidepanel">
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
             <h3 class="ml-4">Hello, {{ request.user }}!</h3>
-            {% ifequal 'customers' request.user.groups.all.0.name %}
-                <a href="{% url 'cust_view_profile' %}">{% icon "user" class="feather-20 mr-2" %} Profile</a>
-                <a href="{% url 'view_favourites' %}">{% icon "heart" class="feather-20 mr-2" %} Favourites</a>
-                <a href="{% url 'view_downloads' %}">{% icon "download" class="feather-20 mr-2" %} My Downloads</a>
-                <a href="{% url 'account_logout' %}">{% icon "log-out" class="feather-20 mr-2" %} Logout</a>
+            {% if request.user.groups.all.0 %}
+                {% ifequal 'customers' request.user.groups.all.0.name %}
+                    <a href="{% url 'cust_view_profile' %}">{% icon "user" class="feather-20 mr-2" %} Profile</a>
+                    <a href="{% url 'view_favourites' %}">{% icon "heart" class="feather-20 mr-2" %} Favourites</a>
+                    <a href="{% url 'view_downloads' %}">{% icon "download" class="feather-20 mr-2" %} My Downloads</a>
+                    <a href="{% url 'account_logout' %}">{% icon "log-out" class="feather-20 mr-2" %} Logout</a>
 
-            {% endifequal %}
-            {% ifequal 'photographers' request.user.groups.all.0.name %}
-                <a href="{% url 'photographer_view_profile' %}">{% icon "user" class="feather-20 mr-2" %} Profile</a>
-                <a href="#">{% icon "book" class="feather-20 mr-2" %} Albums</a>
-                <a href="{% url 'view_uploads' %}">{% icon "upload" class="feather-20 mr-2" %}My Uploads</a>
-                <a href="{% url 'account_logout' %}">{% icon "log-out" class="feather-20 mr-2" %} Logout</a>
-            {% endifequal %}
+                {% endifequal %}
+                {% ifequal 'photographers' request.user.groups.all.0.name %}
+                    <a href="{% url 'photographer_view_profile' %}">{% icon "user" class="feather-20 mr-2" %} Profile</a>
+                    <a href="{% url 'view_uploads' %}">{% icon "upload" class="feather-20 mr-2" %}My Uploads</a>
+                    <a href="{% url 'account_logout' %}">{% icon "log-out" class="feather-20 mr-2" %} Logout</a>
+                {% endifequal %}
+            {% else %}
+                    <a href="{% url 'add_tags' %}">{% icon "tag" class="feather-20 mr-2" %} Manage Tags</a>
+                    <a href="{% url 'add_category' %}">{% icon "folder" class="feather-20 mr-2" %} Manage Categories</a>
+                    <a href="{% url 'account_logout' %}">{% icon "log-out" class="feather-20 mr-2" %} Logout</a>
+            {% endif %}
         </div>
 
         {% endif %}
         <div class="container-fluid my-4 p-sm-4">
-        
         
         {% block pageheader %}
         {% endblock %}

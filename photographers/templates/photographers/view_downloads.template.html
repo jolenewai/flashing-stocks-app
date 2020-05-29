@@ -1,0 +1,42 @@
+{% extends 'base.template.html' %}
+{% load icon %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-sm-3 sidebar-left px-0">
+        {% include 'sidebar.template.html' %}
+    </div>
+    <div class="col-sm">
+    <h2>You have {{ download_count }} Downloads!</h2>
+
+    
+    {% if downloads %}
+    
+    <table class="table mt-4">
+    <thead>
+        <tr>
+            <th>Image Details</th>
+            <th>Downloaded on</th>
+            <th>Downloaded by</th>
+        </tr>
+    </thead>
+    {% for download in downloads %}
+        <tr>
+            <td class="align-middle">
+                <img src="{{ download.image.image.cdn_url }}-/resize/x160/" class="img-fluid float-left mx-sm-2" alt="{{download.image.caption}}">
+                <a href="{% url 'view_photo' photo_id=download.image.id %}"> ImageID #{{download.image.id}}</a>
+                <h5>{{download.image.caption}}</h5>
+            </td>
+            <td>{{ download.image.date_added|date:'d-m-Y' }}</td>
+            <td>{{ download.user.display_name }}</td>
+        </tr>
+
+    {% endfor %}
+    </table>
+    {% else %}
+        No photos uploaded. 
+    {% endif %}
+    </div>
+</div>
+{% endblock %}

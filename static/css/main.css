@@ -10,7 +10,7 @@
     background-color: #FB7B3A;
 }
 
-.photographers {
+.photographers, .admin {
     background-color: #252525;
 }
 
@@ -168,6 +168,10 @@ ol li{
     padding-left: 5px;
 }
 
+.profile-img{
+    border-radius: 50%;
+}
+
 /* // Extra small devices (portrait phones, less than 576px) */
 @media (max-width: 767.98px) { 
 
@@ -187,7 +191,6 @@ ol li{
     .topnav{
         height: 60px;
         padding: 10px;
-        background-color: #FB7B3A;
     }
 
     ul.navbar-nav, #topsearchform {
@@ -253,6 +256,7 @@ ol li{
     }
  }
 
+    
 
 
 /* // Medium devices (tablets, 768px and up to 991.98px) */

@@ -1,5 +1,6 @@
 {% load icon %}
 
+{% if request.user.groups.all.0 %}
 {% ifequal 'customers' request.user.groups.all.0.name %}
 
 <nav id="cust-sidebar" class="nav nav-vertical flex-column">
@@ -18,8 +19,18 @@
     <a class="nav-link" href="{% url 'photographer_view_profile' %}">{% icon "user" class="feather-20 mr-2" %} Profile</a>
     <a class="nav-link" href="{% url 'view_albums' %}">{% icon "book" class="feather-20 mr-2" %} Album</a>
     <a class="nav-link" href="{% url 'view_uploads' %}">{% icon "upload" class="feather-20 mr-2" %} My Uploads</a>
+    <a class="nav-link" href="{% url 'photographer_view_downloads' %}">{% icon "upload" class="feather-20 mr-2" %} My Downloads</a>
     <a class="nav-link" href="{% url 'account_logout' %}">{% icon "log-out" class="feather-20 mr-2" %} Logout</a>
 </nav>
 
 {% endifequal %}
+
+{% else %}
+<nav id="phot-sidebar" class="nav nav-vertical flex-column">
+    <a class="nav-link" href="{% url 'add_tags' %}">{% icon "tag" class="feather-20 mr-2" %} Manage Tags</a>
+    <a class="nav-link" href="{% url 'add_category' %}">{% icon "folder" class="feather-20 mr-2" %} Manage Categories</a>
+    <a class="nav-link" href="{% url 'account_logout' %}">{% icon "log-out" class="feather-20 mr-2" %} Logout</a>
+</nav>
+{% endif %}
+
 
