@@ -1,5 +1,5 @@
 # FlashStocks Stock Image Site
-<img src="static/images/readme/Pretty_Good_Screenshots_v2.jpg" style="margin:0">
+<img src="https://github.com/jolenewai/flashing-stocks-app/blob/master/static/dev/flashstocks_screenshot.png" style="margin:0">
 
 There are a lot of stock images website available. Most of them requires us to purchase credits upfront in order to get the image we like. There are times where users only needed one or two images and feeling reluctant to purchase credits right at the start. Given this situation, **FlashStocks** is a platform that allows users to purchase stock images that they needed, without having to pay extra. This is also a platform which Photographers are allowed to upload their photos for selling. 
  
@@ -18,7 +18,7 @@ Detailed user stories can be accessed [here](https://docs.google.com/spreadsheet
 
 The wireframes and mockup of the website can be accessed here:
 
-[Desktop](https://xd.adobe.com/view/b6c63e20-4de9-4ee9-6413-0442a04b7214-c0f7/) 
+[Desktop](https://xd.adobe.com/view/4d1f629b-8bf9-4aae-7838-340428da7a2d-3b2e/?fullscreen) 
 - Max 4 columns for the images on larger screenshot
 - Searchbar are on top of every page
 - 2 columns layout is used on most of the pages
@@ -77,15 +77,15 @@ User can login to perform the following task:
 - [x] Checkout to complete the purchase
 
 #### Browsing Images
-- The Explore page will show all most recent images, they can also browse into category directly with the link under the heading
-- Categories are retrieved from the database
-- Images that have multiple categories will appear in their respective category page
-- Individual photo details is accessible by clicking on the the title or download button which overlay the image upon hovering (or click on mobile) the image itself
-- Browsing images by tags is also possible by accessing it from the search page
+- [x] The Explore page will show all most recent images, they can also browse into category directly with the link under the heading
+- [x] Categories are retrieved from the database
+- [x] Images that have multiple categories will appear in their respective category page
+- [x] Individual photo details is accessible by clicking on the the title or download button which overlay the image upon hovering (or click on mobile) the image itself
+- [x] Browsing images by tags is also possible by accessing it from the search page
 
 
 #### Search
-The search bar is placed on top of every page except that it will be hidden and toggled in mobile layout. In the search bar, user can  perform search by entering the keywords for _captions_, _descriptions_ or _tags_. 
+- [x]The search bar is placed on top of every page except that it will be hidden and toggled in mobile layout. In the search bar, user can perform search by entering the keywords for _captions_, _descriptions_ or _tags_. 
 
 On the search result page, user can perform further filtering on the search results by limiting it to a specific  _Category_, users can also change the sorting of the result based on _Most Recent_ or _Alphabetical Order_.
 
@@ -213,7 +213,7 @@ Password: abcdefg1234
 ### Checkout (with invalid testing card number)
 - [x] Click on the checkout button on _View Cart_ page
 - [x] Enter invalid testing card number and click on _Pay_ button
-- [x] Verify that the checkout cannot proceed and and error is displayed
+- [x] Verify that the checkout cannot proceed and error is displayed
 
 ### Add Photo to My Favourite (no login)
 - [x] On any image, click on the heart
@@ -280,7 +280,7 @@ All pages are validated with the following website and returns no error (except 
 - [x] [validator.nu](https://html5.validator.nu/)
 
 ### CSS Validation
-CSS are validated and return webkit errors
+CSS are validated and return no errors except -webkit- related 
 - [x] [W3C CSS Validation Service](https://jigsaw.w3.org/css-validator/)
 
 
@@ -299,16 +299,15 @@ pip3 freeze --local > requirements.txt
 4. Create Procfile to register the app with the following line 
 ```
 web: gunicorn flashing_stock_project.wsgi:application
-
 ```
 5. Git push to Heroku Master after all the documents are properly set up
 6. In the Settings page of your Heroku app, set up the following Environment Variables with your own values:
-- UPLOADCARE_PUBLIC_KEY
-- UPLOADCARE_SECRET_KEY
-- STRIPE_PUBLISHABLE_KEY
-- STRIPE_SECRET_KEY
-- SIGING_SECRET
-- DATABASE_URL
+- [x] UPLOADCARE_PUBLIC_KEY
+- [x] UPLOADCARE_SECRET_KEY
+- [x] STRIPE_PUBLISHABLE_KEY
+- [x] STRIPE_SECRET_KEY
+- [x] SIGING_SECRET
+- [x] DATABASE_URL
 
 ## File Hierarchy and Organisation
 
@@ -320,24 +319,31 @@ Files are organised properly based on their functionality and purposes.
 
 ### App Folders
 __home__
+
 Contains search function and landing page 
 
 __photos__
+
 Contains model, URLs, Views function for CRUD related to photos 
 
 __photographers__
+
 Contains model, URLs, Views function for CRUD related to photographers 
 
 __customers__
+
 Contains model, URLs, Views function for CRUD related to customers 
 
 __site_admin__
+
 Contains model, URLs, Views function for CRUD related to the site admin 
 
 __cart__
+
 Contains model, URLs, Views function for CRUD related to the Shopping Cart
 
 __checkout__
+
 Contains model, URLs, Views function for CRUD related to the Payment and Checkout
 
 ## Credits
@@ -347,6 +353,7 @@ Contains model, URLs, Views function for CRUD related to the Payment and Checkou
 
 ### Media
 - The photos used in this site were taken and edited by myself
+- The screenshot is taken with [Am I Responsive](http://ami.responsivedesign.is/#)
 
 ### Acknowledgements
 I received inspiration for this project from
