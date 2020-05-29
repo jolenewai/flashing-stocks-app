@@ -54,6 +54,7 @@ def checkout(request):
 
 @login_required
 def checkout_success(request):
+    cart = request.session.get('shopping_cart', {})
 
     # Empty the shopping cart
     request.session['shopping_cart'] = {}
