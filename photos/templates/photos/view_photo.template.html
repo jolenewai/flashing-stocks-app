@@ -20,7 +20,7 @@
             <h3>{{ photo.caption }}</h3>
             <p>{{ photo.desc }}</p>
 
-            <p class="photographer"><img src="{% static 'img/camera.svg' %}" width="18"> <a href="{% url 'photographer_public_profile' photographer_id=photo.owner.id %}" class="text-darkpink">{{ photo.owner.display_name }}</a></p>
+            <p class="photographer"><img src="{% static 'img/camera.svg' %}" width="18" alt="photograher icon"> <a href="{% url 'photographer_public_profile' photographer_id=photo.owner.id %}" class="text-darkpink">{{ photo.owner.display_name }}</a></p>
             <hr />
             
             <form method="POST" action="{% url 'add_to_cart' photo_id=photo.id %}" class="mt-3">
