@@ -275,10 +275,6 @@ ol li{
         padding: 0 8px;
     }
 
-    #mobile-navbar a:nth-child(1){
-        display:none;
-    }
-
     #mobile-navbar a:nth-child(2){
         padding-right: 4px;
     }
