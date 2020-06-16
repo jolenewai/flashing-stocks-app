@@ -11,7 +11,7 @@ from photos.models import Photo
 from customers.models import Customer, Download
 
 endpoint_secret = settings.SIGNING_SECRET
-
+session = None
 
 @login_required
 def checkout(request):
@@ -55,7 +55,7 @@ def checkout(request):
 @login_required
 def checkout_success(request):
 
-    print(request.session.get('line_items'))
+    print(checkout.session.id)
     # line_items = request.session.get('line_items')
     cart = request.session.get('shopping_cart', {})
     # customer = Customer.objects.get(user=request.user)
@@ -108,7 +108,7 @@ def payment_completed(request):
         # Invalid signature
         return HttpResponse(status=400)
 
-    print('session :' + session)
+    print('session :' + checkout.session)
 
     if event['type'] == 'checkout.session.completed':
         session = event['data']['object']
