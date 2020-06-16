@@ -94,7 +94,7 @@ def add_to_cart(request, photo_id):
             request,
             "Please create a profile before adding to cart"
         )
-        return redirect(reverse('customer.create_profile'))
+        return redirect(reverse('customers.create_profile'))
 
 
 @login_required
