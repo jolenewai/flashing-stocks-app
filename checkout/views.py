@@ -55,8 +55,8 @@ def checkout(request):
 @login_required
 def checkout_success(request):
 
-    print(checkout.session.id)
-    # line_items = request.session.get('line_items')
+    print(session.id)
+    # line_items = request.session.get('line_priitems')
     cart = request.session.get('shopping_cart', {})
     # customer = Customer.objects.get(user=request.user)
 
