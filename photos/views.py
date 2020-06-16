@@ -86,22 +86,27 @@ def view_photo(request, photo_id):
     except ObjectDoesNotExist:
         photo = None
 
-    category = photo.category.all()
-    photos = Photo.objects.all()
+    if photo:
+        category = photo.category.all()
+        photos = Photo.objects.all()
 
-    queries = ~Q(pk__in=[])
+        queries = ~Q(pk__in=[])
 
-    queries_1 = queries & Q(category__in=category)
-    related_photos = photos.filter(queries_1)
+        queries_1 = queries & Q(category__in=category)
+        related_photos = photos.filter(queries_1)
 
-    queries_2 = queries & Q(owner=photo.owner)
-    photographer_set = photos.filter(queries_2) 
+        queries_2 = queries & Q(owner=photo.owner)
+        photographer_set = photos.filter(queries_2)
 
-    return render(request, 'photos/view_photo.template.html', {
-        'photo': photo,
-        'related_photos': related_photos,
-        'photographer_set': photographer_set
-    })
+        return render(request, 'photos/view_photo.template.html', {
+            'photo': photo,
+            'related_photos': related_photos,
+            'photographer_set': photographer_set
+        })
+
+    else:
+        messages.success(request, "Invalid Photo ID")
+        return redirect(reverse(list_photos))
 
 
 @login_required
@@ -162,14 +167,22 @@ def delete_photo(request, photo_id):
 def photo_by_category(request, category_id):
 
     all_categories = Category.objects.all()
-    category = Category.objects.get(id=category_id)
 
-    photos_in_category = Photo.objects.filter(category=category)
-    photos_count = photos_in_category.count()
+    try:
+        category = Category.objects.get(id=category_id)
+    except ObjectDoesNotExist:
+        category = None
 
-    return render(request, 'photos/view_category.template.html', {
-        'photos': photos_in_category,
-        'photos_count': photos_count,
-        'category': category,
-        'all_categories': all_categories
-    })
+    if category:
+        photos_in_category = Photo.objects.filter(category=category)
+        photos_count = photos_in_category.count()
+
+        return render(request, 'photos/view_category.template.html', {
+            'photos': photos_in_category,
+            'photos_count': photos_count,
+            'category': category,
+            'all_categories': all_categories
+        })
+    else:
+        messages.success(request, "Invalid Photo Category")
+        return redirect(reverse(list_photos))

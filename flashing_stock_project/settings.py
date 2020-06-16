@@ -185,7 +185,8 @@ UPLOADCARE = {
 
 STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY')
 STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
-SIGNING_SECRET = os.environ.get('SIGNING_SECRET') 
+SIGNING_SECRET = os.environ.get('SIGNING_SECRET')
+
 
 if 'DEVELOPMENT' in os.environ:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
