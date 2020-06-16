@@ -55,26 +55,28 @@ def checkout(request):
 @login_required
 def checkout_success(request):
 
-    cart = request.session.get('shopping_cart', {})
-    customer = Customer.objects.get(user=request.user)
+    print(session)
+    # line_items = request.session.get('line_items')
+    # cart = request.session.get('shopping_cart', {})
+    # customer = Customer.objects.get(user=request.user)
 
-    for id, photo in cart.items():
-        try:
-            photo_object = Photo.objects.get(id=id)
-        except ObjectDoesNotExist:
-            photo_object = None
+    # for id, photo in cart.items():
+    #     try:
+    #         photo_object = Photo.objects.get(id=id)
+    #     except ObjectDoesNotExist:
+    #         photo_object = None
 
-        new_download = Download(
-            user = customer,
-            image = photo_object,
-            size = photo['size'],
-            date = datetime.datetime.now(),
-            )
-        new_download.save()
+    #     new_download = Download(
+    #         user = customer,
+    #         image = photo_object,
+    #         size = photo['size'],
+    #         date = datetime.datetime.now(),
+    #         )
+    #     new_download.save()
 
-    # Empty the shopping cart
-    request.session['shopping_cart'] = {}
-    messages.success(request, "Thank you for your payment. You may download the images now.")
+    # # Empty the shopping cart
+    # request.session['shopping_cart'] = {}
+    # messages.success(request, "Thank you for your payment. You may download the images now.")
 
     return render(request, 'checkout/checkout_success.template.html', {
         'cart': cart
