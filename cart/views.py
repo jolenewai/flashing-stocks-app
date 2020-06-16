@@ -11,83 +11,85 @@ import datetime
 @login_required
 def add_to_cart(request, photo_id):
 
-    if request.POST['size']:
-        # to get existing cart from the session using the key "shopping cart"
-        cart = request.session.get('shopping_cart', {})
+    try:
+        customer = Customer.objects.get(user=request.user)
+    except ObjectDoesNotExist:
+        customer = None
 
-        try:
-            customer = Customer.objects.get(user=request.user)
-        except ObjectDoesNotExist:
-            customer = None
+    if customer:
 
-        # to check if the photo is already in cart
-        if photo_id not in cart:
-            try:
-                photo = Photo.objects.get(id=photo_id)
-            except ObjectDoesNotExist:
-                photo = None
+        if request.POST['size']:
+            # to get existing cart from the session using the key "shopping cart"
+            cart = request.session.get('shopping_cart', {})
 
-            if customer:
-                # to check if the user has downloaded the photo before
-                customer_downloaded = Download.objects.filter(user=customer)
+            # to check if the photo is already in cart
+            if photo_id not in cart:
                 try:
-                    downloaded = customer_downloaded.filter(image=photo)
+                    photo = Photo.objects.get(id=photo_id)
                 except ObjectDoesNotExist:
-                    downloaded = None
-            else:
-                # if customer profile not exist, redirect user to create a profile before proceed
-                messages.error("Please create a profile before adding to cart")
-                return redirect(reverse('customer.create_profile'))
+                    photo = None
+
+                    # to check if the user has downloaded the photo before
+                    customer_downloaded = Download.objects.filter(user=customer)
+                    try:
+                        downloaded = customer_downloaded.filter(image=photo)
+                    except ObjectDoesNotExist:
+                        downloaded = None
 
 
-            if photo:
-                # if the user has already paid for the photo, add a new record to download
-                # so that the user can download the image again with the desired size
-                if downloaded:
-                    new_download = Download(
-                        user = customer,
-                        image = photo,
-                        size = request.POST['size'],
-                        date = datetime.datetime.now(),
+                if photo:
+                    # if the user has already paid for the photo, add a new record to download
+                    # so that the user can download the image again with the desired size
+                    if downloaded:
+                        new_download = Download(
+                            user = customer,
+                            image = photo,
+                            size = request.POST['size'],
+                            date = datetime.datetime.now(),
+                            )
+                        new_download.save()
+
+                        messages.error(
+                            request,
+                            "Image has already been purchased, please download it on My Download page"
                         )
-                    new_download.save()
+                    else:
+                        cart[photo_id] = {
+                            'id': photo_id,
+                            'caption': photo.caption,
+                            'price': photo.price,
+                            'size': request.POST['size']
+                        }
 
-                    messages.error(
-                        request,
-                        "Image has already been purchased, please download it on My Download page"
+                        request.session['shopping_cart'] = cart
+
+                        messages.success(
+                            request,
+                            f"{photo.caption} has been added to your cart!"
+                        )
+
+                    return redirect(reverse(
+                        'view_photo',
+                        kwargs={'photo_id': photo.id})
                     )
-                else:
-                    cart[photo_id] = {
-                        'id': photo_id,
-                        'caption': photo.caption,
-                        'price': photo.price,
-                        'size': request.POST['size']
-                    }
+            else:
 
-                    request.session['shopping_cart'] = cart
-
-                    messages.success(
-                        request,
-                        f"{photo.caption} has been added to your cart!"
-                    )
-
-                return redirect(reverse(
-                    'view_photo',
-                    kwargs={'photo_id': photo.id})
+                messages.error(
+                    request,
+                    "Image is already in your cart"
                 )
+                return redirect(reverse(list_photos))
         else:
-
             messages.error(
                 request,
-                "Image is already in your cart"
+                "Please select a size!"
             )
-            return redirect(reverse(list_photos))
+            return redirect(reverse('view_photo', kwargs={'photo_id': photo.id}))
+    
     else:
-        messages.error(
-            request,
-            "Please select a size!"
-        )
-        return redirect(reverse('view_photo', kwargs={'photo_id': photo.id}))
+        # if customer profile not exist, redirect user to create a profile before proceed
+        messages.error("Please create a profile before adding to cart")
+        return redirect(reverse('customer.create_profile'))
 
 
 @login_required
