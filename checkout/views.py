@@ -57,7 +57,7 @@ def checkout_success(request):
 
     print(session)
     # line_items = request.session.get('line_items')
-    # cart = request.session.get('shopping_cart', {})
+    cart = request.session.get('shopping_cart', {})
     # customer = Customer.objects.get(user=request.user)
 
     # for id, photo in cart.items():
