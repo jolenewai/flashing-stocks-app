@@ -15,8 +15,16 @@ def add_to_cart(request, photo_id):
         # to get existing cart from the session using the key "shopping cart"
         cart = request.session.get('shopping_cart', {})
 
-        customer = Customer.objects.get(user=request.user)
-        customer_downloaded = Download.objects.filter(user=customer)
+        try:
+            customer = Customer.objects.get(user=request.user)
+        except ObjectDoesNotExist:
+            customer = None
+        
+        if customer:
+            customer_downloaded = Download.objects.filter(user=customer)
+        else: 
+            messages.error("Please create a profile before adding to cart")
+            return redirect(reverse('customer.create_profile'))
 
         # to check if the photo is already in cart
         if photo_id not in cart:
