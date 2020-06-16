@@ -36,16 +36,15 @@ def add_to_cart(request, photo_id):
                     except ObjectDoesNotExist:
                         downloaded = None
 
-
                 if photo:
                     # if the user has already paid for the photo, add a new record to download
                     # so that the user can download the image again with the desired size
                     if downloaded:
                         new_download = Download(
-                            user = customer,
-                            image = photo,
-                            size = request.POST['size'],
-                            date = datetime.datetime.now(),
+                            user=customer,
+                            image=photo,
+                            size=request.POST['size'],
+                            date=datetime.datetime.now(),
                             )
                         new_download.save()
 
@@ -84,11 +83,17 @@ def add_to_cart(request, photo_id):
                 request,
                 "Please select a size!"
             )
-            return redirect(reverse('view_photo', kwargs={'photo_id': photo.id}))
-    
+            return redirect(reverse(
+                'view_photo',
+                kwargs={'photo_id': photo.id})
+            )
     else:
-        # if customer profile not exist, redirect user to create a profile before proceed
-        messages.error("Please create a profile before adding to cart")
+        # if customer profile not exist
+        # redirect user to create a profile before proceed
+        messages.error(
+            request,
+            "Please create a profile before adding to cart"
+        )
         return redirect(reverse('customer.create_profile'))
 
 
