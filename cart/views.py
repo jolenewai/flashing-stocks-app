@@ -5,7 +5,6 @@ from django.contrib.auth.decorators import login_required
 from photos.models import Photo
 from photos.views import list_photos
 from customers.models import Download, Customer
-from customers.views import create_profile
 import datetime
 
 
@@ -95,7 +94,7 @@ def add_to_cart(request, photo_id):
             request,
             "Please create a profile before adding to cart"
         )
-        return redirect(reverse(customers.views.create_profile))
+        return redirect(reverse('cust_create_profile'))
 
 
 @login_required
