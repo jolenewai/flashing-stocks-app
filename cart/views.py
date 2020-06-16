@@ -19,12 +19,6 @@ def add_to_cart(request, photo_id):
             customer = Customer.objects.get(user=request.user)
         except ObjectDoesNotExist:
             customer = None
-        
-        if customer:
-            customer_downloaded = Download.objects.filter(user=customer)
-        else: 
-            messages.error("Please create a profile before adding to cart")
-            return redirect(reverse('customer.create_profile'))
 
         # to check if the photo is already in cart
         if photo_id not in cart:
@@ -33,11 +27,18 @@ def add_to_cart(request, photo_id):
             except ObjectDoesNotExist:
                 photo = None
 
-            # to check if the user has downloaded the photo before
-            try:
-                downloaded = customer_downloaded.filter(image=photo)
-            except ObjectDoesNotExist:
-                downloaded = None
+            if customer:
+                # to check if the user has downloaded the photo before
+                customer_downloaded = Download.objects.filter(user=customer)
+                try:
+                    downloaded = customer_downloaded.filter(image=photo)
+                except ObjectDoesNotExist:
+                    downloaded = None
+            else:
+                # if customer profile not exist, redirect user to create a profile before proceed
+                messages.error("Please create a profile before adding to cart")
+                return redirect(reverse('customer.create_profile'))
+
 
             if photo:
                 # if the user has already paid for the photo, add a new record to download
