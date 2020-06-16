@@ -29,12 +29,16 @@ def add_to_cart(request, photo_id):
                 except ObjectDoesNotExist:
                     photo = None
 
-                    # to check if the user has downloaded the photo before
-                    customer_downloaded = Download.objects.filter(user=customer)
+                # to check if the user has downloaded the photo before
+                customer_downloaded = Download.objects.filter(user=customer)
+
+                if customer_downloaded:
                     try:
                         downloaded = customer_downloaded.filter(image=photo)
                     except ObjectDoesNotExist:
                         downloaded = None
+                else:
+                    downloaded = None
 
                 if photo:
                     # if the user has already paid for the photo, add a new record to download
