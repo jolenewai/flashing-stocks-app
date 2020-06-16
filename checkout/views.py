@@ -11,7 +11,7 @@ from photos.models import Photo
 from customers.models import Customer, Download
 
 endpoint_secret = settings.SIGNING_SECRET
-session = None
+
 
 @login_required
 def checkout(request):
@@ -55,28 +55,26 @@ def checkout(request):
 @login_required
 def checkout_success(request):
 
-    print(session.id)
-    # line_items = request.session.get('line_priitems')
     cart = request.session.get('shopping_cart', {})
-    # customer = Customer.objects.get(user=request.user)
+    customer = Customer.objects.get(user=request.user)
 
-    # for id, photo in cart.items():
-    #     try:
-    #         photo_object = Photo.objects.get(id=id)
-    #     except ObjectDoesNotExist:
-    #         photo_object = None
+    for id, photo in cart.items():
+        try:
+            photo_object = Photo.objects.get(id=id)
+        except ObjectDoesNotExist:
+            photo_object = None
 
-    #     new_download = Download(
-    #         user = customer,
-    #         image = photo_object,
-    #         size = photo['size'],
-    #         date = datetime.datetime.now(),
-    #         )
-    #     new_download.save()
+        new_download = Download(
+            user = customer,
+            image = photo_object,
+            size = photo['size'],
+            date = datetime.datetime.now(),
+            )
+        new_download.save()
 
-    # # Empty the shopping cart
-    # request.session['shopping_cart'] = {}
-    # messages.success(request, "Thank you for your payment. You may download the images now.")
+    # Empty the shopping cart
+    request.session['shopping_cart'] = {}
+    messages.success(request, "Thank you for your payment. You may download the images now.")
 
     return render(request, 'checkout/checkout_success.template.html', {
         'cart': cart
@@ -107,8 +105,6 @@ def payment_completed(request):
     except stripe.error.SignatureVerificationError as e:
         # Invalid signature
         return HttpResponse(status=400)
-
-    print('session :' + checkout.session)
 
     if event['type'] == 'checkout.session.completed':
         session = event['data']['object']
