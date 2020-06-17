@@ -56,21 +56,21 @@ def checkout(request):
 def checkout_success(request):
 
     cart = request.session.get('shopping_cart', {})
-    customer = Customer.objects.get(user=request.user)
+    # customer = Customer.objects.get(user=request.user)
 
-    for id, photo in cart.items():
-        try:
-            photo_object = Photo.objects.get(id=id)
-        except ObjectDoesNotExist:
-            photo_object = None
+    # for id, photo in cart.items():
+    #     try:
+    #         photo_object = Photo.objects.get(id=id)
+    #     except ObjectDoesNotExist:
+    #         photo_object = None
 
-        new_download = Download(
-            user = customer,
-            image = photo_object,
-            size = photo['size'],
-            date = datetime.datetime.now(),
-            )
-        new_download.save()
+    #     new_download = Download(
+    #         user = customer,
+    #         image = photo_object,
+    #         size = photo['size'],
+    #         date = datetime.datetime.now(),
+    #         )
+    #     new_download.save()
 
     # Empty the shopping cart
     request.session['shopping_cart'] = {}
@@ -111,6 +111,23 @@ def payment_completed(request):
     if event['type'] == 'checkout.session.completed':
         session = event['data']['object']
         handle_checkout_session(session)
+
+    cart = request.session.get('shopping_cart', {})
+    customer = Customer.objects.get(user=request.user)
+
+    for id, photo in cart.items():
+        try:
+            photo_object = Photo.objects.get(id=id)
+        except ObjectDoesNotExist:
+            photo_object = None
+
+        new_download = Download(
+            user = customer,
+            image = photo_object,
+            size = photo['size'],
+            date = datetime.datetime.now(),
+            )
+        new_download.save()
 
 
     return HttpResponse(status=200)
