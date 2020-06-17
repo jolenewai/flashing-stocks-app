@@ -106,9 +106,12 @@ def payment_completed(request):
         # Invalid signature
         return HttpResponse(status=400)
 
+    print(event)
+
     if event['type'] == 'checkout.session.completed':
         session = event['data']['object']
         handle_checkout_session(session)
+
 
     return HttpResponse(status=200)
 
