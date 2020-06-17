@@ -18,6 +18,7 @@
         </div>
         <div class="col-sm-6 border custom-border p-3 bg-white">
             <h3>{{ photo.caption }}</h3>
+            <h4>${{ photo.price|stringformat:".2f" }}</h4>
             <p>{{ photo.desc }}</p>
 
             <p class="photographer"><img src="{% static 'img/camera.svg' %}" width="18" alt="photograher icon"> <a href="{% url 'photographer_public_profile' photographer_id=photo.owner.id %}" class="text-darkpink">{{ photo.owner.display_name }}</a></p>
