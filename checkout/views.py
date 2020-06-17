@@ -15,14 +15,15 @@ endpoint_secret = settings.SIGNING_SECRET
 
 @login_required
 def checkout(request):
+    # get stripe api key from environment variable
     stripe.api_key = settings.STRIPE_SECRET_KEY
 
+    # retrieve cart from session
     cart = request.session.get('shopping_cart', {})
-
-    customer = Customer.objects.get(user=request.user)
 
     line_items = []
 
+    # append cart items into line items for stripe
     for id, photo in cart.items():
         try:
             photo_object = Photo.objects.get(id=id)
@@ -39,6 +40,7 @@ def checkout(request):
     current_site = Site.objects.get_current()
     domain = current_site.domain
 
+    # create checkout session object
     session = stripe.checkout.Session.create(
         payment_method_types=['card'],
         line_items=line_items,
@@ -58,6 +60,7 @@ def checkout_success(request):
     cart = request.session.get('shopping_cart', {})
     customer = Customer.objects.get(user=request.user)
 
+    # write cart items into database to enable user to download
     for id, photo in cart.items():
         try:
             photo_object = Photo.objects.get(id=id)

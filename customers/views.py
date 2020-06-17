@@ -12,6 +12,7 @@ from photos.models import Photo
 
 def check_user_in_group(user):
 
+    # check if user is in group 'customers'
     customer_group = Group.objects.get(name='customers')
     if customer_group in user.groups.all():
         return True
@@ -19,87 +20,121 @@ def check_user_in_group(user):
         return False
 
 
+def get_customer(user):
+
+    # return customer object if found else return None
+    try:
+        customer = Customer.objects.get(user=user)
+    except ObjectDoesNotExist:
+        customer = None
+
+    return customer
+
+
 @login_required
 def create_profile(request):
 
+    # check if user is in group 'customers'
     is_customer = check_user_in_group(request.user)
 
+    # get customer object from Customer model if user is in customer group
     if is_customer:
 
-        try:
-            customer = Customer.objects.get(user=request.user)
-        except ObjectDoesNotExist:
-            customer = None
+        customer = get_customer(request.user)
 
+        # if customer has already created a profile,
+        # redirect customer to view profile page
+        # else display form to create profile
         if customer:
             return redirect(reverse(view_profile))
 
         else:
 
+            # if user has submitted the form    
             if request.method == "POST":
                 create_form = CustomerForm(request.POST)
 
+                # check if form is valid, add to database if valid
                 if create_form.is_valid():
-
                     profile = create_form.save(commit=False)
                     profile.user = request.user
                     profile.save()
-                    messages.success(request, "Thank you! Your profile has been created successfully.")
+                    messages.success(
+                        request,
+                        "Profile created successfully."
+                    )
                     return redirect(reverse(view_profile))
 
                 else:
-                    print (create_form._errors)
-                    return render(request, 'customers/create_profile.template.html', {
-                        'form': form
-                    })
+                    # if form is not valid, display error message
+                    # and render the form again
+                    messages.error(
+                        request,
+                        "Error, please check your form and resubmit"
+                    )
 
-                    return HttpResponse("form not valid")
+                    return render(
+                        request,
+                        'customers/create_profile.template.html',
+                        {
+                            'form': create_form
+                        })
 
             else:
+                # if user has not submitted any form, render an empty form
                 form = CustomerForm()
 
-                return render(request, 'customers/create_profile.template.html', {
-                    'form': form
-                })
+                return render(
+                    request,
+                    'customers/create_profile.template.html',
+                    {
+                        'form': form
+                    })
     else:
+        # raise permission denied error if user is not in group 'customers'
         raise PermissionDenied
 
 
 @login_required
 def view_profile(request):
-
+    # check if user is in group 'customers'
     is_customer = check_user_in_group(request.user)
 
+    # if customer is in group 'customers'
     if is_customer:
 
         user_info = request.user
-
-        try:
-            profile = Customer.objects.get(user=request.user)
-        except ObjectDoesNotExist:
-            profile = None
+        # get customer profile
+        profile = get_customer(user_info)
 
         return render(request, 'customers/profile.template.html', {
             'profile': profile,
             'user_info': user_info
         })
     else:
+        # raise permission denied error if user is not in group 'customers'
         raise PermissionDenied
 
 
 @login_required
 def update_profile(request):
 
+    # check if user is in group 'customers'
     is_customer = check_user_in_group(request.user)
 
+    # if customer is in group 'customers'
     if is_customer:
+        # get customer profile
+        profile = get_customer(request.user)
 
-        profile = Customer.objects.get(user=request.user)
-
+        # if user has submitted a form
         if request.method == 'POST':
+            # create form object with posted information
             profile_form = CustomerForm(request.POST, instance=profile)
 
+            # if form has no errors
             if profile_form.is_valid():
+                # update the profile of the user instance 
                 profile_form.save()
                 return redirect(reverse(view_profile))
             else:
@@ -107,11 +142,14 @@ def update_profile(request):
                     'form': profile_form
                 })
         else:
+            # if user has not submitted any form
+            # retrieve and display data in the rendered form
             profile_form = CustomerForm(instance=profile)
             return render(request, 'customers/update_profile.template.html', {
                 'form': profile_form
             })
     else:
+        # raise permission denied if user is not in group 'customers'
         raise PermissionDenied
 
 
@@ -121,9 +159,9 @@ def view_download(request):
     is_customer = check_user_in_group(request.user)
 
     if is_customer:
-        customer = Customer.objects.get(user=request.user)
+        customer = get_customer(request.user)
         downloads = Download.objects.filter(user=customer)
-        return render(request, 'customers/download.template.html',{
+        return render(request, 'customers/download.template.html', {
             'downloads': downloads
         })
     else:
