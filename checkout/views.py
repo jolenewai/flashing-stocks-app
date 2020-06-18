@@ -62,44 +62,35 @@ def checkout(request):
 
 
 @login_required
-def checkout_success(request):
+def checkout_success(request, session_id):
 
-    # verify if checkout session id is in url
-    if request.GET:
-        session_id_in_url = request.GET['session_id']
+    if session_id == request.session['checkout_session_id']:
 
-    print(session_id_in_url, request.session['checkout_session_id'])
+        cart = request.session['shopping_cart']
+        customer = Customer.objects.get(user=request.user)
 
-    if session_id_in_url:
-        if session_id_in_url == request.session['checkout_session_id']:
+        # write cart items into database to enable user to download
+        for id, photo in cart.items():
+            try:
+                photo_object = Photo.objects.get(id=id)
+            except ObjectDoesNotExist:
+                photo_object = None
 
-            cart = request.session['shopping_cart']
-            customer = Customer.objects.get(user=request.user)
+            new_download = Download(
+                user = customer,
+                image = photo_object,
+                size = photo['size'],
+                date = datetime.datetime.now(),
+                )
+            new_download.save()
 
-            # write cart items into database to enable user to download
-            for id, photo in cart.items():
-                try:
-                    photo_object = Photo.objects.get(id=id)
-                except ObjectDoesNotExist:
-                    photo_object = None
+        # Empty the shopping cart
+        request.session['shopping_cart'] = {}
+        messages.success(request, "Thank you for your payment. You may download the images now.")
 
-                new_download = Download(
-                    user = customer,
-                    image = photo_object,
-                    size = photo['size'],
-                    date = datetime.datetime.now(),
-                    )
-                new_download.save()
-
-            # Empty the shopping cart
-            request.session['shopping_cart'] = {}
-            messages.success(request, "Thank you for your payment. You may download the images now.")
-
-            return render(request, 'checkout/checkout_success.template.html', {
-                'cart': cart
-            })
-        else:
-            raise PermissionDenied
+        return render(request, 'checkout/checkout_success.template.html', {
+            'cart': cart
+        })
     else:
         raise PermissionDenied
 
