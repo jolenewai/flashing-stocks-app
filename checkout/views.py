@@ -5,6 +5,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
+import uuid
 import stripe
 import datetime
 from photos.models import Photo
@@ -51,7 +52,7 @@ def checkout(request):
     session['success_url'] = session['success_url']+ f'?session_id={session.id}'
     request.session['checkout_session_id'] = session.id
 
-    print(session.success_url)
+    print(session)
 
     return render(request, 'checkout/checkout.template.html', {
         'session_id': session.id,
@@ -63,7 +64,8 @@ def checkout(request):
 def checkout_success(request):
 
     # verify if checkout session id is in url
-    session_id_in_url = request.GET['session_id']
+    if request.GET:
+        session_id_in_url = request.GET['session_id']
 
     print(session_id_in_url, request.session['checkout_session_id'])
 
