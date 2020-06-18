@@ -51,6 +51,8 @@ def checkout(request):
     session['success_url'] = session['success_url']+ f'?session_id={session.id}'
     request.session['checkout_session_id'] = session.id
 
+    print(session.success_url)
+
     return render(request, 'checkout/checkout.template.html', {
         'session_id': session.id,
         'public_key': settings.STRIPE_PUBLISHABLE_KEY
@@ -61,7 +63,9 @@ def checkout(request):
 def checkout_success(request):
 
     # verify if checkout session id is in url
-    session_id_in_url = request.GET.get('session_id', '')
+    session_id_in_url = request.GET['session_id']
+
+    print(session_id_in_url, request.session['checkout_session_id'])
 
     if session_id_in_url:
         if session_id_in_url == request.session['checkout_session_id']:
