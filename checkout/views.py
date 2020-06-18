@@ -41,15 +41,17 @@ def checkout(request):
     current_site = Site.objects.get_current()
     domain = current_site.domain
 
+
     # create checkout session object
     session = stripe.checkout.Session.create(
         payment_method_types=['card'],
         line_items=line_items,
-        success_url=domain + reverse(checkout_success),
+        success_url='',
         cancel_url=domain + reverse(checkout_cancelled),
     )
 
-    session['success_url'] = session['success_url']+ f'?session_id={session.id}'
+    session['success_url'] = domain + reverse(checkout_success, kwargs={session_id=session.id})
+
     request.session['checkout_session_id'] = session.id
 
     print(session)
