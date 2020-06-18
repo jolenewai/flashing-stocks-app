@@ -50,7 +50,7 @@ def checkout(request):
         cancel_url=domain + reverse(checkout_cancelled),
     )
 
-    session['success_url'] = domain + reverse(checkout_success, kwargs={session_id=session.id})
+    session['success_url'] = domain + reverse(checkout_success, kwargs={'session_id'=session.id})
 
     request.session['checkout_session_id'] = session.id
 
