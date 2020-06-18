@@ -48,6 +48,9 @@ def checkout(request):
         cancel_url=domain + reverse(checkout_cancelled),
     )
 
+    session['success_url'] = session['success_url']+ f'?session_id={session.id}'
+    request.session['checkout_session_id'] = session.id
+
     return render(request, 'checkout/checkout.template.html', {
         'session_id': session.id,
         'public_key': settings.STRIPE_PUBLISHABLE_KEY
@@ -57,31 +60,41 @@ def checkout(request):
 @login_required
 def checkout_success(request):
 
-    cart = request.session.get('shopping_cart', {})
-    customer = Customer.objects.get(user=request.user)
+    # verify if checkout session id is in url
+    session_id_in_url = request.GET.get('session_id', '')
 
-    # write cart items into database to enable user to download
-    for id, photo in cart.items():
-        try:
-            photo_object = Photo.objects.get(id=id)
-        except ObjectDoesNotExist:
-            photo_object = None
+    if session_id_in_url:
+        if session_id_in_url == request.session['checkout_session_id']:
 
-        new_download = Download(
-            user = customer,
-            image = photo_object,
-            size = photo['size'],
-            date = datetime.datetime.now(),
-            )
-        new_download.save()
+            cart = request.session['shopping_cart']
+            customer = Customer.objects.get(user=request.user)
 
-    # Empty the shopping cart
-    request.session['shopping_cart'] = {}
-    messages.success(request, "Thank you for your payment. You may download the images now.")
+            # write cart items into database to enable user to download
+            for id, photo in cart.items():
+                try:
+                    photo_object = Photo.objects.get(id=id)
+                except ObjectDoesNotExist:
+                    photo_object = None
 
-    return render(request, 'checkout/checkout_success.template.html', {
-        'cart': cart
-    })
+                new_download = Download(
+                    user = customer,
+                    image = photo_object,
+                    size = photo['size'],
+                    date = datetime.datetime.now(),
+                    )
+                new_download.save()
+
+            # Empty the shopping cart
+            request.session['shopping_cart'] = {}
+            messages.success(request, "Thank you for your payment. You may download the images now.")
+
+            return render(request, 'checkout/checkout_success.template.html', {
+                'cart': cart
+            })
+        else:
+            raise PermissionDenied
+    else:
+        raise PermissionDenied
 
 
 @login_required
