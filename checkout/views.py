@@ -92,7 +92,8 @@ def checkout_success(request, session_id):
             'cart': cart
         })
     else:
-        raise PermissionDenied
+        messages.error(request, "Invalid Checkout Session")
+        return redirect(reverse('view_cart'))
 
 
 @login_required
