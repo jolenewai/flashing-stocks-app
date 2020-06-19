@@ -12,7 +12,7 @@ from photos.models import Photo
 
 def check_user_in_group(user):
 
-    # check if user is in group 'customers'
+    # return True if user is in group 'customers'
     customer_group = Group.objects.get(name='customers')
     if customer_group in user.groups.all():
         return True
@@ -50,7 +50,7 @@ def create_profile(request):
 
         else:
 
-            # if user has submitted the form    
+            # if user has submitted the form
             if request.method == "POST":
                 create_form = CustomerForm(request.POST)
 
@@ -134,13 +134,16 @@ def update_profile(request):
 
             # if form has no errors
             if profile_form.is_valid():
-                # update the profile of the user instance 
+                # update the profile of the user instance
                 profile_form.save()
                 return redirect(reverse(view_profile))
             else:
-                return render(request, 'customers/update_profile.template.html', {
-                    'form': profile_form
-                })
+                return render(
+                    request,
+                    'customers/update_profile.template.html',
+                    {
+                        'form': profile_form
+                    })
         else:
             # if user has not submitted any form
             # retrieve and display data in the rendered form
@@ -160,7 +163,10 @@ def view_download(request):
 
     if is_customer:
         customer = get_customer(request.user)
-        downloads = Download.objects.filter(user=customer)
+        if customer:
+            downloads = Download.objects.filter(user=customer)
+        else:
+            downloads = None
         return render(request, 'customers/download.template.html', {
             'downloads': downloads
         })
@@ -170,34 +176,60 @@ def view_download(request):
 
 @login_required
 def add_to_favourite(request, photo_id):
+
+    # when user click on the heart button
+    # this function will check if the photo has been favourited before
+
+    # check if user is a customer
     is_customer = check_user_in_group(request.user)
 
+    # if user is a customer
     if is_customer:
+        # get customer profile
+        customer = get_customer(request.user)
+        if customer:
+            # get object of the selected photo
+            photo = Photo.objects.get(id=photo_id)
+            # get favourited photos of the login user
+            customer_favourite = Favourite.objects.filter(user=customer)
 
-        customer = Customer.objects.get(user=request.user)
-        photo = Photo.objects.get(id=photo_id)
-        customer_favourite = Favourite.objects.filter(user=customer)
-        
-        try:
-            favourited = customer_favourite.get(image=photo)
-        except ObjectDoesNotExist:
-            favourited = None
+            try:
+                favourited = customer_favourite.get(image=photo)
+            except ObjectDoesNotExist:
+                favourited = None
 
-        if favourited is None:
-            new_favourite = Favourite(
-                user = customer,
-                image = photo
-            )
-            new_favourite.save()
-            messages.success(request, f"{photo.caption} has been added to your favourite")
+            if favourited is None:
+                # if the photo is not added to favourite before,
+                # create a new record in database
+                new_favourite = Favourite(
+                    user=customer,
+                    image=photo
+                )
+                new_favourite.save()
+                messages.success(
+                    request,
+                    f"{photo.caption} has been added to your favourite"
+                    )
 
+            else:
+                # if the photo is already in database,
+                # remove the record from database
+                messages.success(
+                    request,
+                    f"{photo.caption} has been removed from your favourite"
+                    )
+                favourited.delete()
+
+            # get the url for redirection
+            redirect_url = request.POST['redirect_url']
+
+            return redirect(redirect_url)
         else:
-            messages.success(request, f"{photo.caption} has been removed from your favourite")
-            favourited.delete()
-
-        redirect_url = request.POST['redirect_url']
-
-        return redirect(redirect_url)
+            messages.error(
+                request,
+                'Complete your profile so that you add photos to Favourites'
+                )
+            return redirect(create_profile)
     else:
         raise PermissionDenied
 
@@ -205,11 +237,17 @@ def add_to_favourite(request, photo_id):
 @login_required
 def view_favourites(request):
 
+    # check if user is a customer
     is_customer = check_user_in_group(request.user)
 
+    # if user is a customer
     if is_customer:
-        customer = Customer.objects.get(user=request.user)
-        favourites = Favourite.objects.filter(user=customer)
+
+        customer = get_customer(request.user)
+        if customer:
+            favourites = Favourite.objects.filter(user=customer)
+        else:
+            favourites = None
 
         return render(request, 'customers/view_favourite.template.html', {
             'favourites': favourites

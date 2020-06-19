@@ -16,56 +16,53 @@
     {% if downloads %}
     <div class="pr-3">
         <table class="table mt-2 downloads">
-        <thead class="table-dark">
+            <thead class="table-dark">
+                <tr>
+                    <th class="th-1">Date Purchased</th>
+                    <th class="th-2">Image</th>
+                    <th class="th-3"></th>
+                    <th class="th-4">Size</th>
+                    <th class="th-5"></th>
+                </tr>
+            </thead>
+            {% for download in downloads %}
             <tr>
-                <th class="th-1">Date Purchased</th>
-                <th class="th-2">Image</th>
-                <th class="th-3"></th>
-                <th class="th-4">Size</th>
-                <th class="th-5"></th>
+                <td class="th-1">{{ download.date }}</td>
+                <td class="align-middle th-2">
+                    <img src="{{ download.image.image.cdn_url }}-/resize/x160/" class="img-fluid mb-3" alt="{{download.image.caption}}">
+                </td>
+                <td class="th-3">
+                    <h4>{{ download.image.caption }}</h4>
+                    <p>{{ download.image.desc }}</p>
+
+                </td>
+                <td class="th-4">
+                    {% ifequal download.size 'sm' %}
+                        <strong>SMALL</strong><br/>
+                        650px x 433px
+                    {% endifequal %}
+                    {% ifequal download.size 'md' %}
+                        <strong>MEDIUM</strong><br/>
+                        1200px x 800px
+                    {% endifequal %}
+                    {% ifequal download.size 'lg' %}
+                        <strong>LARGE</strong><br/>
+                        1500px x 1000px
+                    {% endifequal %}   
+                </td>
+                <td class="th-5">
+                    <span class="align-middle">
+                        <a href="{{ download.image.image.cdn_url }}-/resize/{% ifequal download.size 'sm' %}650{% endifequal %}{% ifequal download.size 'md' %}1200{% endifequal %}{% ifequal download.size 'lg' %}1500{% endifequal %}x/" class="text-reset" target="_blank">
+                            {% icon "download" class="feather-20 mr-2" %}
+                        </a>
+                    </span>
+                </td>
             </tr>
-        </thead>
-        {% for download in downloads %}
-
-        <tr>
-            <td class="th-1">{{ download.date }}</td>
-            <td class="align-middle th-2">
-                <img src="{{ download.image.image.cdn_url }}-/resize/x160/" class="img-fluid mb-3" alt="{{download.image.caption}}">
-            </td>
-            <td class="th-3">
-                <h4>{{ download.image.caption }}</h4>
-                <p>{{ download.image.desc }}</p>
-
-            </td>
-            <td class="th-4">
-                {% ifequal download.size 'sm' %}
-                    <strong>SMALL</strong><br/>
-                    650px x 433px
-                {% endifequal %}
-                {% ifequal download.size 'md' %}
-                    <strong>MEDIUM</strong><br/>
-                    1200px x 800px
-                {% endifequal %}
-                {% ifequal download.size 'lg' %}
-                    <strong>LARGE</strong><br/>
-                    1500px x 1000px
-                {% endifequal %}   
-            </td>
-            <td class="th-5">
-                <span class="align-middle">
-                    <a href="{{ download.image.image.cdn_url }}-/resize/{% ifequal download.size 'sm' %}650{% endifequal %}{% ifequal download.size 'md' %}1200{% endifequal %}{% ifequal download.size 'lg' %}1500{% endifequal %}x/" class="text-reset" target="_blank">
-                        {% icon "download" class="feather-20 mr-2" %}
-                    </a>
-                </span>
-            </td>
-            
-        </tr>
-
-    {% endfor %}
-    </table>
-    {% else %}
-        No photos uploaded. 
-    {% endif %}
+            {% endfor %}
+        </table>
+        {% else %}
+            You have not downloaded any photo yet. 
+        {% endif %}
         </div>
     </div>
 </div>
