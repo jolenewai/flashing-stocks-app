@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, reverse, HttpResponse
-from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
+from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.sites.models import Site
 from django.conf import settings
 from django.contrib import messages
@@ -11,6 +11,7 @@ import datetime
 from photos.models import Photo
 from customers.models import Customer, Download
 
+# get stripe signing secret from settings
 endpoint_secret = settings.SIGNING_SECRET
 
 
@@ -38,22 +39,28 @@ def checkout(request):
             'quantity': 1
         })
 
+    # get domain from site settings
     current_site = Site.objects.get_current()
     domain = current_site.domain
 
+    # create a unique session id for verification on checkout/success page
     session_id = uuid.uuid4().hex
 
     # create checkout session object
     session = stripe.checkout.Session.create(
         payment_method_types=['card'],
         line_items=line_items,
-        success_url = domain + reverse('checkout_success', kwargs={'session_id':session_id}),
+        # append the unique session id to success url as a url parameter
+        success_url=domain + reverse(
+            'checkout_success',
+            kwargs={'session_id': session_id}
+        ),
         cancel_url=domain + reverse(checkout_cancelled),
     )
 
+    # store the unique checkout session id in request.session
+    # for verification later
     request.session['checkout_session_id'] = session_id
-
-    print(session)
 
     return render(request, 'checkout/checkout.template.html', {
         'session_id': session.id,
@@ -63,7 +70,9 @@ def checkout(request):
 
 @login_required
 def checkout_success(request, session_id):
-
+    # verify session_id in url against the one created during checkout
+    # if verified, create a record of the download in DB so that
+    # user can download the photo in the required size
     if session_id == request.session['checkout_session_id']:
 
         cart = request.session['shopping_cart']
@@ -77,27 +86,30 @@ def checkout_success(request, session_id):
                 photo_object = None
 
             new_download = Download(
-                user = customer,
-                image = photo_object,
-                size = photo['size'],
-                date = datetime.datetime.now(),
+                user=customer,
+                image=photo_object,
+                size=photo['size'],
+                date=datetime.datetime.now(),
                 )
             new_download.save()
 
         # Empty the shopping cart
         request.session['shopping_cart'] = {}
-        messages.success(request, "Checkout successed!")
+        messages.success(request, "Checkout successful!")
 
         return render(request, 'checkout/checkout_success.template.html', {
             'cart': cart
         })
     else:
+        # if session id not valid, redirect user to view cart page
+        # so that user can do a proper checkout
         messages.error(request, "Invalid checkout session")
         return redirect(reverse('view_cart'))
 
 
 @login_required
 def checkout_cancelled(request):
+
     messages.error(request, "Payment has been cancelled.")
 
     return redirect(reverse('view_cart'))
