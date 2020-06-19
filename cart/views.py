@@ -11,6 +11,9 @@ import datetime
 @login_required
 def add_to_cart(request, photo_id):
 
+    # check if customer profile exist in database
+    # proceed to add to cart if profile exists
+    # else redirect user to create profile page
     try:
         customer = Customer.objects.get(user=request.user)
     except ObjectDoesNotExist:
@@ -76,13 +79,16 @@ def add_to_cart(request, photo_id):
                         kwargs={'photo_id': photo.id})
                     )
             else:
-
+                # if the image is already in the cart, redirect user back to
+                # the previous page and display an error message
                 messages.error(
                     request,
                     "Image is already in your cart"
                 )
                 return redirect(reverse(list_photos))
         else:
+            # if request.GET['size'] is empty, redirect user back to the
+            # previous page and make user select a size
             messages.error(
                 request,
                 "Please select a size!"
@@ -107,6 +113,7 @@ def view_cart(request):
     photos = Photo.objects.all()
     total = 0
 
+    # get price from database and calculate total in cents
     for id, photo in cart.items():
         try:
             photo_object = Photo.objects.get(id=id)
@@ -115,6 +122,7 @@ def view_cart(request):
 
         total = total + int(photo_object.price*100)
 
+    # convert total back to dollars
     total = total / 100
 
     return render(request, 'cart/view_cart.template.html', {
@@ -124,13 +132,14 @@ def view_cart(request):
     })
 
 
-
 def remove_from_cart(request, photo_id):
+
+    # get cart from session
     cart = request.session.get('shopping_cart', {})
 
+    # delete selected photo from cart
     if photo_id in cart:
         del cart[photo_id]
-
         request.session['shopping_cart'] = cart
         messages.success(request, "Photo removed from cart successfully")
         return redirect(reverse(view_cart))
@@ -140,8 +149,11 @@ def remove_from_cart(request, photo_id):
 
 
 def update_size(request, photo_id):
+
+    # get cart from session
     cart = request.session.get('shopping_cart')
 
+    # update the size for the selected photo in cart
     if photo_id in cart:
         cart[photo_id]['size'] = request.POST['size']
         request.session['shopping_cart'] = cart
