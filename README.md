@@ -120,7 +120,7 @@ User can login to perform the following task:
 - [ ] To allow Photographers to add photos into the albums
 - [ ] Lazy loading for the images
 - [ ] To allow Customer to follow a Photographer to receive updates upon new uploads
-- [ ] Pagination to handle large number of results- 
+- [ ] Pagination to handle large number of results
 
 ## Technologies Used
 
@@ -168,26 +168,37 @@ Username : admin
 Password: abcdefg1234
 ```
 
-### User Registration
+### Manual Testing
+
+#### User Registration
 - [x] On the home page, click on Sign-Up
 - [x] Try to submit the empty form and verify that error messages about the required fields appear 
 - [x] Try to submit the form with an existing email address on the database and verify that the registration will be rejected to preserve the uniqueness of the email in the database
 
-### Login 
+
+#### Email Verification Upon User Registration / Sign Up
+- [x] Try to submit the form with valid data and receive email for verification
+- [x] Click on the verification link in the email and click on confirm
+- [x] After clicking the confirm button, the page is redirected to login page 
+
+
+#### Login 
 - [x] On the home page, click on Login
 - [x] Try to submit the empty form and verify that error messages about the required fields appear
 - [x] Try to submit the form with an invalid email address and verify that it is an invalid login
 - [x] Try to submit the form with a wrong password and verify that it is an invalid login
 - [x] Try to submit the form with all inputs valid and verify that the redirection is successful and on the top bar it changes "Login" to "Logout"
 
-### Add Items to Cart
+
+#### Add Items to Cart
 - [x] Click on download on any image to access to the image detail page
 - [x] Click on the Download button after choosing a size
 - [x] Verify that image is added to cart successfully by seeing Message _'Image is added to cart successfully'_ appear on top of the page
 - [x] Further verify the image is in the cart by clicking on the _Cart_ icon on the top navigation bar 
 - [x] The number of items beside the cart will also be updated upon image added to cart
 
-### Edit Item in Cart
+
+#### Edit Item in Cart
 - [x] Click on _Edit_ button beside the _Size_ of one of the image 
 - [x] A modal box with all the sizes available will display
 - [x] Verify that the modal box will close after clicking the _Cancel_ button in the modal box
@@ -195,7 +206,8 @@ Password: abcdefg1234
 - [x] A modal box with confirmation message will display
 - [x] Verify that the size is changed after clicking the _Update_ button in the modal box
 
-### Delete Item in Cart
+
+#### Delete Item in Cart
 - [x] Click on _Delete_ button beside the _Size_ of one of the image 
 - [x] A modal box with confirmation message will display
 - [x] Verify that the modal box will close after clicking the _Cancel_ button in the modal box
@@ -203,82 +215,90 @@ Password: abcdefg1234
 - [x] A modal box with confirmation message will display
 - [x] Verify that the image is deleted after clicking the _Confirm_ button in the modal box
 
-### Checkout (with valid testing card number)
+
+#### Checkout (with valid testing card number)
 - [x] Click on the checkout button on _View Cart_ page
 - [x] Click on submit button without entering information and verify that error message will appear
 - [x] Enter valid information and click on _Pay_ button
 - [x] Verify that the checkout is successful after being redirected to a checkout success page, and items are being added to the download history
 
-### Checkout (with invalid testing card number)
+
+#### Checkout (with invalid testing card number)
 - [x] Click on the checkout button on _View Cart_ page
 - [x] Enter invalid testing card number and click on _Pay_ button
 - [x] Verify that the checkout cannot proceed and error is displayed
 
-### Add Photo to My Favourite (no login)
+
+#### Handling illegal checkout by typing of URL 
+- [x] To prevent user from directly typing the checkout success url to bypass the payment process and get items purchased, an unique checkout session id is created and will be verified through the URL parameter
+- [x] In the address bar, enter https://jw-flashstocks.herokuapp.com/checkout/success and get an error of "Page not found"
+- [x] In the address bar, enter https://jw-flashstocks.herokuapp.com/checkout/success/123 and get redirected to View Cart page and display an error message of invalid checkout session id 
+
+#### Add Photo to My Favourite (no login)
 - [x] On any image, click on the heart
 - [x] Verify that page will be redirected to login page as this action requires login
 
-### Add Photo to My Favourite (after login as Customer)
+#### Add Photo to My Favourite (after login as Customer)
 - [x] On any image, click on the heart
 - [x] Verify that the heart will changed to a heart filled with red colour instead
 - [x] Verify that the image is added to favourite by clicking opening My Favourite page in the collapsible side bar 
 
-### Add A Photo (without login as Photographer)
+#### Add A Photo (without login as Photographer)
 - [x] In the address bar, type in the url for adding a photo directly
 - [x] If the user is not logged in, user will be redirected to login page
 - [x] If the user didn't login as Photographer, access to the page will be denied
 
-### Add A Photo (after login as Photographer) 
+#### Add A Photo (after login as Photographer) 
 - [x] Click on My Uploads on the side navigation, click on Upload button on the right corner of the page
 - [x] Try to submit the empty form and verify that error messages about the required fields appear
 - [x] Try to submit the form with all inputs valid and verify the review has been added when redirected to My Uploads page
 
-### Update A Photo 
+#### Update A Photo 
 - [x] On My Upload page, click on the edit icon beside the title of the image
 - [x] Verify that information from the database are presented in the form inputs, try to change one of the field and verify that the field is updated after submit the form
 
-### Delete A Photo
+#### Delete A Photo
 - [x] On My Uploads page, click on the delete icon beside the title of the review
 - [x] Verify that confirmation message is displayed and try to press confirm and verify that the review is deleted when redirected to My Uploads page
 
-### Update Profile
+#### Update Profile
 - [x] On Profile page, click on the Update Profile link in under the profile display
 - [x] Verify that information from the database are presented in the form inputs, try to change one of the field and verify that the field is updated after submit the form
 - [x] Try to change image and submit and verify that the image is updated after submit the form
 
-### CRUD For Tags
+#### CRUD For Tags
 - [x] Create, read, update and delete tags are tested after login as Admin
 - [x] Verify that create will add a new tag
 - [x] Verify that read will list all the tags in database
 - [x] Verify that update will change the selected tag
 - [x] Verify that delete will remove the selected tag
 
-### CRUD For Categories
+#### CRUD For Categories
 - [x] Create, read, update and delete categories are tested after login as Admin
 - [x] Verify that create will add a new category
 - [x] Verify that read will list all the categories in database
 - [x] Verify that update will change the selected category
 - [x] Verify that delete will remove the selected category
 
-### Search 
+#### Search 
 - [x] On any page, type in any keyword in the search bar, verify that the matching results appear in Search Result page
 - [x] On Search Result page, apply filter with one of the category and sorting, and verify that the matching results displayed
 
-### Browsing Images by Category on Explore page
+#### Browsing Images by Category on Explore page
 - [x] Click on each button and verify that the matching images are displayed
 
-### Responsivenesss
+#### Responsivenesss
 This website is responsive on the following devices
 - [x] Widescreen Desktop (above 992px)
 - [x] Tablet in Landscape (between 768px and 991.98px)
 - [x] Mobile Phones (below 576px)
 
-### HTML validation
+#### HTML validation
 All pages are validated with the following website and returns no error (except the page with uploadcare attribute)
 - [x] [FREEFORMATTER](https://www.freeformatter.com/html-validator.html)
 - [x] [validator.nu](https://html5.validator.nu/)
 
-### CSS Validation
+#### CSS Validation
 CSS are validated and return no errors except -webkit- related 
 - [x] [W3C CSS Validation Service](https://jigsaw.w3.org/css-validator/)
 
@@ -288,18 +308,33 @@ CSS are validated and return no errors except -webkit- related
 This website is deployed on [Heroku](https://www.heroku.com). 
 The URL for the deployed website is https://jw-flashstocks.herokuapp.com/
 
-To deploy on Heroku
-1. Download or Clone the master branch from [github](https://github.com/jolenewai/flashing-stocks-app)
+### Prerequisite for deployment
+- [x] An IDE e.g. Visual Studio Code or Gitpod
+- [x] Account with [Heroku](https://www.heroku.com)
+- [x] Account with [UploadCare](https://uploadcare.com/) for image uploading
+- [x] Account with [stripe](https://stripe.com/) for payment handling
+- [x] Account with [Gmail](https://stripe.com/) for sending out email upon user registration
+
+### To deploy on Heroku
+1. Download the master branch from [github](https://github.com/jolenewai/flashing-stocks-app)
+2. Alternatively, clone the master branch with the following command line in your IDE:
+```
+git clone https://github.com/jolenewai/flashing-stocks-app
+```
 2. To list all the requirements in requirements.txt, run the following command in terminal:
 ```
 pip3 freeze --local > requirements.txt
 ```
-3. Set Debug to False
+3. Make sure to set Debug to False in settings.py
 4. Create Procfile to register the app with the following line 
 ```
 web: gunicorn flashing_stock_project.wsgi:application
 ```
-5. Git push to Heroku Master after all the documents are properly set up
+5. Login to Heroku using the following command line :
+```
+heroku login
+``` 
+7. Git push to Heroku Master after all the documents are properly set up
 6. In the Settings page of your Heroku app, set up the following Environment Variables with your own values:
 - [x] UPLOADCARE_PUBLIC_KEY
 - [x] UPLOADCARE_SECRET_KEY
@@ -307,6 +342,8 @@ web: gunicorn flashing_stock_project.wsgi:application
 - [x] STRIPE_SECRET_KEY
 - [x] SIGING_SECRET
 - [x] DATABASE_URL
+- [x] EMAIL_HOST_USER
+- [x] EMAIL_HOST_PASSWORD
 
 ## File Hierarchy and Organisation
 
