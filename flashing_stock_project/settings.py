@@ -27,7 +27,7 @@ load_dotenv(os.path.join(BASE_DIR, '.env'))
 SECRET_KEY = '38neb1xnqe%y*oo)2egzhh%asry=*bm8j-&oqk4r@cnhg@1ky5'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["jw-flashstocks.herokuapp.com", "*"]
 
@@ -115,8 +115,6 @@ ACCOUNT_USERNAME_MIN_LENGTH = 4
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/'
 ACCOUNT_SIGNUP_FORM_CLASS = 'customers.forms.SignupForm'
-
-
 
 WSGI_APPLICATION = 'flashing_stock_project.wsgi.application'
 
