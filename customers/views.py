@@ -1,10 +1,8 @@
-from django.shortcuts import render, HttpResponse, get_object_or_404, redirect, reverse
+from django.shortcuts import render, redirect, reverse
 from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.core.exceptions import ObjectDoesNotExist
-from django.db.models import Q
 from .forms import CustomerForm
 from .models import Customer, Download, Favourite
 from photos.models import Photo
