@@ -87,7 +87,7 @@ User can login to perform the following task:
 #### Search
 - [x] The search bar is placed on top of every page except that it will be hidden and toggled in mobile layout. In the search bar, user can perform search by entering the keywords for _captions_, _descriptions_ or _tags_. 
 
-On the search result page, user can perform further filtering on the search results by limiting it to a specific  _Category_, users can also change the sorting of the result based on _Most Recent_ or _Alphabetical Order_.
+- [x] On the search result page, user can perform further filtering on the search results by limiting it to a specific  _Category_, users can also change the sorting of the result based on _Most Recent_ or _Alphabetical Order_.
 
 
 #### View Photographer Profile
