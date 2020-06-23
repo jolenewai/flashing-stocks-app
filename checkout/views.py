@@ -126,7 +126,7 @@ def payment_completed(request):
         event = stripe.Webhook.construct_event(
             payload, sig_header, endpoint_secret
         )
-    except ValuedError as e:
+    except ValueError as e:
         # Invalid payload
         return HttpResponse(status=400)
     except stripe.error.SignatureVerificationError as e:
