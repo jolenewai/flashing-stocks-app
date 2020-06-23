@@ -42,112 +42,21 @@
     </head>
     <body>
         <header class="container-fluid px-0">
-            
-        <nav class="navbar navbar-expand-lg topnav {% if user.groups.all.0 %}{{ user.groups.all.0 }} {% elif user.is_staff %} admin {% endif %} ">
-            <div id="site-logo"><a class="navbar-brand" href="{% url 'home' %}"></a></div>
-            {% if request.user.groups.all.0 %}
-                {% ifnotequal 'photographers' request.user.groups.all.0.name %}
-                <form id="topsearchform" class="form-inline my-lg-0" method="GET" action="{% url 'search' %}">
-                    <input name="keyword" class="top-searchbar" type="search" placeholder="Search image" aria-label="Search">
-                    <button class="btn btn-main" type="submit">{% icon "search" class="feather-16 feather-white" %}</button>
-                </form>
-                {% endifnotequal %}
-            {% endif %}
-                <div id="mobile-navbar">
-                    {% if request.user.groups.all.0 %}
-                        {% ifnotequal 'photographers' request.user.groups.all.0.name %}
-                        <a href="#" onclick="toggleSearch()">{% icon "search" class="feather-16 feather-white" %}</a>
-                        
-                        <a  href="{% url 'view_cart' %}">{% icon "shopping-cart" class="feather-16 feather-white" %}<span class="mx-1 cart-number">{{number_of_items}}</span></a>
-                        {% endifnotequal %}
-                    {% endif %}
-                    <a class="text-white" href="{% if request.user.is_authenticated  %}#{% else %}{% url 'account_login' %}{% endif %}" onclick="openNav()">{% icon "user" class="feather-16 feather-white" %} </a>
-                </div>
-                <ul class="navbar-nav ml-auto">
-                    {% if request.user.groups.all.0 %}
-                        {% ifnotequal 'photographers' request.user.groups.all.0.name %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'view_cart' %}">{% icon "shopping-cart" class="feather-20 feather-white" %}<span class="sr-only">(shopping cart)</span><span class="mx-1 cart-number">{{number_of_items}}</span></a>
-                        </li>
-                        {% endifnotequal %}
-                    {% endif %}
-                    
-                    <li class="nav-item">
-                        {% if request.user.is_authenticated  %}
-                        <a class="nav-link text-white" href="{% url 'account_logout' %}"> Logout</a>
-                        {% else %}
-                        <a class="nav-link text-white" href="{% url 'account_login' %}"> Login</a>
-                        {% endif %}     
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="#" onclick="openNav()">{% icon "user" class="feather-20 feather-white" %} </a>
-                    </li>
-                </ul>
-                {% if request.user.is_authenticated  %}
-                    <span class="navbar-text text-white">
-                        Hello, {{ request.user }}!
-                    </span>
-                {% endif %}
-        </nav>
-        {% if request.user.groups.all.0 %}
-            {% ifnotequal 'photographers' request.user.groups.all.0.name %}
-                <form id="mobileSearchForm" class="form-inline my-lg-0" method="GET" action="{% url 'search' %}">
-                    <input name="keyword" class="top-searchbar" type="search" placeholder="Search image" aria-label="Search">
-                    <button class="btn btn-main" type="submit">{% icon "search" class="feather-16 feather-white" %}</button>
-                </form>
-            {% endifnotequal %}
-        {% endif %}
-        {% if messages %}
-            {% for m in messages %}
-                <div class="message-container alert {% ifequal m.tags 'error' %} alert-warning {% else %} alert-{{ m.tags }}{% endifequal %}">
-                    {{ m }}
-                </div>    
-            {% endfor %}
-        {% endif %}
-
+            {% include 'header.template.html' %}
         </header>
 
-        {% if request.user.is_authenticated  %}
-
-        <div id="mySidepanel" class="sidepanel">
-            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-            <h3 class="ml-4">Hello, {{ request.user }}!</h3>
-            {% if request.user.groups.all.0 %}
-                {% ifequal 'customers' request.user.groups.all.0.name %}
-                    <a href="{% url 'cust_view_profile' %}">{% icon "user" class="feather-20 mr-2" %} Profile</a>
-                    <a href="{% url 'view_favourites' %}">{% icon "heart" class="feather-20 mr-2" %} Favourites</a>
-                    <a href="{% url 'view_downloads' %}">{% icon "download" class="feather-20 mr-2" %} My Downloads</a>
-                    <a href="{% url 'account_logout' %}">{% icon "log-out" class="feather-20 mr-2" %} Logout</a>
-
-                {% endifequal %}
-                {% ifequal 'photographers' request.user.groups.all.0.name %}
-                    <a href="{% url 'photographer_view_profile' %}">{% icon "user" class="feather-20 mr-2" %} Profile</a>
-                    <a href="{% url 'view_albums' %}">{% icon "book" class="feather-20 mr-2" %} Album</a>
-                    <a href="{% url 'view_uploads' %}">{% icon "upload" class="feather-20 mr-2" %}My Uploads</a>
-                    <a href="{% url 'photographer_view_downloads' %}">{% icon "upload" class="feather-20 mr-2" %} My Downloads</a>
-                    <a href="{% url 'account_logout' %}">{% icon "log-out" class="feather-20 mr-2" %} Logout</a>
-                {% endifequal %}
-            {% elif user.is_staff %}
-                    <a href="{% url 'add_tags' %}">{% icon "tag" class="feather-20 mr-2" %} Manage Tags</a>
-                    <a href="{% url 'add_category' %}">{% icon "folder" class="feather-20 mr-2" %} Manage Categories</a>
-                    <a href="{% url 'account_logout' %}">{% icon "log-out" class="feather-20 mr-2" %} Logout</a>
-            {% endif %}
-        </div>
-
-        {% endif %}
+        {% include 'sidepanel.template.html' %}
         <div class="container-fluid my-4 p-sm-4">
         
-        {% block pageheader %}
-        {% endblock %}
+            {% block pageheader %}
+            {% endblock %}
 
-        {% block content %}
-        {% endblock %}
+            {% block content %}
+            {% endblock %}
     
-    
-    </div>
+        </div>
     <footer class="mt-5 pt-3 border-top container-flex clearfix small ">
-        <a class="mx-1" href="{% url 'terms_of_use' %}">Terms of Use</a> <a class="mx-1" href="{% url 'license_agreements' %}">License(s) Agreements</a>  
-        <div class="float-right">&copy; FlashStocks Inc {% now 'Y' %}. All rights reserved.</div>
+        {% include 'footer.template.html' %}
     </footer>
 
     {% block postloadjs %}

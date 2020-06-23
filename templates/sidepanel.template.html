@@ -1,0 +1,32 @@
+{% load icon %}
+
+{% if request.user.is_authenticated  %}
+    <div id="mySidepanel" class="sidepanel">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <h3 class="ml-4">Hello, {{ request.user }}!</h3>
+        {% if request.user.groups.all.0 %}
+            <!-- load the navigations for customer if user is a customer -->
+            {% ifequal 'customers' request.user.groups.all.0.name %}
+                <a href="{% url 'cust_view_profile' %}">{% icon "user" class="feather-20 mr-2" %} Profile</a>
+                <a href="{% url 'view_favourites' %}">{% icon "heart" class="feather-20 mr-2" %} Favourites</a>
+                <a href="{% url 'view_downloads' %}">{% icon "download" class="feather-20 mr-2" %} My Downloads</a>
+                <a href="{% url 'account_logout' %}">{% icon "log-out" class="feather-20 mr-2" %} Logout</a>
+            {% endifequal %}
+
+            <!-- load the navigations for photographer if user is a photographer -->
+            {% ifequal 'photographers' request.user.groups.all.0.name %}
+                <a href="{% url 'photographer_view_profile' %}">{% icon "user" class="feather-20 mr-2" %} Profile</a>
+                <a href="{% url 'view_albums' %}">{% icon "book" class="feather-20 mr-2" %} Album</a>
+                <a href="{% url 'view_uploads' %}">{% icon "upload" class="feather-20 mr-2" %}My Uploads</a>
+                <a href="{% url 'photographer_view_downloads' %}">{% icon "upload" class="feather-20 mr-2" %} My Downloads</a>
+                <a href="{% url 'account_logout' %}">{% icon "log-out" class="feather-20 mr-2" %} Logout</a>
+            {% endifequal %}
+        
+        <!-- load the navigations for admin if user is a staff -->
+        {% elif user.is_staff %}
+                <a href="{% url 'add_tags' %}">{% icon "tag" class="feather-20 mr-2" %} Manage Tags</a>
+                <a href="{% url 'add_category' %}">{% icon "folder" class="feather-20 mr-2" %} Manage Categories</a>
+                <a href="{% url 'account_logout' %}">{% icon "log-out" class="feather-20 mr-2" %} Logout</a>
+        {% endif %}
+    </div>
+{% endif %}

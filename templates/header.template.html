@@ -1,0 +1,68 @@
+{% load icon %}
+
+<nav class="navbar navbar-expand-lg topnav {% if user.groups.all.0 %}{{ user.groups.all.0 }} {% elif user.is_staff %} admin {% endif %} ">
+    <div id="site-logo"><a class="navbar-brand" href="{% url 'home' %}"></a></div>
+    <form id="topsearchform" class="form-inline my-lg-0" method="GET" action="{% url 'search' %}">
+        {% if request.user.groups.all.0 %}
+            {% ifnotequal 'photographers' request.user.groups.all.0.name %}
+                <input name="keyword" class="top-searchbar" type="search" placeholder="Search image" aria-label="Search">
+                <button class="btn btn-main" type="submit">{% icon "search" class="feather-16 feather-white" %}</button>
+            {% endifnotequal %}
+        {% endif %}
+        {% if not request.user.is_authenticated %}
+            <input name="keyword" class="top-searchbar" type="search" placeholder="Search image" aria-label="Search">
+            <button class="btn btn-main" type="submit">{% icon "search" class="feather-16 feather-white" %}</button>
+        {% endif %}
+    </form>
+
+        <div id="mobile-navbar">
+            {% if request.user.groups.all.0 %}
+                {% ifnotequal 'photographers' request.user.groups.all.0.name %}
+                <a href="#" onclick="toggleSearch()">{% icon "search" class="feather-16 feather-white" %}</a>
+                
+                <a  href="{% url 'view_cart' %}">{% icon "shopping-cart" class="feather-16 feather-white" %}<span class="mx-1 cart-number">{{number_of_items}}</span></a>
+                {% endifnotequal %}
+            {% endif %}
+            <a class="text-white" href="{% if request.user.is_authenticated  %}#{% else %}{% url 'account_login' %}{% endif %}" onclick="openNav()">{% icon "user" class="feather-16 feather-white" %} </a>
+        </div>
+        <ul class="navbar-nav ml-auto">
+            {% if request.user.groups.all.0 %}
+                {% ifnotequal 'photographers' request.user.groups.all.0.name %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'view_cart' %}">{% icon "shopping-cart" class="feather-20 feather-white" %}<span class="sr-only">(shopping cart)</span><span class="mx-1 cart-number">{{number_of_items}}</span></a>
+                </li>
+                {% endifnotequal %}
+            {% endif %}
+            
+            <li class="nav-item">
+                {% if request.user.is_authenticated  %}
+                <a class="nav-link text-white" href="{% url 'account_logout' %}"> Logout</a>
+                {% else %}
+                <a class="nav-link text-white" href="{% url 'account_login' %}"> Login</a>
+                {% endif %}     
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" href="#" onclick="openNav()">{% icon "user" class="feather-20 feather-white" %} </a>
+            </li>
+        </ul>
+        {% if request.user.is_authenticated  %}
+            <span class="navbar-text text-white">
+                Hello, {{ request.user }}!
+            </span>
+        {% endif %}
+</nav>
+{% if request.user.groups.all.0 %}
+    {% ifnotequal 'photographers' request.user.groups.all.0.name %}
+        <form id="mobileSearchForm" class="form-inline my-lg-0" method="GET" action="{% url 'search' %}">
+            <input name="keyword" class="top-searchbar" type="search" placeholder="Search image" aria-label="Search">
+            <button class="btn btn-main" type="submit">{% icon "search" class="feather-16 feather-white" %}</button>
+        </form>
+    {% endifnotequal %}
+{% endif %}
+{% if messages %}
+    {% for m in messages %}
+        <div class="message-container alert {% ifequal m.tags 'error' %} alert-warning {% else %} alert-{{ m.tags }}{% endifequal %}">
+            {{ m }}
+        </div>    
+    {% endfor %}
+{% endif %}
