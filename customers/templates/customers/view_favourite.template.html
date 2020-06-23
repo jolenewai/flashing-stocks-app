@@ -13,36 +13,30 @@
     <h2>My Favourites</h2>
     {% if favourites %}
     <div class="row row-cols-1 row-cols-md-3 p-4">
-            {% for favourite in favourites %}
+        {% for favourite in favourites %}
 
-            <div class="col mb-2 px-0 ">
-                <div class="image-container">
-                    <img src="{{ favourite.image.image.cdn_url }}-/preview/" class="image" alt="{{favourite.image.caption}}" />
-                    <div class="overlay">
-                        <a href="{% url 'view_photo' photo_id=favourite.image.id %}">{{favourite.image.caption}}</a>
-                        <form method="POST" action="{% url 'add_to_favourite' photo_id=favourite.image.id %}" class="form-inline float-right">
+        <div class="col mb-2 px-0 ">
+            <div class="image-container">
+                <img src="{{ favourite.image.image.cdn_url }}-/preview/" class="image" alt="{{favourite.image.caption}}" />
+                <div class="overlay">
+                    <a href="{% url 'view_photo' photo_id=favourite.image.id %}">{{favourite.image.caption}}</a>
+                    <form method="POST" action="{% url 'add_to_favourite' photo_id=favourite.image.id %}" class="form-inline float-right">
                         {% csrf_token %}
                         <button type="submit" class="btn-icon" >
-                            
-                            {% if user.is_authenticated and photo in favourited_photo %}
                             {% icon 'heart' class='feather-20 feather-liked float-right mx-1' %}
-                            {% else %}
-                            {% icon 'heart' class='feather-20 feather-white float-right mx-1' %}
-                            {% endif %}
-
                         </button>
                         <input type="hidden" name="redirect_url" value="{{ request.path }}" />
                         <a href="{% url 'view_photo' photo_id=favourite.image.id %}">{% icon 'download' class='feather-20 feather-white float-right mx-1' %}</a>
 
-                        </form>
-                    </div>
+                    </form>
                 </div>
-            </div>   
-            {% endfor %}
-        </div>
-        {% else %}
+            </div>
+        </div>   
+        {% endfor %}
+    </div>
+    {% else %}
         <p>No favourites so far. Starting add now!</p>
-        {% endif %}
+    {% endif %}
     </div>
 </div>
 {% endblock %}

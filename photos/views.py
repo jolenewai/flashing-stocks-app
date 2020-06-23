@@ -46,7 +46,7 @@ def list_photos(request):
     photos_count = photos.count()
 
     # if user is logged in and in customer group
-    if request.user.is_authenticated and request.user.groups.first() == 'customers':
+    if request.user.is_authenticated:
 
         try:
             customer = Customer.objects.get(user=request.user)
@@ -128,11 +128,11 @@ def view_photo(request, photo_id):
 
         # find photos in the same category of the specified photo_id
         queries_1 = queries & Q(category__in=category)
-        related_photos = photos.filter(queries_1)
+        related_photos = photos.filter(queries_1).distinct()
 
         # find photos by the same photographer of the specified photo_id
         queries_2 = queries & Q(owner=photo.owner)
-        photographer_set = photos.filter(queries_2)
+        photographer_set = photos.filter(queries_2).distinct()
 
         return render(request, 'photos/view_photo.template.html', {
             'photo': photo,
@@ -222,6 +222,27 @@ def photo_by_category(request, category_id):
     except ObjectDoesNotExist:
         category = None
 
+    # initialise empty array for user favourite photos
+    favourited_photo = []
+
+    # if user is logged in
+    if request.user.is_authenticated:
+
+        try:
+            customer = Customer.objects.get(user=request.user)
+        except ObjectDoesNotExist:
+            customer = None
+
+        # if customer profile exists, get favourite for this user
+        if customer:
+            favourites = Favourite.objects.filter(user=customer)
+
+            # append photo to favourited_photo array if record found
+            for fav in favourites:
+                favourited_photo.append(
+                    fav.image
+                )
+
     # if category is found
     if category:
         photos_in_category = Photo.objects.filter(category=category)
@@ -231,7 +252,8 @@ def photo_by_category(request, category_id):
             'photos': photos_in_category,
             'photos_count': photos_count,
             'category': category,
-            'all_categories': all_categories
+            'all_categories': all_categories,
+            'favourited_photo': favourited_photo
         })
     # redirect to all photos page if category is not found
     else:

@@ -80,8 +80,8 @@ def search(request):
     # variable initialised as empty array to avoid error in template
     favourited_photo = []
 
-    # if user is logged in and in customer group
-    if request.user.is_authenticated and request.user.groups.first() == 'customers':
+    # if user is logged in
+    if request.user.is_authenticated:
 
         try:
             customer = Customer.objects.get(user=request.user)
@@ -128,8 +128,8 @@ def search_by_tag(request, tag_id):
     favourited_photo = []
     photos_count = photos.count()
 
-    # if user is logged in and in customer group
-    if request.user.is_authenticated and request.user.groups.first() == 'customers':
+    # if user is logged in
+    if request.user.is_authenticated:
 
         try:
             customer = Customer.objects.get(user=request.user)
