@@ -7,7 +7,7 @@ django-crispy-forms==1.9.1
 django-feather==0.2.6
 gunicorn==20.0.4
 oauthlib==3.1.0
-Pillow==7.1.2
+Pillow==8.1.1
 psycopg2==2.8.5
 python-dotenv==0.13.0
 python3-openid==3.1.0
